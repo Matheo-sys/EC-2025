@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nom du Site - Accueil</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Polices (à personnaliser) -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Favicon (à ajouter) -->
+    <!-- <link rel="icon" type="image/png" href="images/favicon.png"> -->
+</head>
+<body>
+    <!-- Préchargeur (optionnel) -->
+    <div id="preloader">
+        <div class="loader"></div>
+    </div>
+    <!-- Barre de navigation -->    
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <!-- Logo -->
+            <a href="/" class="logo">
+                <img src="images/logo-placeholder.png" alt="Nom du Site">
+            </a>
+
+            <!-- Navigation Desktop -->
+            <nav class="nav-desktop">
+                <ul>
+                    <li><a href="/" class="active">Accueil</a></li>
+                    <li><a href="about.html">À propos</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+
+            <!-- Burger Menu Mobile -->
+            <button class="burger-menu" aria-label="Menu mobile">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+
+        <!-- Navigation Mobile -->
+        <nav class="nav-mobile">
+            <ul>
+                <li><a href="/" class="active">Accueil</a></li>
+                <li><a href="about.html">À propos</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Contenu principal -->
+    <main id="main-content">
+        <!-- Section Hero -->
+        <section class="hero">
+            <div class="container">
+                <h1>Bienvenue sur [Nom du Site]</h1>
+                <p class="subtitle">Un slogan percutant qui résume votre site</p>
+                <a href="#cta" class="btn">Call to Action</a>
+            </div>
+        </section>
+
+        <!-- Section Features -->
+        <section class="features">
+            <div class="container">
+                <h2>Nos atouts</h2>
+                <div class="grid">
+                    <article class="feature-card">
+                        <h3>Atout 1</h3>
+                        <p>Description courte de cet atout principal.</p>
+                    </article>
+                    <article class="feature-card">
+                        <h3>Atout 2</h3>
+                        <p>Description courte de cet atout principal.</p>
+                    </article>
+                    <article class="feature-card">
+                        <h3>Atout 3</h3>
+                        <p>Description courte de cet atout principal.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section CTA -->
+        <section class="cta" id="cta">
+            <div class="container">
+                <h2>Prêt à commencer ?</h2>
+                <p>Une phrase d'accroche pour inciter à l'action</p>
+                <a href="contact.html" class="btn">Nous contacter</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-columns">
+                <!-- Colonne 1 -->
+                <div class="footer-col">
+                    <h4>À propos</h4>
+                    <p>Une brève description de votre entreprise ou projet.</p>
+                </div>
+
+                <!-- Colonne 2 -->
+                <div class="footer-col">
+                    <h4>Liens utiles</h4>
+                    <ul>
+                        <li><a href="mentions-legales.html">Mentions légales</a></li>
+                        <li><a href="confidentialite.html">Confidentialité</a></li>
+                    </ul>
+                </div>
+
+                <!-- Colonne 3 -->
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li>Email: <a href="mailto:contact@example.com">contact@example.com</a></li>
+                        <li>Tél: <a href="tel:+33123456789">01 23 45 67 89</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Copyright -->
+            <div class="copyright">
+                <p>© 2023 Nom du Site. Tous droits réservés.</p>
+                <div class="social-links">
+                    <a href="#"><img src="images/facebook-icon.svg" alt="Facebook"></a>
+                    <a href="#"><img src="images/twitter-icon.svg" alt="Twitter"></a>
+                    <a href="#"><img src="images/linkedin-icon.svg" alt="LinkedIn"></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/script.js"></script>
+</body>
+</html>
