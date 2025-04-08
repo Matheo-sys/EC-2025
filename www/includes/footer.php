@@ -6,8 +6,8 @@
             <!-- Colonne 1 -->
             <div class="col-12 col-md-4 mb-4 mb-md-0">
                 <div class="footer-col">
-                    <h4 class="mb-3" >À propos</h4>
-                    <p>ParisSport+ est votre plateforme de référence pour trouver et réserver des terrains sportifs à Paris. Nous connectons les passionnés de sport aux meilleures infrastructures de la capitale.</p>
+                    <h4 class="mb-3" > À propos de ParisSport+</h4>
+                    <p>ParisSport+ est votre guide de confiance pour trouver des terrains de sport gratuits à Paris. Que vous soyez amateur ou professionnel, nous vous aidons à accéder facilement à des espaces sportifs de qualité, sans frais. Rejoignez-nous pour une pratique sportive accessible à tous !</p>
                 </div>
             </div>
 

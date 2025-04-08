@@ -67,16 +67,16 @@ $terrains = $sql->fetchAll(PDO::FETCH_ASSOC);
                 <h2>Nos atouts</h2>
                 <div class="grid">
                     <article class="feature-card">
-                        <h3>Atout 1</h3>
-                        <p>Description courte de cet atout principal.</p>
+                        <h3>Facilité d'accès</h3>
+                        <p>Nous vous permettons de trouver rapidement des terrains de sport gratuits près de chez vous grâce à une interface simple et intuitive.</p>
                     </article>
                     <article class="feature-card">
-                        <h3>Atout 2</h3>
-                        <p>Description courte de cet atout principal.</p>
+                        <h3>Élargissement de l'offre</h3>
+                        <p>Notre plateforme répertorie une grande variété de terrains de sport gratuits, couvrant divers sports pour satisfaire tous les passionnés.</p>
                     </article>
                     <article class="feature-card">
-                        <h3>Atout 3</h3>
-                        <p>Description courte de cet atout principal.</p>
+                        <h3>Accessibilité pour tous</h3>
+                        <p>Tous les terrains listés sont accessibles sans frais, permettant à chacun de pratiquer son sport préféré sans contrainte financière.</p>
                     </article>
                 </div>
             </div>
