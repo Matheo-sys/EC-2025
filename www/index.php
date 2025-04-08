@@ -29,7 +29,10 @@ $terrains = $sql->fetchAll(PDO::FETCH_ASSOC);
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     
     <!-- Favicon (à ajouter) -->
-    <!-- <link rel="icon" type="image/png" href="images/favicon.png"> -->
+    <link rel="icon" type="image/png" href="assets/P+-removebg.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="assets/P+-removebg.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="assets/P+-removebg.png" sizes="48x48">
+    <link rel="icon" type="image/png" href="" sizes="64x64">    
 </head>
 <body>
     <!-- Préchargeur (optionnel) -->
@@ -40,21 +43,62 @@ $terrains = $sql->fetchAll(PDO::FETCH_ASSOC);
 
     <!-- Header -->
     <header class="header">
-    <div class="container">
-        <a href="/" class="logo">
-            <img src="images/logo-placeholder.png" alt="Logo">
-        </a>
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <!-- Logo -->
+            <div class="col-6 col-sm-4 col-md-3">
+                <a href="/" class="logo">
+                    <img src="assets/P green-removebg-preview.png" alt="Logo" class="logo-img" sizes="64x64">
+                    <a class="logo-text">ParisSport+</a>
+                </a>
+            </div>
 
-        <nav class="nav-desktop">
-            <ul>
-                <li><a href="/" class="active">Accueil</a></li>
-                <li><a href="about.html">À propos</a></li>
-                <li><a href="services.html">Services</a></li>
-                <li><a href="contact.html">Contact</a></li>
-            </ul>
-        </nav>
+            <!-- Navigation Desktop -->
+            <nav class="col-6 col-md-9 d-none d-md-block">
+                <ul class="nav justify-content-end">
+                    <li class="nav-item">
+                        <a href="/" class="nav-link active">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="about.html" class="nav-link">À propos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="services.html" class="nav-link">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="contact.html" class="nav-link">Contact</a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Burger Menu for Mobile -->
+            <div class="col-6 d-md-none">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a href="/" class="nav-link">Accueil</a>
+            </li>
+            <li class="nav-item">
+                <a href="about.html" class="nav-link">À propos</a>
+            </li>
+            <li class="nav-item">
+                <a href="services.html" class="nav-link">Services</a>
+            </li>
+            <li class="nav-item">
+                <a href="contact.html" class="nav-link">Contact</a>
+            </li>
+        </ul>
     </div>
 </header>
+
 
 
     <main id="main-content">
@@ -70,7 +114,7 @@ $terrains = $sql->fetchAll(PDO::FETCH_ASSOC);
                     </div>
                 </form>
 
-                <p class="description mt-4">
+                <p class="description mt-4" style="color: white;">
                     Trouvez facilement des terrains sportifs à Paris.
                 </p>
             </div>
@@ -125,13 +169,15 @@ $terrains = $sql->fetchAll(PDO::FETCH_ASSOC);
                 </div>
 
                 <!-- Boutons -->
+                <!-- Boutons -->
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselEquipements" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon"></span>
+                <span class="carousel-control-prev-icon" style="background-color: #2B9348;"></span> <!-- Change la couleur ici -->
                 </button>
 
                 <button class="carousel-control-next" type="button" data-bs-target="#carouselEquipements" data-bs-slide="next">
-                <span class="carousel-control-next-icon"></span>
+                <span class="carousel-control-next-icon" style="background-color: #2B9348;"></span> <!-- Change la couleur ici -->
                 </button>
+
 
             </div>
         </section>
