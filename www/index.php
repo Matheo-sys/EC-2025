@@ -1,12 +1,25 @@
+<?php
+require_once("config/database.php");
+
+$sql = $conn->query("SELECT * FROM equipements_sportifs_paris LIMIT 10");
+$terrains = $sql->fetchAll(PDO::FETCH_ASSOC);
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nom du Site - Accueil</title>
+    <title>ParisSport+ - Accueil</title>
     
     <!-- CSS -->
     <link rel="stylesheet" href="css/reset.css">
@@ -27,32 +40,12 @@
 
     <!-- Header -->
     <header class="header">
-        <div class="container">
-            <!-- Logo -->
-            <a href="/" class="logo">
-                <img src="images/logo-placeholder.png" alt="Nom du Site">
-            </a>
+    <div class="container">
+        <a href="/" class="logo">
+            <img src="images/logo-placeholder.png" alt="Logo">
+        </a>
 
-            <!-- Navigation Desktop -->
-            <nav class="nav-desktop">
-                <ul>
-                    <li><a href="/" class="active">Accueil</a></li>
-                    <li><a href="about.html">À propos</a></li>
-                    <li><a href="services.html">Services</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                </ul>
-            </nav>
-
-            <!-- Burger Menu Mobile -->
-            <button class="burger-menu" aria-label="Menu mobile">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
-
-        <!-- Navigation Mobile -->
-        <nav class="nav-mobile">
+        <nav class="nav-desktop">
             <ul>
                 <li><a href="/" class="active">Accueil</a></li>
                 <li><a href="about.html">À propos</a></li>
@@ -60,18 +53,29 @@
                 <li><a href="contact.html">Contact</a></li>
             </ul>
         </nav>
-    </header>
+    </div>
+</header>
 
-    <!-- Contenu principal -->
+
     <main id="main-content">
-        <!-- Section Hero -->
-        <section class="hero">
-            <div class="container">
-                <h1>Bienvenue sur [Nom du Site]</h1>
-                <p class="subtitle">Un slogan percutant qui résume votre site</p>
-                <a href="#cta" class="btn">Call to Action</a>
+        <!-- Section Recherche -->
+        <section class="hero py-5">
+            <div class="container text-center">
+                <h1 class="mb-4">Bienvenue sur ParisSport+</h1>
+
+                <form action="recherche.php" method="get" class="d-flex justify-content-center">
+                    <div class="input-group w-50">
+                        <input type="text" name="q" class="form-control" placeholder="Rechercher un terrain sportif..." required>
+                        <button class="btn btn-primary" type="submit">Rechercher</button>
+                    </div>
+                </form>
+
+                <p class="description mt-4">
+                    Trouvez facilement des terrains sportifs à Paris.
+                </p>
             </div>
         </section>
+
 
         <!-- Section Features -->
         <section class="features">
@@ -94,7 +98,46 @@
             </div>
         </section>
 
-        <!-- Section CTA -->
+
+
+        <!-- Section Équipements -->
+        <section class="container py-5">
+            <h2 class="mb-4 text-center">Équipements sportifs à Paris</h2>
+
+            <div id="carouselEquipements" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+
+                <?php foreach ($terrains as $index => $terrain): ?>
+                    <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
+                    <div class="d-flex justify-content-center">
+                        <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title"><?= htmlspecialchars($terrain['nom']) ?></h5>
+                            <p class="card-text">Adresse : <?= htmlspecialchars($terrain['adresse']) ?></p>
+                            <p class="card-text">Sport : <?= htmlspecialchars($terrain['type_sport']) ?></p>
+                            <p class="card-text">Arrondissement : <?= htmlspecialchars($terrain['arrondissement']) ?></p>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                <?php endforeach; ?>
+
+                </div>
+
+                <!-- Boutons -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselEquipements" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+                </button>
+
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselEquipements" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+                </button>
+
+            </div>
+        </section>
+
+
+
         <section class="cta" id="cta">
             <div class="container">
                 <h2>Prêt à commencer ?</h2>
@@ -147,5 +190,11 @@
 
     <!-- JavaScript -->
     <script src="js/script.js"></script>
+    <script>
+  const track = document.querySelector('.carousel-track');
+  const clones = track.innerHTML;
+  track.innerHTML += clones; // Double les cartes pour loop infini
+</script>
+
 </body>
 </html>
