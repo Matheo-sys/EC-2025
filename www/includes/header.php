@@ -37,7 +37,7 @@
                         <a href="about.html" class="nav-link">À propos</a>
                     </li>
                     <li class="nav-item">
-                        <a href="services.html" class="nav-link">Services</a>
+                        <a href="recherche.php" class="nav-link">Carte</a>
                     </li>
                     <li class="nav-item">
                         <a href="contact.html" class="nav-link">Contact</a>
