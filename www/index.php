@@ -1,5 +1,6 @@
 <?php
 require_once("config/database.php");
+include('includes/header.php');
 
 $sql = $conn->query("SELECT * FROM equipements_sportifs_paris LIMIT 10");
 $terrains = $sql->fetchAll(PDO::FETCH_ASSOC);
@@ -11,11 +12,13 @@ $terrains = $sql->fetchAll(PDO::FETCH_ASSOC);
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
 <!-- Bootstrap CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,72 +38,7 @@ $terrains = $sql->fetchAll(PDO::FETCH_ASSOC);
     <link rel="icon" type="image/png" href="" sizes="64x64">    
 </head>
 <body>
-    <!-- Préchargeur (optionnel) -->
-    <div id="preloader">
-        <div class="loader"></div>
-    </div>
-    <!-- Barre de navigation -->    
 
-    <!-- Header -->
-    <header class="header">
-    <div class="container-fluid">
-        <div class="row align-items-center">
-            <!-- Logo -->
-            <div class="col-6 col-sm-4 col-md-3">
-                <a href="/" class="logo">
-                    <img src="assets/P green-removebg-preview.png" alt="Logo" class="logo-img" sizes="64x64">
-                    <a class="logo-text">ParisSport+</a>
-                </a>
-            </div>
-
-            <!-- Navigation Desktop -->
-            <nav class="col-6 col-md-9 d-none d-md-block">
-                <ul class="nav justify-content-end">
-                    <li class="nav-item">
-                        <a href="/" class="nav-link active">Accueil</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="about.html" class="nav-link">À propos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="services.html" class="nav-link">Services</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="contact.html" class="nav-link">Contact</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="login.html" class="nav-link">Connexion/Inscription</a>
-                    </li>
-                </ul>
-            </nav>
-
-            <!-- Burger Menu for Mobile -->
-            <div class="col-6 d-md-none">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Mobile Navigation -->
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a href="/" class="nav-link">Accueil</a>
-            </li>
-            <li class="nav-item">
-                <a href="about.html" class="nav-link">À propos</a>
-            </li>
-            <li class="nav-item">
-                <a href="services.html" class="nav-link">Services</a>
-            </li>
-            <li class="nav-item">
-                <a href="contact.html" class="nav-link">Contact</a>
-            </li>
-        </ul>
-    </div>
-</header>
 
 
 
