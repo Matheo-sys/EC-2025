@@ -31,14 +31,15 @@
             <nav class="col-6 col-md-9 d-none d-md-block">
                 <ul class="nav justify-content-end">
                     <li class="nav-item">
-                        <a href="/" class="nav-link active">Accueil</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="about.html" class="nav-link">À propos</a>
+                        <a href="/" class="nav-link">Accueil</a>
                     </li>
                     <li class="nav-item">
                         <a href="recherche.php" class="nav-link">Carte</a>
                     </li>
+                    <li class="nav-item">
+                        <a href="about.php" class="nav-link">À propos</a>
+                    </li>
+
                     <li class="nav-item">
                         <a href="contact.html" class="nav-link">Contact</a>
                     </li>
@@ -55,8 +56,9 @@
             <div class="card card-body">
                 <ul class="navbar-nav">
                     <li class="nav-item"><a href="/" class="nav-link active">Accueil</a></li>
-                    <li class="nav-item"><a href="about.html" class="nav-link">À propos</a></li>
-                    <li class="nav-item"><a href="services.html" class="nav-link">Services</a></li>
+                    <li class="nav-item"><a href="recherche.php" class="nav-link">Carte</a></li>
+                    <li class="nav-item"><a href="about.php" class="nav-link">À propos</a></li>
+                    
                     <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
                     <li class="nav-item"><a href="login.html" class="nav-link">Connexion/Inscription</a></li>
                 </ul>
