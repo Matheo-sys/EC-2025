@@ -71,56 +71,55 @@ function calculer_distance($lat1, $lon1, $lat2, $lon2) {
 </head>
 <body>
 
-    <main id="main-content">
-        <section class="container py-5">
-            <h2 class="mb-4 text-center">Résultats de la recherche</h2>
+<main id="main-content">
+    <section class="container py-5">
+        <h2 class="mb-5 text-center">Résultats de la recherche</h2>
 
-            <!-- Formulaire de recherche avec filtres -->
-            <form action="recherche.php" method="get" class="d-flex justify-content-center mb-4">
-                <div class="input-group w-50">
-                    <input type="text" name="q" class="form-control" placeholder="Rechercher un terrain sportif..." value="<?= htmlspecialchars($query) ?>" required>
-                    <button class="btn btn-primary" type="submit">Rechercher</button>
-                </div>
-            </form>
-
-            <!-- Filtres supplémentaires -->
-
-            <!-- Carte -->
-            <div class="row mt-4">
-                <div class="col-md-12">
-                    <div id="map"></div>
-                </div>
+        <!-- Formulaire de recherche -->
+        <form action="map.php" method="get" class="d-flex justify-content-center mb-5">
+            <div class="input-group w-50">
+                <input type="text" name="q" class="form-control" placeholder="Rechercher un terrain sportif..." value="<?= htmlspecialchars($query) ?>" required>
+                <button class="btn btn-primary" type="submit">Rechercher</button>
             </div>
+        </form>
 
-            <!-- Affichage du nombre de résultats -->
-            <div class="row">
-                <div class="col-md-12">
-                    <?php if ($query): ?>
-                        <h3>Nombre de terrains trouvés : <?= count($terrains) ?></h3>
-                    <?php else: ?>
-                        <h3>Liste de tous les terrains</h3>
-                    <?php endif; ?>
-                </div>
+        <!-- Map avec un espace dessous -->
+        <div class="row mb-5">
+            <div class="col-md-12">
+                <div id="map" style="height: 400px; border-radius: 15px;"></div>
             </div>
+        </div>
 
-            <!-- Affichage des résultats -->
-            <div class="row">
-                <div class="col-md-12">
-                    <ul class="list-group">
-                        <?php foreach ($terrains as $terrain): ?>
-                            <li class="list-group-item">
-                                <h5><?= htmlspecialchars($terrain['nom']) ?></h5>
-                                <p>Adresse : <?= htmlspecialchars($terrain['adresse']) ?></p>
-                                <p>Sport : <?= htmlspecialchars($terrain['type_sport']) ?></p>
-                                <p>Arrondissement : <?= htmlspecialchars($terrain['arrondissement']) ?></p>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
+        <!-- Nombre de résultats -->
+        <div class="row mb-4">
+            <div class="col-md-12 text-center">
+                <?php if ($query): ?>
+                    <h4>Nombre de terrains trouvés : <?= count($terrains) ?></h4>
+                <?php else: ?>
+                    <h4>Liste de tous les terrains</h4>
+                <?php endif; ?>
             </div>
+        </div>
 
-        </section>
-    </main>
+        <!-- Résultats -->
+        <div class="row g-4"> <!-- g-4 = espace entre les cartes -->
+            <?php foreach ($terrains as $terrain): ?>
+                <div class="col-md-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="card-title"><?= htmlspecialchars($terrain['nom']) ?></h5>
+                            <p class="card-text">Adresse : <?= htmlspecialchars($terrain['adresse']) ?></p>
+                            <p class="card-text">Sport : <?= htmlspecialchars($terrain['type_sport']) ?></p>
+                            <p class="card-text">Arrondissement : <?= htmlspecialchars($terrain['arrondissement']) ?></p>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+
+    </section>
+</main>
+
 
     <!-- JavaScript map -->
     <script>

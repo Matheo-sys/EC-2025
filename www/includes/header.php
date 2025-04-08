@@ -34,7 +34,7 @@
                         <a href="/" class="nav-link">Accueil</a>
                     </li>
                     <li class="nav-item">
-                        <a href="recherche.php" class="nav-link">Carte</a>
+                        <a href="map.php" class="nav-link">Carte</a>
                     </li>
                     <li class="nav-item">
                         <a href="about.php" class="nav-link">À propos</a>
@@ -56,7 +56,7 @@
             <div class="card card-body">
                 <ul class="navbar-nav">
                     <li class="nav-item"><a href="/" class="nav-link active">Accueil</a></li>
-                    <li class="nav-item"><a href="recherche.php" class="nav-link">Carte</a></li>
+                    <li class="nav-item"><a href="map.php" class="nav-link">Carte</a></li>
                     <li class="nav-item"><a href="about.php" class="nav-link">À propos</a></li>
                     
                     <li class="nav-item"><a href="contact.php" class="nav-link">Contact</a></li>
