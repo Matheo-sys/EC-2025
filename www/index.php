@@ -30,10 +30,10 @@ $terrains = $sql->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/style.css">
     
-    <!-- Polices (à personnaliser) -->
+    <!-- Polices -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     
-    <!-- Favicon (à ajouter) -->
+    <!-- Favicon -->
     <link rel="icon" type="image/png" href="assets/P+-removebg.png" sizes="16x16">
     <link rel="icon" type="image/png" href="assets/P+-removebg.png" sizes="32x32">
     <link rel="icon" type="image/png" href="assets/P+-removebg.png" sizes="48x48">
@@ -50,7 +50,7 @@ $terrains = $sql->fetchAll(PDO::FETCH_ASSOC);
                 <form action="recherche.php" method="get" class="d-flex justify-content-center">
                     <div class="input-group w-50">
                         <input type="text" name="q" class="form-control" placeholder="Rechercher un terrain sportif..." required>
-                        <button class="btn btn-primary" type="submit">Rechercher</button>
+                        <button class="btn btn-primary" type="submit" href="recherche.php">Rechercher</button>
                     </div>
                 </form>
 
