@@ -66,7 +66,8 @@
 
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <p>Vous pouvez me contacter par mail : <a href="mailto:matheosoriano75@gmail.com">matheosoriano75@gmail.com</a></p>
+            <p>Vous pouvez me contacter </p>
+            <a href="contact.php" class="btn btn-secondary w-10" style="background-color: #2B9348; border-color: #2B9348;">Contact</a>
         </div>
     </div>
 

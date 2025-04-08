@@ -41,7 +41,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="contact.html" class="nav-link">Contact</a>
+                        <a href="contact.php" class="nav-link">Contact</a>
                     </li>
                     <li class="nav-item">
                         <a href="login.html" class="nav-link">Connexion/Inscription</a>
@@ -59,7 +59,7 @@
                     <li class="nav-item"><a href="recherche.php" class="nav-link">Carte</a></li>
                     <li class="nav-item"><a href="about.php" class="nav-link">À propos</a></li>
                     
-                    <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+                    <li class="nav-item"><a href="contact.php" class="nav-link">Contact</a></li>
                     <li class="nav-item"><a href="login.html" class="nav-link">Connexion/Inscription</a></li>
                 </ul>
             </div>

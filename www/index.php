@@ -126,9 +126,9 @@ $terrains = $sql->fetchAll(PDO::FETCH_ASSOC);
 
         <section class="cta" id="cta">
             <div class="container">
-                <h2>Prêt à commencer ?</h2>
-                <p>Une phrase d'accroche pour inciter à l'action</p>
-                <a href="contact.html" class="btn">Nous contacter</a>
+                <h2>Il manque un terrain, un sport ?</h2>
+                <p>N'hésitez pas à nous contacter</p>
+                <a href="contact.php" class="btn">Nous contacter</a>
             </div>
         </section>
     </main>
