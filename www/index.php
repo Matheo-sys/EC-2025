@@ -2,6 +2,8 @@
 require_once("config/database.php");
 include('includes/header.php');
 
+
+
 $sql = $conn->query("SELECT * FROM equipements_sportifs_paris LIMIT 10");
 $terrains = $sql->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -35,12 +37,9 @@ $terrains = $sql->fetchAll(PDO::FETCH_ASSOC);
     <link rel="icon" type="image/png" href="assets/P+-removebg.png" sizes="16x16">
     <link rel="icon" type="image/png" href="assets/P+-removebg.png" sizes="32x32">
     <link rel="icon" type="image/png" href="assets/P+-removebg.png" sizes="48x48">
-    <link rel="icon" type="image/png" href="" sizes="64x64">    
+    <link rel="icon" type="image/png" href="assets/P+-removebg.png" sizes="64x64">    
 </head>
 <body>
-
-
-
 
     <main id="main-content">
         <!-- Section Recherche -->
@@ -134,54 +133,11 @@ $terrains = $sql->fetchAll(PDO::FETCH_ASSOC);
         </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-columns">
-                <!-- Colonne 1 -->
-                <div class="footer-col">
-                    <h4>À propos</h4>
-                    <p>Une brève description de votre entreprise ou projet.</p>
-                </div>
-
-                <!-- Colonne 2 -->
-                <div class="footer-col">
-                    <h4>Liens utiles</h4>
-                    <ul>
-                        <li><a href="mentions-legales.html">Mentions légales</a></li>
-                        <li><a href="confidentialite.html">Confidentialité</a></li>
-                    </ul>
-                </div>
-
-                <!-- Colonne 3 -->
-                <div class="footer-col">
-                    <h4>Contact</h4>
-                    <ul>
-                        <li>Email: <a href="mailto:contact@example.com">contact@example.com</a></li>
-                        <li>Tél: <a href="tel:+33123456789">01 23 45 67 89</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Copyright -->
-            <div class="copyright">
-                <p>© 2023 Nom du Site. Tous droits réservés.</p>
-                <div class="social-links">
-                    <a href="#"><img src="images/facebook-icon.svg" alt="Facebook"></a>
-                    <a href="#"><img src="images/twitter-icon.svg" alt="Twitter"></a>
-                    <a href="#"><img src="images/linkedin-icon.svg" alt="LinkedIn"></a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
+<?php
+include('includes/footer.php');
+?>
     <!-- JavaScript -->
     <script src="js/script.js"></script>
-    <script>
-  const track = document.querySelector('.carousel-track');
-  const clones = track.innerHTML;
-  track.innerHTML += clones; // Double les cartes pour loop infini
-</script>
 
 </body>
 </html>
