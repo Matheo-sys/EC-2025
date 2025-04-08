@@ -68,6 +68,9 @@ $terrains = $sql->fetchAll(PDO::FETCH_ASSOC);
                     <li class="nav-item">
                         <a href="contact.html" class="nav-link">Contact</a>
                     </li>
+                    <li class="nav-item">
+                        <a href="login.html" class="nav-link">Connexion/Inscription</a>
+                    </li>
                 </ul>
             </nav>
 
