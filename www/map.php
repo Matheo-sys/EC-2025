@@ -78,8 +78,8 @@ function calculer_distance($lat1, $lon1, $lat2, $lon2) {
         <!-- Formulaire de recherche -->
         <form action="map.php" method="get" class="d-flex justify-content-center mb-5">
             <div class="input-group w-50">
-                <input type="text" name="q" class="form-control" placeholder="Rechercher un terrain sportif..." value="<?= htmlspecialchars($query) ?>" required>
-                <button class="btn btn-primary" type="submit">Rechercher</button>
+                <input type="text" name="q" class="form-control" placeholder="Rechercher un terrain sportif..." required>
+                <button class="btn btn-primary" style="background-color: #2B9348; border-color:#2B9348" type="submit" href="map.php">Rechercher</button>
             </div>
         </form>
 

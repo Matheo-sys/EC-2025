@@ -77,7 +77,9 @@ h1, h2, h3, h4 {
   justify-content: center;
   position: relative;
 }
-
+.container {
+  margin-bottom: 50px; 
+}
 .container text-center {
   z-index: 10; /* S'assure que la barre de recherche est au-dessus de l'image */
   max-width: 800px;
@@ -96,18 +98,15 @@ h1, h2, h3, h4 {
   margin: 0 auto;
 }
 
-.form-control {
+.hero .form-control {
   border-radius: 50px 0 0 50px !important;
   padding: 1.25rem 2rem;
   border: 2px solid var(--primary-color);
 }
 
-.btn-primary {
+.hero .btn-primary {
   border-radius: 0 50px 50px 0 !important;
   padding: 1rem 2.5rem;
-  background: var(--primary-color);
-  border: none;
-  transition: var(--transition);
 }
 
 .btn-primary:hover {
@@ -295,4 +294,22 @@ h1, h2, h3, h4 {
 
 #mobileMenu .card-body {
   padding: 1rem;
+}
+
+/* Style du formulaire de recherche */
+.card .form-control2 {
+  border-radius: 50px !important;
+  padding: 1rem 1.5rem;
+  border: 2px solid #dee2e6 !important;
+}
+
+.card .btn-primary {
+  border-radius: 50px !important;
+  padding: 0.75rem 2rem !important;
+  border: none !important;
+}
+
+.card .form-floating > label {
+  left: 1.5rem !important;
+  padding: 0 0.5rem !important;
 }
