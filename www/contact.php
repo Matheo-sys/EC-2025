@@ -21,7 +21,7 @@
 
 <main class="d-flex align-items-center justify-content-center vh-100">
     <div class="container text-center">
-        <h1 class="mb-4 fw-bold">Contactez-moi</h1>
+        <h1 class="mb-4 fw-bold">Contactez-nous</h1>
 
         <p class="mb-4 text-muted">Une question ? Un bug ? Une idée ? N'hésitez pas à me contacter via ce formulaire.</p>
 

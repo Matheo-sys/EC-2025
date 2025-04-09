@@ -108,14 +108,12 @@ $terrains = $sql->fetchAll(PDO::FETCH_ASSOC);
 
                 </div>
 
-                <!-- Boutons -->
-                <!-- Boutons -->
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselEquipements" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" style="background-color: #2B9348;"></span> <!-- Change la couleur ici -->
+                <span class="carousel-control-prev-icon" style="background-color: #2B9348;"></span> 
                 </button>
 
                 <button class="carousel-control-next" type="button" data-bs-target="#carouselEquipements" data-bs-slide="next">
-                <span class="carousel-control-next-icon" style="background-color: #2B9348;"></span> <!-- Change la couleur ici -->
+                <span class="carousel-control-next-icon" style="background-color: #2B9348;"></span> 
                 </button>
 
 

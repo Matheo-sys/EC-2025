@@ -83,7 +83,7 @@ function calculer_distance($lat1, $lon1, $lat2, $lon2) {
             </div>
         </form>
 
-        <!-- Map avec un espace dessous -->
+        <!-- Map -->
         <div class="row mb-5">
             <div class="col-md-12">
                 <div id="map" style="height: 400px; border-radius: 15px;"></div>
@@ -102,15 +102,14 @@ function calculer_distance($lat1, $lon1, $lat2, $lon2) {
         </div>
 
         <!-- Résultats -->
-        <div class="row g-4"> <!-- g-4 = espace entre les cartes -->
+        <div class="row g-4"> 
             <?php foreach ($terrains as $terrain): ?>
                 <div class="col-md-4">
                     <div class="card shadow-sm h-100">
                         <div class="card-body">
                             <h5 class="card-title"><?= htmlspecialchars($terrain['nom']) ?></h5>
                             <p class="card-text">Adresse : <?= htmlspecialchars($terrain['adresse']) ?></p>
-                            <p class="card-text">Sport : <?= htmlspecialchars($terrain['type_sport']) ?></p>
-                            <p class="card-text">Arrondissement : <?= htmlspecialchars($terrain['arrondissement']) ?></p>
+                            <p class="card-text">Type/Sport : <?= htmlspecialchars($terrain['type_sport']) ?></p>
                         </div>
                     </div>
                 </div>
