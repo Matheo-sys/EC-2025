@@ -16,9 +16,12 @@
                 <div class="footer-col">
                     <h4 class="mb-3">Liens utiles</h4>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><a href="mentions-legales.html" class="text-decoration-none">Mentions légales</a></li>
-                        <li class="mb-2"><a href="confidentialite.html" class="text-decoration-none">Confidentialité</a></li>
-                        <li><a href="faq.html" class="text-decoration-none">FAQ</a></li>
+                        <li class="mb-2"><a href="legal.php" class="text-decoration-none">Mentions légales</a></li>
+                        <li class="mb-2"><a href="privacy.php" class="text-decoration-none">Confidentialité</a></li>
+                        <li class="mb-2"><a href="terms.php" class="text-decoration-none">Conditions d'utilisation</a></li>
+                        <li class="mb-2"><a href="about.php" class="text-decoration-none">À propos</a></li>
+                        <li class="mb-2"><a href="contact.php" class="text-decoration-none">Contact</a></li>
+
                     </ul>
                 </div>
             </div>
@@ -45,7 +48,7 @@
         <!-- Copyright -->
         <div class="row mt-5">
             <div class="col-12 text-center">
-                <p class="text-muted mb-0">&copy; 2023 ParisSport+. Tous droits réservés.</p>
+                <p class="text-muted mb-0">&copy; 2025 ParisSport+. Tous droits réservés.</p>
             </div>
         </div>
     </div>

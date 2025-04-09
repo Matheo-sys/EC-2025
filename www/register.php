@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['is_logged_in'] = true;
         $_SESSION['avatar_url'] = 'assets/default-avatar.png'; 
         
-        header("Location: index.php");
+        header("Location: login.php");
         exit();
     } else {
         $erreur = "Erreur lors de l'inscription.";
@@ -82,6 +82,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="form-floating mb-4">
                 <input type="password" class="form-control2 w-100 rounded-pill" id="password" name="password" placeholder="Mot de passe" required>
             </div>
+
+            <div class="form-floating mb-4">
+                <input type="password" class="form-control2 w-100 rounded-pill" id="confirm_password" name="confirm_password" placeholder="Confirmer le mot de passe" required>
+            </div>
+
+            <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="accept_conditions" name="accept_conditions" required>
+            <label class="form-check-label" for="accept_conditions">
+                J'accepte les <a href="terms.php" target="_blank">conditions d'utilisation</a> et la <a href="privacy.php" target="_blank">politique de confidentialité</a>.
+            </label>
+        </div>
 
             <button type='submit' class="btn btn-secondary w-100 rounded-pill" style="background-color: #2B9348; border-color: #2B9348;">
                 S'inscrire

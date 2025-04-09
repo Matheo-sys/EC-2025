@@ -23,7 +23,7 @@
     <div class="container text-center">
         <h1 class="mb-4 fw-bold">Contactez-nous</h1>
 
-        <p class="mb-4 text-muted">Une question ? Un bug ? Une idée ? N'hésitez pas à me contacter via ce formulaire.</p>
+        <p class="mb-4 text-muted">Une question ? Un bug ? Une idée ? N'hésitez pas à nous contacter via ce formulaire.</p>
 
         <div class="row justify-content-center">
             <div class="col-md-6">
