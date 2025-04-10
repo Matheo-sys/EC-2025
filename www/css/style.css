@@ -109,6 +109,7 @@ h1, h2, h3, h4 {
   padding: 1rem 2.5rem;
 }
 
+
 .btn-primary:hover {
   background: #237A3D;
   transform: translateY(-2px);
@@ -313,3 +314,7 @@ h1, h2, h3, h4 {
   left: 1.5rem !important;
   padding: 0 0.5rem !important;
 }
+
+/* like */
+
+/* Styles généraux du bouton */

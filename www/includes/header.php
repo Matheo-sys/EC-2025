@@ -72,7 +72,7 @@ if (session_status() == PHP_SESSION_NONE) {
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="userMenu">
                                 <li><a class="dropdown-item" href="profile.php">Profil</a></li>
-                                <li><a class="dropdown-item" href="likes.php">Favoris</a></li>
+                                <li><a class="dropdown-item" href="mylikes.php">Favoris</a></li>
                                 <li><a class="dropdown-item" href="logout.php">Déconnexion</a></li>
                             </ul>
                         </li>
@@ -102,7 +102,7 @@ if (session_status() == PHP_SESSION_NONE) {
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="userMenuMobile">
                                 <li><a class="dropdown-item" href="profile.php">Profil</a></li>
-                                <li><a class="dropdown-item" href="likes.php">Favoris</a></li>
+                                <li><a class="dropdown-item" href="mylikes.php">Favoris</a></li>
                                 <li><a class="dropdown-item" href="logout.php">Déconnexion</a></li>
                             </ul>
                         </li>

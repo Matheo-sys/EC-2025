@@ -1,13 +1,13 @@
 <?php
 require_once("config/database.php");
-include('includes/header.php');
 
+include('likes.php');
+include('includes/header.php');
 // Récupérer les filtres
 $sport = isset($_GET['sport']) ? $_GET['sport'] : '';
 $arrondissement = isset($_GET['arrondissement']) ? $_GET['arrondissement'] : '';
 $distance = isset($_GET['distance']) ? $_GET['distance'] : 0;
 $query = isset($_GET['q']) ? $_GET['q'] : '';
-
 $sql = "SELECT * FROM equipements_sportifs_paris WHERE 1";
 
 if ($query) {
@@ -61,6 +61,9 @@ function calculer_distance($lat1, $lon1, $lat2, $lon2) {
     <!-- Leaflet pour la carte -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <!-- Font Awesome CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
 
     <style>
         #map {
@@ -110,11 +113,17 @@ function calculer_distance($lat1, $lon1, $lat2, $lon2) {
                             <h5 class="card-title"><?= htmlspecialchars($terrain['nom']) ?></h5>
                             <p class="card-text">Adresse : <?= htmlspecialchars($terrain['adresse']) ?></p>
                             <p class="card-text">Type/Sport : <?= htmlspecialchars($terrain['type_sport']) ?></p>
+                            <button class="like-btn" data-element-id="<?= $terrain['id'] ?>" data-liked="false">
+                            <i class="fa-regular fa-heart"></i> 
+                            </button>
+
+
+
+
                         </div>
                     </div>
                 </div>
             <?php endforeach; ?>
-        </div>
 
     </section>
 </main>
@@ -164,12 +173,45 @@ function calculer_distance($lat1, $lon1, $lat2, $lon2) {
             return a.distance - b.distance;
         });
 
-        // Ajouter des marqueurs pour les terrains triés
-        distances.forEach(function(item) {
-            var terrain = item.terrain;
-            var marker = L.marker([terrain.latitude, terrain.longitude]).addTo(map);
-            marker.bindPopup("<b>" + terrain.nom + "</b><br>Adresse: " + terrain.adresse + "<br>Sport: " + terrain.type_sport);
-        });
+// Ajouter des marqueurs pour les terrains triés
+distances.forEach(function(item) {
+    var terrain = item.terrain;
+    var marker = L.marker([terrain.latitude, terrain.longitude]).addTo(map);
+
+    // Créer le contenu HTML de la popup avec le bouton like
+    var popupContent = 
+        "<b>" + terrain.nom + "</b><br>" +
+        "Adresse: " + terrain.adresse + "<br>" +
+        "Sport: " + terrain.type_sport + "<br><br>" +
+        "<button class='like-btn' data-element-id='" + terrain.id + "' data-liked='false'>" +
+            "<i class='fa-regular fa-heart heart-icon'></i> " +
+            "<span class='like-text'>Like</span>" +
+        "</button>";
+
+    marker.bindPopup(popupContent);
+});// Ajouter des marqueurs pour les terrains triés
+distances.forEach(function(item) {
+    var terrain = item.terrain;
+    var marker = L.marker([terrain.latitude, terrain.longitude]).addTo(map);
+
+    // Créer le contenu HTML de la popup avec le bouton like positionné en haut à droite
+    var popupContent = 
+        "<div style='position: relative; padding: 10px;'>" +
+
+            "<div>" +
+                "<b>" + terrain.nom + "</b><br>" +
+                "Adresse: " + terrain.adresse + "<br>" +
+                "Sport: " + terrain.type_sport +
+            "</div>" +
+                "<button class='like-btn' data-element-id='" + terrain.id + "' data-liked='false'>" +
+                    "<i class='fa-regular fa-heart heart-icon'></i> " +
+                    "<span class='like-text'>Like</span>" +
+                "</button>" +
+        "</div>";
+
+    marker.bindPopup(popupContent);
+});
+
 
         // Fonction pour calculer la distance entre deux points (en km)
         function calculer_distance(lat1, lon1, lat2, lon2) {
@@ -190,8 +232,127 @@ function calculer_distance($lat1, $lon1, $lat2, $lon2) {
             return deg * (Math.PI / 180);
         }
     </script>
+    <!-- Likes -->
+    <script>
+    // Quand le DOM est chargé
+    document.addEventListener('DOMContentLoaded', function() {
+      // Sélectionne tous les boutons like (si plusieurs)
+      const likeButtons = document.querySelectorAll('.like-btn');
 
+      likeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const elementId = button.getAttribute('data-element-id');
+          // Récupère l'état actuel du like
+          const isLiked = button.getAttribute('data-liked') === 'true';
+
+          // Vérifier que l'elementId est présent
+          if (!elementId) {
+            console.error('ID d\'élément manquant');
+            return;
+          }
+
+          // Prépare les données à envoyer en POST
+          const dataToSend = new URLSearchParams();
+          dataToSend.append('element_id', elementId);
+          // Ici, on envoie uniquement l'ID ; le serveur gère l'ajout ou la suppression
+          
+          fetch('likes.php', {
+            method: 'POST',
+            body: dataToSend
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.status === 'liked') {
+              // Met à jour l'état du bouton en like
+              button.setAttribute('data-liked', 'true');
+              const icon = button.querySelector('i');
+              icon.classList.remove('fa-regular');
+              icon.classList.add('fa-solid');
+            } else if (data.status === 'unliked') {
+              // Met à jour l'état du bouton en unlike
+              button.setAttribute('data-liked', 'false');
+              const icon = button.querySelector('i');
+              icon.classList.remove('fa-solid');
+              icon.classList.add('fa-regular');
+            } else {
+              alert("Erreur: " + data.message);
+            }
+          })
+          .catch(error => {
+            console.error('Erreur AJAX:', error);
+          });
+        });
+      });
+    });
+
+    // Lorsque la popup s'ouvre, attacher l'événement "click" au bouton like qu'elle contient
+map.on('popupopen', function(e) {
+    // Récupère l'élément DOM de la popup ouverte
+    const popupNode = e.popup.getElement();
+
+    // Recherche le bouton like dans la popup
+    const likeButton = popupNode.querySelector('.like-btn');
+
+    if (likeButton) {
+        likeButton.addEventListener('click', function(event) {
+            event.preventDefault(); // Empêche le comportement par défaut
+            const elementId = likeButton.getAttribute('data-element-id');
+            const isLiked = likeButton.getAttribute('data-liked') === 'true';
+            const heartIcon = likeButton.querySelector('.heart-icon');
+            const likeText = likeButton.querySelector('.like-text');
+
+            // Inverse l'état dans l'interface
+            const newLikeState = !isLiked;
+            likeButton.setAttribute('data-liked', newLikeState ? 'true' : 'false');
+
+            if (newLikeState) {
+                heartIcon.classList.remove('fa-regular');
+                heartIcon.classList.add('fa-solid');
+                likeText.textContent = 'Unlike';
+            } else {
+                heartIcon.classList.remove('fa-solid');
+                heartIcon.classList.add('fa-regular');
+                likeText.textContent = 'Like';
+            }
+
+            // Envoyer l'ID et le nouvel état via AJAX à likes.php
+            fetch('likes.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    'element_id': elementId,
+                    // Vous pouvez envoyer l'état si nécessaire, par exemple 'liked': newLikeState ? 'true' : 'false'
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Si nécessaire, ajuster l'interface en fonction de la réponse
+                if (data.status === 'liked') {
+                    likeButton.setAttribute('data-liked', 'true');
+                    heartIcon.classList.remove('fa-regular');
+                    heartIcon.classList.add('fa-solid');
+                    likeText.textContent = 'Unlike';
+                } else if (data.status === 'unliked') {
+                    likeButton.setAttribute('data-liked', 'false');
+                    heartIcon.classList.remove('fa-solid');
+                    heartIcon.classList.add('fa-regular');
+                    likeText.textContent = 'Like';
+                } else {
+                    console.error("Erreur: " + data.message);
+                }
+            })
+            .catch(error => console.error('Erreur AJAX:', error));
+        });
+    }
+});
+
+  </script>
+<?php include('js/script.js'); ?>
 </body>
 </html>
 
 <?php include('includes/footer.php'); ?>
+
+
