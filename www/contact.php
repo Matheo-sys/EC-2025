@@ -1,4 +1,29 @@
 <?php include('includes/header.php'); ?>
+<?php 
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $nom = htmlspecialchars($_POST['name']);
+    $email = htmlspecialchars($_POST['email']);
+    $message = htmlspecialchars($_POST['message']);
+
+    $to = "parissport@alwaysdata.net"; 
+    $subject = "Nouveau message de $nom via ParisSport+";
+
+    $headers = "From: $email\r\n";
+    $headers .= "Reply-To: $email\r\n";
+    $headers .= "Content-Type: text/plain; charset=utf-8\r\n";
+
+    $body = "Nom : $nom\n";
+    $body .= "Email : $email\n\n";
+    $body .= "Message :\n$message\n";
+
+    if (mail($to, $subject, $body, $headers)) {
+        echo "<script>alert('Message envoyé avec succès !'); window.location.href='contact.php';</script>";
+    } else {
+        echo "<script>alert('Erreur lors de l\'envoi du message.'); window.location.href='contact.php';</script>";
+    }
+}
+?>
+
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -27,25 +52,26 @@
 
         <div class="row justify-content-center">
             <div class="col-md-6">
-                <form action="contact.php" method="post" class="p-4 border rounded shadow-sm bg-light">
+            <form action="contact.php" method="post" class="p-4 border rounded shadow-sm bg-light">
 
-                    <div class="mb-3 text-start">
-                        <label for="name" class="form-label">Nom</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
-                    </div>
+                <div class="mb-3 text-start">
+                    <label for="name" class="form-label">Nom</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
 
-                    <div class="mb-3 text-start">
-                        <label for="email" class="form-label">Adresse Email</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
-                    </div>
+                <div class="mb-3 text-start">
+                    <label for="email" class="form-label">Adresse Email</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
 
-                    <div class="mb-3 text-start">
-                        <label for="message" class="form-label">Message</label>
-                        <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
-                    </div>
+                <div class="mb-3 text-start">
+                    <label for="message" class="form-label">Message</label>
+                    <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                </div>
 
-                    <button type="submit" class="btn btn-secondary w-50" style="background-color: #2B9348; border-color: #2B9348;">Envoyer</button>
-                </form>
+                <button type="submit" class="btn btn-success w-100 rounded-pill">Envoyer</button>
+            </form>
+
             </div>
         </div>
     </div>

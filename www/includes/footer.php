@@ -31,7 +31,7 @@
                 <div class="footer-col">
                     <h4 class="mb-3">Contact</h4>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><i class="bi bi-envelope me-2"></i><a href="mailto:contact@parissportplus.fr" class="text-decoration-none">contact@parissportplus.fr</a></li>
+                        <li class="mb-2"><i class="bi bi-envelope me-2"></i><a href="mailto:parissport@alwaysdata.net" class="text-decoration-none">parissport@alwaysdata.net</a></li>
                         <li class="mb-2"><i class="bi bi-telephone me-2"></i><a href="tel:+33123456789" class="text-decoration-none">01 23 45 67 89</a></li>
                         <li class="mt-3">
                             <div class="social-links">

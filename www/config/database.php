@@ -1,5 +1,5 @@
 <?php
-$serveur = "mysql-parissport.alwaysdata.net;port=3306";
+$serveur = "mysql-parissport.alwaysdata.net";
 $utilisateur = "408844";
 $motdepasse = "qqRyDvP7G#r3crg";
 $bdd = "parissport_bdd";

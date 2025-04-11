@@ -17,7 +17,7 @@ include('includes/header.php');
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ParisSport+ - Accueil</title>
+    <title>ParisSport+ - legal</title>
     
     <!-- CSS -->
     <link rel="stylesheet" href="css/style.css">
@@ -46,7 +46,7 @@ include('includes/header.php');
                     <p><strong>Directeur de la publication :</strong> Jean Dupont</p>
 
                     <h3>Hébergement</h3>
-                    <p><strong>Nom de l'hébergeur :</strong> HébergeurWeb Inc.</p>
+                    <p><strong>Nom de l'hébergeur :</strong> Alwaysdata </p>
                     <p><strong>Adresse de l'hébergeur :</strong> 456 rue du Web, 75002 Paris, France</p>
                     <p><strong>Numéro de téléphone :</strong> +33 1 23 45 67 89</p>
 
@@ -64,7 +64,7 @@ include('includes/header.php');
                     <p>Le site ParisSport+ utilise des cookies pour améliorer votre expérience utilisateur. Vous pouvez gérer vos préférences en matière de cookies dans les paramètres de votre navigateur.</p>
 
                     <h3>Contact</h3>
-                    <p>Pour toute question, contactez-nous par e-mail à <a href="mailto:support@parissportplus.com">contact@parissportplus.com</a> ou par téléphone au +33 1 23 45 67 89.</p>
+                    <p>Pour toute question, contactez-nous par e-mail à <a href="mailto:parissport@alwaysdata.net">parissport@alwaysdata.net</a> ou par téléphone au +33 1 23 45 67 89.</p>
 
                     <p class="text-center">
                         <a href="index.php" class="btn btn-primary" style="background-color: #2B9348; border-color: #2B9348;">Retour à l'accueil</a>

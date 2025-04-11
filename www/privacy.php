@@ -17,7 +17,7 @@ include('includes/header.php');
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ParisSport+ - Accueil</title>
+    <title>ParisSport+ - privacy</title>
     
     <!-- CSS -->
     <link rel="stylesheet" href="css/style.css">
@@ -82,7 +82,7 @@ include('includes/header.php');
                         <li><strong>Droit d'opposition :</strong> Vous pouvez vous opposer au traitement de vos données pour des raisons légitimes.</li>
                         <li><strong>Droit à la portabilité :</strong> Vous pouvez demander à recevoir vos données dans un format structuré, couramment utilisé et lisible par machine.</li>
                     </ul>
-                    <p>Pour exercer ces droits, vous pouvez nous contacter à l'adresse suivante : <a href="mailto:support@parissportplus.com">contact@parissportplus.com</a>.</p>
+                    <p>Pour exercer ces droits, vous pouvez nous contacter à l'adresse suivante : <a href="mailto:parissport@alwaysdata.net">parissport@alwaysdata.net</a>.</p>
 
                     <h3>7. Conservation des données</h3>
                     <p>Nous conservons vos données personnelles aussi longtemps que nécessaire pour les finalités décrites dans cette politique, et conformément à la législation en vigueur. En général, nous conservons vos données pendant la durée de votre inscription et de votre utilisation de nos services.</p>
