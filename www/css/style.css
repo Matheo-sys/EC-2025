@@ -315,6 +315,35 @@ h1, h2, h3, h4 {
   padding: 0 0.5rem !important;
 }
 
-/* like */
+.password-strength {
+  margin-top: 10px;
+}
 
-/* Styles généraux du bouton */
+.strength-bar {
+  height: 10px;
+  width: 0%; 
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+
+.strength-bar.weak {
+  background-color: red;
+  width: 33%;
+}
+
+.strength-bar.medium {
+  background-color: orange;
+  width: 66%;
+}
+
+.strength-bar.strong {
+  background-color: green;
+  width: 100%;
+}
+
+#strengthText {
+  font-size: 14px;
+  margin-top: 5px;
+  color: #666;
+}

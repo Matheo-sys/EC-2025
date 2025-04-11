@@ -6,11 +6,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nom = htmlspecialchars($_POST['nom']);
     $prenom = htmlspecialchars($_POST['prenom']);
     $email = htmlspecialchars($_POST['email']);
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $password = $_POST['password']; // Garder le mot de passe en clair pour la comparaison
+    $confirm_password = $_POST['confirm_password'];
+
+     // Vérifier si les mots de passe correspondent
+     if ($password !== $confirm_password) {
+        $erreur = "Les mots de passe ne correspondent pas.";
+    } else {
+       
+        $sql = "SELECT COUNT(*) FROM utilisateurs WHERE email = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$email]);
+        $email_exists = $stmt->fetchColumn();
+
+        if ($email_exists) {
+            $erreur = "Cet email est déjà utilisé.";
+        
+    } else {
+        // Si les mots de passe correspondent, on hache le mot de passe
+        $password_hashed = password_hash($password, PASSWORD_DEFAULT);
+    
+
 
     $sql = "INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe) VALUES (?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    if($stmt->execute([$nom, $prenom, $email, $password])) {
+    if($stmt->execute([$nom, $prenom, $email, $password_hashed])) {
         // Get the last inserted user ID
         $user_id = $conn->lastInsertId();
         
@@ -27,7 +47,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $erreur = "Erreur lors de l'inscription.";
     }
-}
+}}}
+
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -82,6 +104,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="form-floating mb-4">
                 <input type="password" class="form-control2 w-100 rounded-pill" id="password" name="password" placeholder="Mot de passe" required>
             </div>
+            
+            <div class="password-strength">
+                <div class="strength-bar" id="strengthBar"></div>
+                <p id="strengthText"></p>
+            </div>
 
             <div class="form-floating mb-4">
                 <input type="password" class="form-control2 w-100 rounded-pill" id="confirm_password" name="confirm_password" placeholder="Confirmer le mot de passe" required>
@@ -106,3 +133,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 </main>
 <?php include('includes/footer.php'); ?>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/script.js"></script>
