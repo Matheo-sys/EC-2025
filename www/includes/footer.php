@@ -32,7 +32,7 @@
                     <h4 class="mb-3">Contact</h4>
                     <ul class="list-unstyled">
                         <li class="mb-2"><i class="bi bi-envelope me-2"></i><a href="mailto:parissport@alwaysdata.net" class="text-decoration-none">parissport@alwaysdata.net</a></li>
-                        <li class="mb-2"><a href="contact.php" class="text-decoration-none">Contact</a></li>
+                        <li class="mb-2"><i class="bi bi-envelope me-2"></i><a href="contact.php" class="text-decoration-none">Contact</a></li>
                         <li class="mt-3">
                             <div class="social-links">
                                 <a href="#" class="text-decoration-none me-3"><i class="bi bi-facebook"></i></a>

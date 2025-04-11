@@ -65,7 +65,7 @@
 
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <p>Vous pouvez me contacter </p>
+            <p>N'hesitez pas à me contacter ! </p>
             <a href="contact.php" class="btn btn-secondary w-10" style="background-color: #2B9348; border-color: #2B9348;">Contact</a>
         </div>
     </div>

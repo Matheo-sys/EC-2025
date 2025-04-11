@@ -78,7 +78,7 @@ include('includes/header.php');
                     <p>Ces conditions d'utilisation sont régies par la loi en vigueur dans le pays où ParisSport+ est basé. En cas de litige, les tribunaux compétents seront ceux du pays concerné.</p>
 
                     <h3>11. Contact</h3>
-                    <p>Pour toute question ou préoccupation concernant ces conditions d'utilisation, vous pouvez nous contacter à l'adresse suivante : <a href="mailto:support@parissportplus.com">contact@parissportplus.com</a>.</p>
+                    <p>Pour toute question ou préoccupation concernant ces conditions d'utilisation, vous pouvez nous contacter à l'adresse suivante : <a href="mailto:parissport@alwaysdata.net">parissport@alwaysdata.net</a>.</p>
 
                     <p class="text-center">
                         <a href="index.php" class="btn btn-primary" style="background-color: #2B9348; border-color: #2B9348;">Retour à l'accueil</a>

@@ -91,7 +91,7 @@ include('includes/header.php');
                     <p>Nous nous réservons le droit de modifier cette politique de confidentialité à tout moment. Toute modification sera publiée sur cette page avec la date de mise à jour. Nous vous encourageons à consulter régulièrement cette page pour vous tenir informé des dernières modifications.</p>
 
                     <h3>Contact</h3>
-                    <p>Si vous avez des questions ou des préoccupations concernant cette politique de confidentialité, vous pouvez nous contacter à l'adresse suivante : <a href="mailto:support@parissportplus.com">contact@parissportplus.com</a>.</p>
+                    <p>Si vous avez des questions ou des préoccupations concernant cette politique de confidentialité, vous pouvez nous contacter à l'adresse suivante : <a href="mailto:parissport@alwaysdata.net">parissport@alwaysdata.net</a>.</p>
 
                     <p class="text-center">
                         <a href="index.php" class="btn btn-primary" style="background-color: #2B9348; border-color: #2B9348;">Retour à l'accueil</a>
