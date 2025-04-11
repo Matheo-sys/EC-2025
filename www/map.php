@@ -137,7 +137,12 @@ function calculer_distance($lat1, $lon1, $lat2, $lon2) {
                             <p class="card-text">Code Postal : <?= htmlspecialchars($terrain['arrondissement']) ?></p>
                             <p class="card-text">Accès handicap : <?= htmlspecialchars($terrain['handicap_access']) ?></p>
                             <button class="like-btn" data-element-id="<?= $terrain['id'] ?>" data-liked="false">
-                            <i class="fa-regular fa-heart"></i> 
+                            <?php if (isset($_SESSION['user_id'])): ?>
+                                <i class="fa-regular fa-heart"></i>
+                            <?php else: ?>
+                                <i class="fa-regular fa-heart"></i>
+                                <span class="text-danger">Connectez-vous pour liker</span>
+                            <?php endif; ?>
                             </button>
 
 
