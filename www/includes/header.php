@@ -73,6 +73,9 @@ if (session_status() == PHP_SESSION_NONE) {
                             <ul class="dropdown-menu" aria-labelledby="userMenu">
                                 <li><a class="dropdown-item" href="profile.php">Profil</a></li>
                                 <li><a class="dropdown-item" href="mylikes.php">Favoris</a></li>
+                                <?php if($_SESSION['user']['id'] == 5): ?>
+                                    <li><a class="dropdown-item" href="admin_crud.php">Administration</a></l>
+                                <?php endif; ?>
                                 <li><a class="dropdown-item" href="logout.php">Déconnexion</a></li>
                             </ul>
                         </li>

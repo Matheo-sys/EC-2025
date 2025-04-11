@@ -3,7 +3,7 @@ require_once("config/database.php");
 
 include('likes.php');
 include('includes/header.php');
-// Récupérer les filtres
+
 $sport = isset($_GET['sport']) ? $_GET['sport'] : '';
 $arrondissement = isset($_GET['arrondissement']) ? $_GET['arrondissement'] : '';
 $distance = isset($_GET['distance']) ? $_GET['distance'] : 0;
@@ -168,12 +168,12 @@ function calculer_distance($lat1, $lon1, $lat2, $lon2) {
             distances.push({terrain: terrain, distance: distance});
         });
 
-        // Trier les terrains par distance (du plus proche au plus éloigné)
+        // Trier les terrains par distance 
         distances.sort(function(a, b) {
             return a.distance - b.distance;
         });
 
-// Ajouter des marqueurs pour les terrains triés
+// Ajou des marqueurs pour les terrains 
 distances.forEach(function(item) {
     var terrain = item.terrain;
     var marker = L.marker([terrain.latitude, terrain.longitude]).addTo(map);
@@ -187,27 +187,6 @@ distances.forEach(function(item) {
             "<i class='fa-regular fa-heart heart-icon'></i> " +
             "<span class='like-text'>Like</span>" +
         "</button>";
-
-    marker.bindPopup(popupContent);
-});// Ajouter des marqueurs pour les terrains triés
-distances.forEach(function(item) {
-    var terrain = item.terrain;
-    var marker = L.marker([terrain.latitude, terrain.longitude]).addTo(map);
-
-    // Créer le contenu HTML de la popup avec le bouton like positionné en haut à droite
-    var popupContent = 
-        "<div style='position: relative; padding: 10px;'>" +
-
-            "<div>" +
-                "<b>" + terrain.nom + "</b><br>" +
-                "Adresse: " + terrain.adresse + "<br>" +
-                "Sport: " + terrain.type_sport +
-            "</div>" +
-                "<button class='like-btn' data-element-id='" + terrain.id + "' data-liked='false'>" +
-                    "<i class='fa-regular fa-heart heart-icon'></i> " +
-                    "<span class='like-text'>Like</span>" +
-                "</button>" +
-        "</div>";
 
     marker.bindPopup(popupContent);
 });
@@ -234,27 +213,20 @@ distances.forEach(function(item) {
     </script>
     <!-- Likes -->
     <script>
-    // Quand le DOM est chargé
     document.addEventListener('DOMContentLoaded', function() {
-      // Sélectionne tous les boutons like (si plusieurs)
       const likeButtons = document.querySelectorAll('.like-btn');
 
       likeButtons.forEach(button => {
         button.addEventListener('click', function() {
           const elementId = button.getAttribute('data-element-id');
-          // Récupère l'état actuel du like
           const isLiked = button.getAttribute('data-liked') === 'true';
 
-          // Vérifier que l'elementId est présent
           if (!elementId) {
             console.error('ID d\'élément manquant');
             return;
           }
-
-          // Prépare les données à envoyer en POST
           const dataToSend = new URLSearchParams();
           dataToSend.append('element_id', elementId);
-          // Ici, on envoie uniquement l'ID ; le serveur gère l'ajout ou la suppression
           
           fetch('likes.php', {
             method: 'POST',
@@ -285,12 +257,9 @@ distances.forEach(function(item) {
       });
     });
 
-    // Lorsque la popup s'ouvre, attacher l'événement "click" au bouton like qu'elle contient
 map.on('popupopen', function(e) {
-    // Récupère l'élément DOM de la popup ouverte
     const popupNode = e.popup.getElement();
 
-    // Recherche le bouton like dans la popup
     const likeButton = popupNode.querySelector('.like-btn');
 
     if (likeButton) {
@@ -323,12 +292,10 @@ map.on('popupopen', function(e) {
                 },
                 body: new URLSearchParams({
                     'element_id': elementId,
-                    // Vous pouvez envoyer l'état si nécessaire, par exemple 'liked': newLikeState ? 'true' : 'false'
                 }),
             })
             .then(response => response.json())
             .then(data => {
-                // Si nécessaire, ajuster l'interface en fonction de la réponse
                 if (data.status === 'liked') {
                     likeButton.setAttribute('data-liked', 'true');
                     heartIcon.classList.remove('fa-regular');

@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// Vérification de la connexion de l'utilisateur
 if (!isset($_SESSION['user']) || !isset($_SESSION['user']['id'])) {
     header("Location: login.php");
     exit();
@@ -11,19 +10,18 @@ include('config/database.php');
 
 $userId = $_SESSION['user']['id'];
 
-// Traitement de la suppression d'un like via le formulaire
+// suppression d'un like 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['element_id'])) {
     $elementId = $_POST['element_id'];
     
     $stmt = $conn->prepare("DELETE FROM likes WHERE user_id = ? AND element_id = ?");
     $stmt->execute([$userId, $elementId]);
     
-    // Redirection pour actualiser la page
     header("Location: mylikes.php");
     exit();
 }
 
-// Récupération des terrains likés par l'utilisateur
+// Récupération des terrains likés 
 $stmt = $conn->prepare("
     SELECT e.*
     FROM equipements_sportifs_paris e
@@ -75,7 +73,6 @@ $likedTerrains = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <p class="card-text">Adresse : <?= htmlspecialchars($terrain['adresse']) ?></p>
                             <p class="card-text">Sport : <?= htmlspecialchars($terrain['type_sport']) ?></p>
                             
-                            <!-- Bouton pour supprimer le like -->
                             <form method="POST" action="mylikes.php">
                                 <input type="hidden" name="element_id" value="<?= htmlspecialchars($terrain['id']) ?>">
                                 <button type="submit" class="btn btn-danger w-100">Supprimer le like</button>
