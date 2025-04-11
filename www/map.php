@@ -37,7 +37,7 @@ if ($arrondissement) {
     $whereClauses[] = "arrondissement = :arrondissement";
     $params['arrondissement'] = $arrondissement;
 }
-
+// Multi-recherche 
 if (!empty($_GET['sports'])) {
     $globalSportConditions = [];
     
@@ -118,7 +118,7 @@ function slugify($text) {
 
         <!-- Formulaire de recherche -->
         <form action="map.php" method="get" class="d-flex flex-column align-items-center">
-            <div class="input-group mb-3">
+            <div class="input-group mb-3 flex-nowrap flex-md-wrap">
                 <input type="text" name="q" class="form-control" placeholder="Rechercher un terrain sportif...">
                 <button class="btn btn-primary" style="background-color: #2B9348; border-color:#2B9348" type="submit" href="map.php">Rechercher</button>
             </div>

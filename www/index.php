@@ -48,7 +48,7 @@ $terrains = $sql->fetchAll(PDO::FETCH_ASSOC);
                 <h1 class="mb-4">Bienvenue sur ParisSport+</h1>
 
                 <form action="map.php" method="get" class="d-flex justify-content-center">
-                    <div class="input-group w-50">
+                    <div class="input-group flex-nowrap flex-md-wrap">
                         <input type="text" name="q" class="form-control" placeholder="Rechercher un terrain sportif..." required>
                         <button class="btn btn-primary" style="background-color: #2B9348; border-color:#2B9348" type="submit" href="map.php">Rechercher</button>
                     </div>
