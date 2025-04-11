@@ -37,7 +37,29 @@ if ($arrondissement) {
     $whereClauses[] = "arrondissement = :arrondissement";
     $params['arrondissement'] = $arrondissement;
 }
-
+// Après la récupération des autres paramètres
+if (!empty($_GET['sports'])) {
+    $sportConditions = [];
+    
+    foreach ($_GET['sports'] as $sportKeywords) {
+        $keywords = explode(',', $sportKeywords);
+        $sportOrConditions = [];
+        
+        foreach ($keywords as $keyword) {
+            $paramKey = 'sport_' . uniqid();
+            $sportOrConditions[] = "type_sport LIKE :$paramKey";
+            $params[$paramKey] = "%$keyword%";
+        }
+        
+        if (!empty($sportOrConditions)) {
+            $sportConditions[] = '(' . implode(' OR ', $sportOrConditions) . ')';
+        }
+    }
+    
+    if (!empty($sportConditions)) {
+        $whereClauses[] = '(' . implode(' AND ', $sportConditions) . ')';
+    }
+}
 if (count($whereClauses) > 0) {
     $sql .= " AND " . implode(" AND ", $whereClauses);
 }
@@ -55,19 +77,10 @@ if (isset($_SESSION['user']['id'])) {
     $userLikes = $stmt->fetchAll(PDO::FETCH_COLUMN);
 }
 
-// Fonction pour calculer la distance entre deux points (en km) en utilisant la formule de Haversine
-function calculer_distance($lat1, $lon1, $lat2, $lon2) {
-    $R = 6371; // Rayon de la Terre en kilomètres
-    $phi1 = deg2rad($lat1);
-    $phi2 = deg2rad($lat2);
-    $delta_phi = deg2rad($lat2 - $lat1);
-    $delta_lambda = deg2rad($lon2 - $lon1);
-    $a = sin($delta_phi / 2) * sin($delta_phi / 2) +
-         cos($phi1) * cos($phi2) *
-         sin($delta_lambda / 2) * sin($delta_lambda / 2);
-    $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
-    $distance = $R * $c; // Distance en kilomètres
-    return $distance;
+
+// Fonction slug
+function slugify($text) {
+    return strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $text)));
 }
 ?>
 
@@ -106,11 +119,43 @@ function calculer_distance($lat1, $lon1, $lat2, $lon2) {
         <h2 class="mb-5 text-center">Résultats de la recherche</h2>
 
         <!-- Formulaire de recherche -->
-        <form action="map.php" method="get" class="d-flex justify-content-center mb-5">
+        <form action="map.php" method="get" class="d-flex flex-column align-items-center">
             <div class="input-group w-50">
-                <input type="text" name="q" class="form-control" placeholder="Rechercher un terrain sportif..." required>
+                <input type="text" name="q" class="form-control" placeholder="Rechercher un terrain sportif...">
                 <button class="btn btn-primary" style="background-color: #2B9348; border-color:#2B9348" type="submit" href="map.php">Rechercher</button>
             </div>
+
+            <!-- Checkbox filtres -->
+            <div class="filters-container mb-3 mt-4"  width="100%">
+                <div class="d-flex flex-wrap gap-3 justify-content-center">
+                    <?php
+                    $sportsFilters = [
+                        'Foot' => ['foot', 'soccer', 'football'],
+                        'Basket' => ['basket', 'basketball'],
+                        'Pétanque' => ['pétanque', 'boules'],
+                        'Volley' => ['volley', 'volleyball'],
+                        'Tennis' => ['tennis'],
+                        'Musculation' => ['muscu', 'fitness', 'musculation','forme%','remise%'],
+                        'Multi-sports/City' => ['multi', 'polyvalent','city%'],
+                        'Piste Cyclabe' => ['cyclisme', 'vélo', 'piste%', 'cyclable'],
+                    ];
+                    
+                    foreach ($sportsFilters as $label => $keywords): ?>
+                        <div class="form-check">
+                            <input class="form-check-input" 
+                                type="checkbox" 
+                                name="sports[]" 
+                                value="<?= implode(',', $keywords) ?>" 
+                                id="filter_<?= slugify($label) ?>"
+                                <?= isset($_GET['sports']) && array_intersect($keywords, $_GET['sports']) ? 'checked' : '' ?>>
+                            <label class="form-check-label" for="filter_<?= slugify($label) ?>">
+                                <?= $label ?>
+                            </label>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+
         </form>
 
         <!-- Map -->
@@ -154,9 +199,6 @@ function calculer_distance($lat1, $lon1, $lat2, $lon2) {
                             <?php else: ?>
                                 <p class="text-muted">Connectez-vous pour aimer ce terrain.</p>
                             <?php endif; ?>
-
-
-
 
                         </div>
                     </div>
@@ -203,7 +245,7 @@ function calculer_distance($lat1, $lon1, $lat2, $lon2) {
 
             map.setView([userLat, userLon], 12);
 
-            // Position de l'utilisateur avec l'icône simple
+            // Position de l'utilisateur
             L.marker([userLat, userLon], {icon: dotIcon}).addTo(map)
                 .bindPopup("<b>Vous êtes ici</b>")
                 .openPopup();
@@ -218,7 +260,7 @@ function calculer_distance($lat1, $lon1, $lat2, $lon2) {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    // Convertir les terrains (fourni via PHP) en tableau et calculer les distances
+    // Convertions des terrains (fourni via PHP) en tableau et calculer les distances
     var terrains = <?php echo json_encode($terrains); ?>;
     var distances = [];
 
