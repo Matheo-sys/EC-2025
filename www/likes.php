@@ -10,7 +10,8 @@ if (isset($_POST['element_id'])) {
     }
 
     if (!isset($_SESSION['user']) || empty($_SESSION['user']['id'])) {
-        echo json_encode(["status" => "error", "message" => "Utilisateur non connecté"]);
+        echo json_encode(["status" => "error", "message" => "Veuillez vous connecter pour aimer cet élément"]);
+
         exit();
     }
 

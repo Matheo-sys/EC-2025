@@ -78,7 +78,9 @@ function calculer_distance($lat1, $lon1, $lat2, $lon2) {
 
     <!-- Leaflet pour la carte -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="js/script.js"></script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
     <!-- Font Awesome CDN -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
@@ -110,6 +112,7 @@ function calculer_distance($lat1, $lon1, $lat2, $lon2) {
                 <div id="map" style="height: 400px; border-radius: 15px;"></div>
             </div>
         </div>
+        <div id="terrains-data" data-terrains="<?= htmlspecialchars(json_encode($terrains), ENT_QUOTES, 'UTF-8') ?>"></div>
 
         <!-- Nombre de résultats -->
         <div class="row mb-4">
@@ -150,201 +153,6 @@ function calculer_distance($lat1, $lon1, $lat2, $lon2) {
 </main>
 
 
-<script>
-    // Définir un icône personnalisé simple sans ombre pour réduire le lag
-    var simpleIcon = L.icon({
-        iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-        popupAnchor: [0, -41],
-        shadowUrl: '',          // Pas d'ombre
-        shadowSize: [0, 0],
-        shadowAnchor: [0, 0]
-    });
-
-    // Variables pour stocker la position de l'utilisateur (Paris par défaut)
-    var userLat = 48.8566;
-    var userLon = 2.3522;
-
-    // Si l'API de géolocalisation est disponible
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            userLat = position.coords.latitude;
-            userLon = position.coords.longitude;
-
-            // Centrer la carte sur la position de l'utilisateur
-            map.setView([userLat, userLon], 12);
-
-            // Ajouter un marqueur pour la position de l'utilisateur avec l'icône simple
-            L.marker([userLat, userLon], {icon: simpleIcon}).addTo(map)
-                .bindPopup("<b>Vous êtes ici</b>")
-                .openPopup();
-        });
-    }
-
-    // Initialisation de la carte avec Leaflet
-    var map = L.map('map').setView([userLat, userLon], 12);
-
-    // Ajout de la carte OpenStreetMap
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
-    // Convertir les terrains (fourni via PHP) en tableau et calculer les distances
-    var terrains = <?php echo json_encode($terrains); ?>;
-    var distances = [];
-
-    terrains.forEach(function(terrain) {
-        var distance = calculer_distance(userLat, userLon, terrain.latitude, terrain.longitude);
-        distances.push({terrain: terrain, distance: distance});
-    });
-
-    // Trier les terrains par distance (du plus proche au plus éloigné)
-    distances.sort(function(a, b) {
-        return a.distance - b.distance;
-    });
-
-    // Ajouter des marqueurs pour les terrains triés, en utilisant l'icône simple
-    distances.forEach(function(item) {
-        var terrain = item.terrain;
-        var marker = L.marker([terrain.latitude, terrain.longitude], {icon: simpleIcon}).addTo(map);
-        
-        // Créer le contenu de la popup avec un bouton like
-        var popupContent =
-            "<b>" + terrain.nom + "</b><br>" +
-            "Adresse: " + terrain.adresse + "<br>" +
-            "Sport: " + terrain.type_sport + "<br><br>" +
-            "<button class='like-btn' data-element-id='" + terrain.id + "' data-liked='false'>" +
-                "<i class='fa-regular fa-heart heart-icon'></i> " +
-                "<span class='like-text'>Like</span>" +
-            "</button>";
-        marker.bindPopup(popupContent);
-    });
-
-    // Fonction pour calculer la distance en km entre deux points (formule de Haversine)
-    function calculer_distance(lat1, lon1, lat2, lon2) {
-        var R = 6371;
-        var phi1 = deg2rad(lat1);
-        var phi2 = deg2rad(lat2);
-        var delta_phi = deg2rad(lat2 - lat1);
-        var delta_lambda = deg2rad(lon2 - lon1);
-        var a = Math.sin(delta_phi / 2) * Math.sin(delta_phi / 2) +
-                Math.cos(phi1) * Math.cos(phi2) *
-                Math.sin(delta_lambda / 2) * Math.sin(delta_lambda / 2);
-        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        return R * c;
-    }
-
-    function deg2rad(deg) {
-        return deg * (Math.PI / 180);
-    }
-</script>
-    <!-- Likes -->
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const likeButtons = document.querySelectorAll('.like-btn');
-
-      likeButtons.forEach(button => {
-        button.addEventListener('click', function() {
-          const elementId = button.getAttribute('data-element-id');
-          const isLiked = button.getAttribute('data-liked') === 'true';
-
-          if (!elementId) {
-            console.error('ID d\'élément manquant');
-            return;
-          }
-          const dataToSend = new URLSearchParams();
-          dataToSend.append('element_id', elementId);
-          
-          fetch('likes.php', {
-            method: 'POST',
-            body: dataToSend
-          })
-          .then(response => response.json())
-          .then(data => {
-            if (data.status === 'liked') {
-              // Met à jour l'état du bouton en like
-              button.setAttribute('data-liked', 'true');
-              const icon = button.querySelector('i');
-              icon.classList.remove('fa-regular');
-              icon.classList.add('fa-solid');
-            } else if (data.status === 'unliked') {
-              // Met à jour l'état du bouton en unlike
-              button.setAttribute('data-liked', 'false');
-              const icon = button.querySelector('i');
-              icon.classList.remove('fa-solid');
-              icon.classList.add('fa-regular');
-            } else {
-              alert("Erreur: " + data.message);
-            }
-          })
-          .catch(error => {
-            console.error('Erreur AJAX:', error);
-          });
-        });
-      });
-    });
-
-map.on('popupopen', function(e) {
-    const popupNode = e.popup.getElement();
-
-    const likeButton = popupNode.querySelector('.like-btn');
-
-    if (likeButton) {
-        likeButton.addEventListener('click', function(event) {
-            event.preventDefault(); // Empêche le comportement par défaut
-            const elementId = likeButton.getAttribute('data-element-id');
-            const isLiked = likeButton.getAttribute('data-liked') === 'true';
-            const heartIcon = likeButton.querySelector('.heart-icon');
-            const likeText = likeButton.querySelector('.like-text');
-
-            // Inverse l'état dans l'interface
-            const newLikeState = !isLiked;
-            likeButton.setAttribute('data-liked', newLikeState ? 'true' : 'false');
-
-            if (newLikeState) {
-                heartIcon.classList.remove('fa-regular');
-                heartIcon.classList.add('fa-solid');
-                likeText.textContent = 'Unlike';
-            } else {
-                heartIcon.classList.remove('fa-solid');
-                heartIcon.classList.add('fa-regular');
-                likeText.textContent = 'Like';
-            }
-
-            // Envoyer l'ID et le nouvel état via AJAX à likes.php
-            fetch('likes.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: new URLSearchParams({
-                    'element_id': elementId,
-                }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'liked') {
-                    likeButton.setAttribute('data-liked', 'true');
-                    heartIcon.classList.remove('fa-regular');
-                    heartIcon.classList.add('fa-solid');
-                    likeText.textContent = 'Unlike';
-                } else if (data.status === 'unliked') {
-                    likeButton.setAttribute('data-liked', 'false');
-                    heartIcon.classList.remove('fa-solid');
-                    heartIcon.classList.add('fa-regular');
-                    likeText.textContent = 'Like';
-                } else {
-                    console.error("Erreur: " + data.message);
-                }
-            })
-            .catch(error => console.error('Erreur AJAX:', error));
-        });
-    }
-});
-
-  </script>
-<?php include('js/script.js'); ?>
 </body>
 </html>
 

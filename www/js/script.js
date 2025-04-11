@@ -1,73 +1,141 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // Configuration de la carte
+    const simpleIcon = L.icon({
+        iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [0, -41],
+        shadowUrl: '',
+        shadowSize: [0, 0],
+        shadowAnchor: [0, 0]
+    });
+
+    let userLat = 48.8566;
+    let userLon = 2.3522;
+    const map = L.map('map').setView([userLat, userLon], 12);
+
+    // Couche carte
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Géolocalisation
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+            userLat = position.coords.latitude;
+            userLon = position.coords.longitude;
+            map.setView([userLat, userLon], 12);
+            L.marker([userLat, userLon], { icon: simpleIcon })
+                .addTo(map)
+                .bindPopup("<b>Vous êtes ici</b>")
+                .openPopup();
+        });
+    }
+
+    // Gestion des terrains
+    const terrainsData = document.getElementById('terrains-data');
+    const terrains = JSON.parse(terrainsData.dataset.terrains);
+    const distances = terrains.map(terrain => ({
+        terrain,
+        distance: calculerDistance(userLat, userLon, terrain.latitude, terrain.longitude)
+    })).sort((a, b) => a.distance - b.distance);
+
+    distances.forEach(({ terrain }) => {
+        const marker = L.marker([terrain.latitude, terrain.longitude], { icon: simpleIcon }).addTo(map);
+        marker.bindPopup(createPopupContent(terrain));
+    });
+
+    // Gestion des likes
+    function handleLikeClick(event) {
+        const button = event.currentTarget;
+        const elementId = button.dataset.elementId;
+        const isLiked = button.dataset.liked === 'true';
+        const heartIcon = button.querySelector('.heart-icon');
+        const likeText = button.querySelector('.like-text');
+
+        button.dataset.liked = (!isLiked).toString();
+        heartIcon.classList.toggle('fa-regular', isLiked);
+        heartIcon.classList.toggle('fa-solid', !isLiked);
+        likeText.textContent = isLiked ? 'Like' : 'Unlike';
+
+        fetch('likes.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({ element_id: elementId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status !== 'liked' && data.status !== 'unliked') {
+                console.error("Erreur: " + data.message);
+                button.dataset.liked = isLiked.toString(); // Annulation visuelle
+            }
+        })
+        .catch(console.error);
+    }
+
+    map.on('popupopen', e => {
+        const likeButton = e.popup.getElement().querySelector('.like-btn');
+        if (likeButton) likeButton.addEventListener('click', handleLikeClick);
+    });
+
+    // Fonctions utilitaires
+    function createPopupContent(terrain) {
+        return `<b>${terrain.nom}</b><br>
+                Adresse: ${terrain.adresse}<br>
+                Sport: ${terrain.type_sport}<br><br>
+                <button class="like-btn" data-element-id="${terrain.id}" data-liked="false">
+                    <i class="fa-regular fa-heart heart-icon"></i>
+                    <span class="like-text">Like</span>
+                </button>`;
+    }
+
+    function calculerDistance(lat1, lon1, lat2, lon2) {
+        const R = 6371;
+        const φ1 = deg2rad(lat1);
+        const φ2 = deg2rad(lat2);
+        const Δφ = deg2rad(lat2 - lat1);
+        const Δλ = deg2rad(lon2 - lon1);
+        const a = Math.sin(Δφ/2) ** 2 + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ/2) ** 2;
+        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    }
+
+    function deg2rad(deg) {
+        return deg * (Math.PI / 180);
+    }
+
+    // Validation mot de passe
     const passwordInput = document.getElementById("password");
     const confirmPasswordInput = document.getElementById("confirm_password");
     const submitButton = document.getElementById("submitBtn");
     const strengthBar = document.getElementById("strengthBar");
     const strengthText = document.getElementById("strengthText");
 
-    // Fonction pour vérifier la force du mot de passe
     function checkPasswordStrength(password) {
-        const hasUpperCase = /[A-Z]/.test(password);
+        const hasUpper = /[A-Z]/.test(password);
         const hasNumber = /\d/.test(password);
-        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-        const isLongEnough = password.length >= 8;
+        const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+        const isLong = password.length >= 8;
 
-        console.log('Vérification de la force du mot de passe:', password); // Débogage
-
-        if (!isLongEnough || (!hasUpperCase && !hasNumber && !hasSpecialChar)) {
-            return "weak";
-        }
-
-        if (isLongEnough && hasUpperCase && hasNumber && !hasSpecialChar) {
-            return "medium";
-        }
-
-        if (isLongEnough && hasUpperCase && hasNumber && hasSpecialChar) {
-            return "strong";
-        }
-
-        return "weak";
+        if (!isLong) return "weak";
+        return [hasUpper, hasNumber, hasSpecial].filter(Boolean).length === 3 ? "strong" :
+               [hasUpper, hasNumber, hasSpecial].filter(Boolean).length >= 2 ? "medium" : "weak";
     }
 
-    // Vérifier la force du mot de passe et mettre à jour la barre de force
+    function updateStrengthDisplay(strength) {
+        strengthBar.className = `strength-bar ${strength}`;
+        strengthText.textContent = `Mot de passe ${['faible', 'moyen', 'fort'][['weak', 'medium', 'strong'].indexOf(strength)]}`;
+    }
+
+    function validateForm() {
+        const isValid = passwordInput.value === confirmPasswordInput.value && 
+                        checkPasswordStrength(passwordInput.value) === "strong";
+        submitButton.disabled = !isValid;
+    }
+
     passwordInput.addEventListener("input", () => {
-        const password = passwordInput.value;
-        const strength = checkPasswordStrength(password);
-
-        // Mettre à jour la force du mot de passe
-        console.log('Force du mot de passe:', strength); // Débogage
-
-        if (strength === "weak") {
-            strengthBar.className = "strength-bar weak";
-            strengthText.textContent = "Mot de passe faible";
-        } else if (strength === "medium") {
-            strengthBar.className = "strength-bar medium";
-            strengthText.textContent = "Mot de passe moyen";
-        } else if (strength === "strong") {
-            strengthBar.className = "strength-bar strong";
-            strengthText.textContent = "Mot de passe fort";
-        }
-
-        // Vérifier si le bouton doit être activé
-        validateSubmitButton();
+        updateStrengthDisplay(checkPasswordStrength(passwordInput.value));
+        validateForm();
     });
 
-    // Vérifier si les mots de passe correspondent et si la force est "strong"
-    confirmPasswordInput.addEventListener("input", () => {
-        validateSubmitButton();
-    });
-
-    // Fonction pour valider si le bouton de soumission doit être activé
-    function validateSubmitButton() {
-        const password = passwordInput.value;
-        const confirmPassword = confirmPasswordInput.value;
-        const strength = checkPasswordStrength(password);
-
-        // Désactiver le bouton si les mots de passe ne correspondent pas ou si la force n'est pas "strong"
-        if (password !== confirmPassword || strength !== "strong") {
-            submitButton.disabled = true;
-        } else {
-            submitButton.disabled = false;
-        }
-    }
+    confirmPasswordInput.addEventListener("input", validateForm);
 });
