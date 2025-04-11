@@ -54,7 +54,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Vérifier si les mots de passe correspondent et si la force est "strong"
     confirmPasswordInput.addEventListener("input", () => {
-        console.log('Confirm Password:', confirmPasswordInput.value); // Débogage
         validateSubmitButton();
     });
 
@@ -64,17 +63,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const confirmPassword = confirmPasswordInput.value;
         const strength = checkPasswordStrength(password);
 
-        console.log('Mot de passe:', password); // Débogage
-        console.log('Confirm Mot de passe:', confirmPassword); // Débogage
-        console.log('Force du mot de passe:', strength); // Débogage
-
         // Désactiver le bouton si les mots de passe ne correspondent pas ou si la force n'est pas "strong"
         if (password !== confirmPassword || strength !== "strong") {
             submitButton.disabled = true;
-            console.log('Bouton désactivé'); // Débogage
         } else {
             submitButton.disabled = false;
-            console.log('Bouton activé'); // Débogage
         }
     }
 });

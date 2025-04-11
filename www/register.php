@@ -6,10 +6,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nom = htmlspecialchars($_POST['nom']);
     $prenom = htmlspecialchars($_POST['prenom']);
     $email = htmlspecialchars($_POST['email']);
-    $password = $_POST['password']; // Garder le mot de passe en clair pour la comparaison
+    $password = $_POST['password']; 
     $confirm_password = $_POST['confirm_password'];
 
-     // Vérifier si les mots de passe correspondent
      if ($password !== $confirm_password) {
         $erreur = "Les mots de passe ne correspondent pas.";
     } else {
@@ -31,10 +30,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe) VALUES (?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
     if($stmt->execute([$nom, $prenom, $email, $password_hashed])) {
-        // Get the last inserted user ID
         $user_id = $conn->lastInsertId();
         
-        // Set session variables
         $_SESSION['user_id'] = $user_id;
         $_SESSION['nom'] = $nom;
         $_SESSION['prenom'] = $prenom;
