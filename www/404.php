@@ -1,4 +1,11 @@
-<?php include('includes/header.php'); ?>
+<?php 
+http_response_code(404);
+ob_start(); 
+
+include('includes/header.php');
+
+;
+?>
 
 <!DOCTYPE html>
 <html lang="fr">

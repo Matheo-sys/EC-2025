@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Module Carte (uniquement si l'élément map existe)
+    // Module Carte 
     if (document.getElementById('map')) {
         const simpleIcon = L.icon({
             iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Module Likes (uniquement si boutons like existent)
+    // Module Likes
     function handleLikeClick(event) {
         const button = event.currentTarget;
         const elementId = button.dataset.elementId;
@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .catch(console.error);
     }
 
-    // Module Password (uniquement sur la page register)
+    // Module Password
     if (document.getElementById('password')) {
         const passwordInput = document.getElementById('password');
         const confirmInput = document.getElementById('confirm_password');
@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
         confirmInput.addEventListener('input', validateForm);
     }
 
-    // Fonctions utilitaires globales
+    // Fonctions utilitaires 
     function calculerDistance(lat1, lon1, lat2, lon2) {
         const R = 6371;
         const φ1 = lat1 * Math.PI/180;
