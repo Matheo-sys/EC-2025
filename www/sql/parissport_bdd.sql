@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Hôte : localhost:8889
--- Généré le : ven. 11 avr. 2025 à 12:26
--- Version du serveur : 8.0.40
--- Version de PHP : 8.3.14
+-- Host: mysql-parissport.alwaysdata.net
+-- Generation Time: Apr 12, 2025 at 12:42 AM
+-- Server version: 10.11.11-MariaDB
+-- PHP Version: 7.4.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,495 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `mixone`
+-- Database: `parissport_bdd`
 --
-CREATE DATABASE IF NOT EXISTS `mixone` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
-USE `mixone`;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `cache`
---
-
-CREATE TABLE `cache` (
-  `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `value` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `expiration` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `cache_locks`
---
-
-CREATE TABLE `cache_locks` (
-  `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `owner` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `expiration` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `failed_jobs`
---
-
-CREATE TABLE `failed_jobs` (
-  `id` bigint UNSIGNED NOT NULL,
-  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `jobs`
---
-
-CREATE TABLE `jobs` (
-  `id` bigint UNSIGNED NOT NULL,
-  `queue` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `attempts` tinyint UNSIGNED NOT NULL,
-  `reserved_at` int UNSIGNED DEFAULT NULL,
-  `available_at` int UNSIGNED NOT NULL,
-  `created_at` int UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `job_batches`
---
-
-CREATE TABLE `job_batches` (
-  `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `total_jobs` int NOT NULL,
-  `pending_jobs` int NOT NULL,
-  `failed_jobs` int NOT NULL,
-  `failed_job_ids` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `options` mediumtext COLLATE utf8mb4_unicode_ci,
-  `cancelled_at` int DEFAULT NULL,
-  `created_at` int NOT NULL,
-  `finished_at` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `messages`
---
-
-CREATE TABLE `messages` (
-  `id` bigint UNSIGNED NOT NULL,
-  `sender_id` bigint UNSIGNED NOT NULL,
-  `receiver_id` bigint UNSIGNED NOT NULL,
-  `message` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `migrations`
---
-
-CREATE TABLE `migrations` (
-  `id` int UNSIGNED NOT NULL,
-  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `batch` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table `migrations`
---
-
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
-(1, '0001_01_01_000000_create_users_table', 1),
-(2, '0001_01_01_000001_create_cache_table', 1),
-(3, '0001_01_01_000002_create_jobs_table', 1),
-(5, '2025_02_11_122349_create_studios_table', 2),
-(6, '2025_02_14_170633_add_columns_to_studios_table', 3),
-(7, '2025_02_14_194815_add_latitude_longitude_to_studios_table', 4),
-(8, '2025_02_25_123031_create_messages_table', 5),
-(9, '2025_03_01_160553_add_profile_fields_to_users_table', 5),
-(10, '2025_03_09_202225_add_rating_to_studios_table', 5),
-(11, '2025_03_20_142006_create_reservations_table', 5),
-(13, '2025_03_20_160847_add_date_and_number_of_hours_to_reservations_table', 6),
-(14, '2025_03_22_125109_create_wishlists_table', 7),
-(15, '2025_03_22_164841_add_price_and_status_to_reservations', 8),
-(16, '2025_03_23_164742_add_image_fields_to_studios_table', 9);
-
--- --------------------------------------------------------
-
---
--- Structure de la table `password_reset_tokens`
---
-
-CREATE TABLE `password_reset_tokens` (
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `reservations`
---
-
-CREATE TABLE `reservations` (
-  `id` bigint UNSIGNED NOT NULL,
-  `user_id` bigint UNSIGNED NOT NULL,
-  `studio_id` bigint UNSIGNED NOT NULL,
-  `date` date NOT NULL,
-  `number_of_hours` int NOT NULL,
-  `price` decimal(10,2) DEFAULT NULL,
-  `status` enum('En attente','Confirmée','Annulée') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'En attente',
-  `time_slot` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table `reservations`
---
-
-INSERT INTO `reservations` (`id`, `user_id`, `studio_id`, `date`, `number_of_hours`, `price`, `status`, `time_slot`, `created_at`, `updated_at`) VALUES
-(22, 2, 3, '2025-03-31', 1, 50.00, 'Confirmée', '14:00', '2025-03-22 21:23:40', '2025-03-25 11:49:32'),
-(23, 2, 3, '2025-03-31', 2, 100.00, 'Confirmée', '08:00', '2025-03-22 21:24:58', '2025-03-25 11:28:41'),
-(24, 2, 11, '2025-03-25', 3, 60.00, 'Annulée', '14:00', '2025-03-23 22:32:34', '2025-03-25 11:28:06'),
-(25, 2, 8, '2025-03-28', 3, 60.00, 'Confirmée', '14:00', '2025-03-24 13:12:01', '2025-03-25 11:27:58'),
-(26, 2, 21, '2025-03-28', 2, 140.00, 'Annulée', '16:00', '2025-03-24 13:43:24', '2025-03-25 11:27:42'),
-(27, 2, 10, '2025-04-16', 7, 140.00, 'Confirmée', '14:00', '2025-03-25 08:10:35', '2025-03-25 11:27:39'),
-(28, 2, 21, '2025-03-28', 4, 280.00, 'Annulée', '10:00', '2025-03-25 11:41:58', '2025-03-25 12:22:00'),
-(29, 2, 21, '2025-03-30', 4, 280.00, 'Confirmée', '14:00', '2025-03-25 11:49:53', '2025-03-25 12:21:57'),
-(30, 2, 21, '2025-03-31', 5, 350.00, 'Confirmée', '16:00', '2025-03-25 12:22:47', '2025-03-25 12:38:19'),
-(31, 2, 21, '2025-04-23', 5, 350.00, 'Confirmée', '10:00', '2025-03-25 13:43:03', '2025-03-25 13:43:38'),
-(33, 3, 3, '2025-03-25', 1, 50.00, 'En attente', '08:00', '2025-03-25 13:52:28', '2025-03-25 13:52:28'),
-(34, 2, 21, '2025-03-27', 2, 140.00, 'Confirmée', '16:00', '2025-03-27 11:41:03', '2025-03-27 11:41:08');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `sessions`
---
-
-CREATE TABLE `sessions` (
-  `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `user_id` bigint UNSIGNED DEFAULT NULL,
-  `ip_address` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `user_agent` text COLLATE utf8mb4_unicode_ci,
-  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `last_activity` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table `sessions`
---
-
-INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('9qesFeNy5t0xxopI01d5pLoeFNVkeq3reqvOazSl', 2, '127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiQ2pZNzJmRWxaeVV0T0xPbVFLSm5kdTRDSm5wY0RObFlZalNIUmR5VCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjI7czo0OiJhdXRoIjthOjE6e3M6MjE6InBhc3N3b3JkX2NvbmZpcm1lZF9hdCI7aToxNzQzMDc5MzIwO319', 1743079320),
-('NuOg9RGf1mzWqKsF723VrUFxZEbRjpehN4m22fOA', 3, '127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiTHdkbnBOdTJ3WllrU1hRVXZkeEswd1lYQXJlQnZXUUxnUFlXNDJJOSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzg6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9kYXNoYm9hcmQvc3R1ZGlvIjt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MztzOjQ6ImF1dGgiO2E6MTp7czoyMToicGFzc3dvcmRfY29uZmlybWVkX2F0IjtpOjE3NDI5NjYwNDk7fX0=', 1742966052),
-('qBrchM2dMATZL0Pl2wytvWKGT5qkFa7KMMvj42Ac', 3, '127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiUkxpVmdwUWdwN0tiRkdHYUczOUFjR0NLendwV1NpWDM5NW9yNVlEdiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjM7czo0OiJhdXRoIjthOjE6e3M6MjE6InBhc3N3b3JkX2NvbmZpcm1lZF9hdCI7aToxNzQyOTEzODMzO319', 1742916591);
-
--- --------------------------------------------------------
-
---
--- Structure de la table `studios`
---
-
-CREATE TABLE `studios` (
-  `id` bigint UNSIGNED NOT NULL,
-  `user_id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `zipcode` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `city` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `country` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `hourly_rate` double NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `available_date` date DEFAULT NULL,
-  `min_hours` int DEFAULT NULL,
-  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `latitude` decimal(10,7) DEFAULT NULL,
-  `longitude` decimal(10,7) DEFAULT NULL,
-  `rating` decimal(3,1) DEFAULT '0.0',
-  `image1` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `image2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `image3` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `image4` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table `studios`
---
-
-INSERT INTO `studios` (`id`, `user_id`, `name`, `address`, `zipcode`, `city`, `country`, `hourly_rate`, `created_at`, `updated_at`, `available_date`, `min_hours`, `description`, `latitude`, `longitude`, `rating`, `image1`, `image2`, `image3`, `image4`) VALUES
-(3, 1, 'Studio 1', 'xxxx', '75000', 'Cachan', 'France', 50, '2025-02-13 13:07:04', NULL, NULL, 1, NULL, 48.7945413, 2.3340758, 0.0, NULL, NULL, NULL, NULL),
-(4, 1, 'Studio 2', '3 avenue Flouquet ', '75000', 'Paris 20', 'France', 40, '2025-02-12 13:07:04', NULL, NULL, 2, NULL, 48.8660000, 2.4060000, 0.0, NULL, NULL, NULL, NULL),
-(5, 6, 'Studio 3', 'aaaaaaaa', '75000', 'Fresnes', 'France', 20, '2025-02-14 18:10:52', '2025-02-14 18:10:52', NULL, 3, 'aaaaaaaa', 48.7556000, 2.3225000, 0.0, NULL, NULL, NULL, NULL),
-(6, 6, 'Studio 4', 'aaaaaa', '75000', 'Paris 13', 'France', 10, '2025-02-14 18:13:52', '2025-02-14 18:13:52', NULL, 4, 'aaaaaa', 48.8298000, 2.3556000, 0.0, NULL, NULL, NULL, NULL),
-(7, 6, 'Studio 5', 'aaaaaa', '75000', 'Rambouillet', 'France', 10, '2025-02-14 18:14:32', '2025-02-14 18:14:32', NULL, 4, 'aaaaaa', 48.6444000, 1.8292000, 0.0, NULL, NULL, NULL, NULL),
-(8, 6, 'Studio 6', 'aaaaaa', '75000', 'Cergy', 'France', 20, '2025-02-14 19:51:07', '2025-02-14 19:51:07', NULL, 1, 'aaaaaaa', 49.0360000, 2.0633000, 0.0, NULL, NULL, NULL, NULL),
-(9, 6, 'Studio 7', 'aaaaaaaa', '75000', 'Monaco', 'France', 20, '2025-02-14 19:53:44', '2025-02-14 19:53:44', NULL, 1, 'aaaaaaaa', 43.7384000, 7.4246000, 0.0, NULL, NULL, NULL, NULL),
-(10, 7, 'Sudio 8', 'gggvhgh', '75000', 'Marseille', 'France', 20, '2025-02-16 14:53:17', '2025-02-16 14:53:17', NULL, 1, 'aaaaa', 43.2965000, 5.3698000, 0.0, NULL, NULL, NULL, NULL),
-(11, 7, 'Studio 9', 'aaaaaa', '94240', 'Saint-Denis', 'France', 20, '2025-02-25 10:42:34', '2025-02-25 10:42:34', NULL, 1, 'aaaaa', 48.9366000, 2.3572000, 0.0, NULL, NULL, NULL, NULL),
-(21, 3, 'Studio Vert', '5 rue jules valles', '78130', 'Les Mureaux', 'France', 70, '2025-03-24 13:42:22', '2025-03-24 13:42:22', NULL, 2, 'Contenu et description', 48.9762513, 1.9108283, 0.0, NULL, NULL, NULL, NULL);
-
--- --------------------------------------------------------
-
---
--- Structure de la table `users`
---
-
-CREATE TABLE `users` (
-  `id` bigint UNSIGNED NOT NULL,
-  `profile` enum('artist','studio') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `username` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `last_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `first_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `birth_date` date DEFAULT NULL,
-  `about` text COLLATE utf8mb4_unicode_ci,
-  `avatar` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_line1` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_line2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `city` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `state` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `country` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `zipcode` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email_verified_at` timestamp NULL DEFAULT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table `users`
---
-
-INSERT INTO `users` (`id`, `profile`, `username`, `last_name`, `first_name`, `email`, `phone`, `birth_date`, `about`, `avatar`, `address_line1`, `address_line2`, `city`, `state`, `country`, `zipcode`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'artist', NULL, 'Magniez', 'Thibaud', 'thibaud@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$12$NpcHetu/q9KS7u7x.tQvx.sbEBboaotppdX6ZUOeHLsZsjS50UrFC', NULL, '2025-02-11 09:30:55', '2025-02-11 09:30:55'),
-(2, 'artist', NULL, 'Louhichi', 'Elias', 'elias@gmail.com', NULL, NULL, NULL, 'avatars/l0z86kHnOeRRZwMF9JYsboBLSpxFcoYh0ZSCVXLb.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$12$7Cgwr4mdocGsPydqb26wquGJLms01aUweDwJSLYLLYATuhgRnlL.i', NULL, '2025-02-11 14:25:41', '2025-03-23 22:32:49'),
-(3, 'studio', NULL, 'soriano', 'matheo', 'matheo@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$12$tFbqWqeWlHBGu4peU14QY.gHlHk4PuK44GpwxAJ/H1HVOhlVwa8Da', NULL, '2025-02-13 07:24:19', '2025-03-25 08:06:39'),
-(4, 'studio', NULL, 'soriano', 'matheo', 'matheo2@gmail.com', NULL, NULL, NULL, 'avatars/Sm93drq1OuzfzaL0l2NyDWRQfrEykQhL4CySKC86.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$12$cl4kqqXHkRnGg7XmreFMmeW4GB5AaxWtaL8lgUCLlYrNI8LitaUcq', NULL, '2025-02-16 16:06:52', '2025-03-25 08:26:58');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `wishlists`
---
-
-CREATE TABLE `wishlists` (
-  `id` bigint UNSIGNED NOT NULL,
-  `user_id` bigint UNSIGNED NOT NULL,
-  `studio_id` bigint UNSIGNED NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table `wishlists`
---
-
-INSERT INTO `wishlists` (`id`, `user_id`, `studio_id`, `created_at`, `updated_at`) VALUES
-(3, 2, 8, '2025-03-22 15:40:18', '2025-03-22 15:40:18'),
-(4, 2, 3, '2025-03-25 08:09:14', '2025-03-25 08:09:14'),
-(5, 2, 9, '2025-03-25 08:09:19', '2025-03-25 08:09:19'),
-(6, 2, 10, '2025-03-25 08:09:21', '2025-03-25 08:09:21');
-
---
--- Index pour les tables déchargées
---
-
---
--- Index pour la table `cache`
---
-ALTER TABLE `cache`
-  ADD PRIMARY KEY (`key`);
-
---
--- Index pour la table `cache_locks`
---
-ALTER TABLE `cache_locks`
-  ADD PRIMARY KEY (`key`);
-
---
--- Index pour la table `failed_jobs`
---
-ALTER TABLE `failed_jobs`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`);
-
---
--- Index pour la table `jobs`
---
-ALTER TABLE `jobs`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `jobs_queue_index` (`queue`);
-
---
--- Index pour la table `job_batches`
---
-ALTER TABLE `job_batches`
-  ADD PRIMARY KEY (`id`);
-
---
--- Index pour la table `messages`
---
-ALTER TABLE `messages`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `messages_sender_id_foreign` (`sender_id`),
-  ADD KEY `messages_receiver_id_foreign` (`receiver_id`);
-
---
--- Index pour la table `migrations`
---
-ALTER TABLE `migrations`
-  ADD PRIMARY KEY (`id`);
-
---
--- Index pour la table `password_reset_tokens`
---
-ALTER TABLE `password_reset_tokens`
-  ADD PRIMARY KEY (`email`);
-
---
--- Index pour la table `reservations`
---
-ALTER TABLE `reservations`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `reservations_user_id_foreign` (`user_id`),
-  ADD KEY `reservations_studio_id_foreign` (`studio_id`);
-
---
--- Index pour la table `sessions`
---
-ALTER TABLE `sessions`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `sessions_user_id_index` (`user_id`),
-  ADD KEY `sessions_last_activity_index` (`last_activity`);
-
---
--- Index pour la table `studios`
---
-ALTER TABLE `studios`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `studios_user_id_foreign` (`user_id`);
-
---
--- Index pour la table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `users_email_unique` (`email`);
-
---
--- Index pour la table `wishlists`
---
-ALTER TABLE `wishlists`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `wishlists_user_id_studio_id_unique` (`user_id`,`studio_id`),
-  ADD KEY `wishlists_studio_id_foreign` (`studio_id`);
-
---
--- AUTO_INCREMENT pour les tables déchargées
---
-
---
--- AUTO_INCREMENT pour la table `failed_jobs`
---
-ALTER TABLE `failed_jobs`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT pour la table `jobs`
---
-ALTER TABLE `jobs`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT pour la table `messages`
---
-ALTER TABLE `messages`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT pour la table `migrations`
---
-ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
-
---
--- AUTO_INCREMENT pour la table `reservations`
---
-ALTER TABLE `reservations`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
-
---
--- AUTO_INCREMENT pour la table `studios`
---
-ALTER TABLE `studios`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
-
---
--- AUTO_INCREMENT pour la table `users`
---
-ALTER TABLE `users`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT pour la table `wishlists`
---
-ALTER TABLE `wishlists`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
---
--- Contraintes pour les tables déchargées
---
-
---
--- Contraintes pour la table `messages`
---
-ALTER TABLE `messages`
-  ADD CONSTRAINT `messages_receiver_id_foreign` FOREIGN KEY (`receiver_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `messages_sender_id_foreign` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
-
---
--- Contraintes pour la table `reservations`
---
-ALTER TABLE `reservations`
-  ADD CONSTRAINT `reservations_studio_id_foreign` FOREIGN KEY (`studio_id`) REFERENCES `studios` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `reservations_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
-
---
--- Contraintes pour la table `wishlists`
---
-ALTER TABLE `wishlists`
-  ADD CONSTRAINT `wishlists_studio_id_foreign` FOREIGN KEY (`studio_id`) REFERENCES `studios` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `wishlists_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
---
--- Base de données : `parissport`
---
-CREATE DATABASE IF NOT EXISTS `parissport` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
-USE `parissport`;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `equipements_sportifs_paris`
+-- Table structure for table `equipements_sportifs_paris`
 --
 
 CREATE TABLE `equipements_sportifs_paris` (
@@ -519,10 +37,10 @@ CREATE TABLE `equipements_sportifs_paris` (
   `gratuit` text NOT NULL,
   `handicap_access` text NOT NULL,
   `arrondissement` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Déchargement des données de la table `equipements_sportifs_paris`
+-- Dumping data for table `equipements_sportifs_paris`
 --
 
 INSERT INTO `equipements_sportifs_paris` (`id`, `nom`, `adresse`, `type_sport`, `latitude`, `longitude`, `gratuit`, `handicap_access`, `arrondissement`) VALUES
@@ -550,7 +68,6 @@ INSERT INTO `equipements_sportifs_paris` (`id`, `nom`, `adresse`, `type_sport`, 
 ('E001I751120018', 'TERRAIN DE PETANQUE', '51 BOULEVARD DE PICPUS, 75012 Paris 12e Arrondissement', 'terrain de pétanque', '48.84422', '2.40198', '1', '1', 'Paris'),
 ('E001I751120019', 'GRAND TERRAIN DE PETANQUE', '32 BOULEVARD DE LA  BASTILLE', 'Terrain de pétanque', '48.85002', '2.36836', '1', '0', '75012'),
 ('E001I751120062', 'TERRAIN DE BASKET-BALL', '1-17 RUE DU COLONEL ROZANOFF', 'Terrain de basket-ball', '48.84431', '2.3878', '1', '0', '75012'),
-('E001I751120080', 'PISTE CYCLABLE', 'ROUTE ROYALE DE BEAUTE-ROUTE BOURBON BOIS DE VINCENNES, 75012 Paris 12e Arrondissement', 'aire mixte (décollage et atterissage)', '48.8338', '2.44491', '1', '1', 'Paris'),
 ('E001I751120081', 'CITY STADE', '10 PLACE LEONARD BERNSTEIN', 'Multisports/City-stades', '48.83669', '2.37955', '1', '0', '75012'),
 ('E001I751120087', 'SKATE PARK DE BERCY', '10 PLACE LEONARD BERNSTEIN', 'Skatepark', '48.837054', '2.378912', '1', '1', '75012'),
 ('E001I751130015', 'MUR D&#039;ENTRAINEMENT', '17 AVENUE EDISON', 'Mur de tennis', '48.82744', '2.364', '1', '0', '75013'),
@@ -897,10 +414,10 @@ INSERT INTO `equipements_sportifs_paris` (`id`, `nom`, `adresse`, `type_sport`, 
 ('E001I772510003', 'TERRAIN DE BASKET', 'RUE DE TIGERY', 'Terrain de basket-ball', '48.63453', '2.5476', '1', '0', '77127'),
 ('E001I772510004', 'PLATEAU DE BASKET JULES FERRY', 'RUE DUMAINE', 'Terrain de basket-ball', '48.63149', '2.54733', '1', '0', '77127'),
 ('E001I772570001', 'TERRAIN MULTISPORTS', 'ALLEES DES PLATANES RESIDENCE DE LA MALADRERIE', 'Multisports/City-stades', '49.01986', '3.029145', '1', '0', '77440'),
-('E001I772570004', 'TERRAIN DE FOOTBALL D&#039;HONNEUR', 'RUE DU STADE', 'Terrain de football', '49.02124', '3.02596', '1', '0', '77440');
-INSERT INTO `equipements_sportifs_paris` (`id`, `nom`, `adresse`, `type_sport`, `latitude`, `longitude`, `gratuit`, `handicap_access`, `arrondissement`) VALUES
+('E001I772570004', 'TERRAIN DE FOOTBALL D&#039;HONNEUR', 'RUE DU STADE', 'Terrain de football', '49.02124', '3.02596', '1', '0', '77440'),
 ('E001I772570007', 'PLAINE DE JEUX FOOTBALL', 'PLACE DE LA REPUBLIQUE', 'Terrain de football', '49.02253', '3.02788', '1', '0', '77440'),
-('E001I772570009', 'TERRAIN MULTISPORT', 'AVENUE DU GENERAL DE GAULLE', 'Multisports/City-stades', '49.0292', '3.01781', '1', '0', '77440'),
+('E001I772570009', 'TERRAIN MULTISPORT', 'AVENUE DU GENERAL DE GAULLE', 'Multisports/City-stades', '49.0292', '3.01781', '1', '0', '77440');
+INSERT INTO `equipements_sportifs_paris` (`id`, `nom`, `adresse`, `type_sport`, `latitude`, `longitude`, `gratuit`, `handicap_access`, `arrondissement`) VALUES
 ('E001I772570010', 'SALLE DE BOXE', '6 PLACE FLORIAN', 'Salle de boxe', '49.0287', '3.02005', '1', '0', '77440'),
 ('E001I772580004', 'TERRAIN MULTISPORT', 'RUE DU PARC', 'Multisports/City-stades', '48.8359', '2.63189', '1', '0', '77185'),
 ('E001I772580006', 'TERRAIN DE BASKET', 'QUARTIER LE FOUR', 'Terrain de basket-ball', '48.83428', '2.63728', '1', '0', '77185'),
@@ -1277,11 +794,11 @@ INSERT INTO `equipements_sportifs_paris` (`id`, `nom`, `adresse`, `type_sport`, 
 ('E001I781640001', 'TERRAIN DE FOOTBALL', 'CHEMIN DE L&#039;ESSART', 'Terrain de football', '48.61153', '1.91127', '1', '0', '78120'),
 ('E001I781640003', 'boucle de randonnée entre Clairefontaine et la Celle-les-Bordes', 'Eglise de Clairefontaine', 'Boucle de randonnée', '48.61317', '1.90918', '1', '0', '78120'),
 ('E001I781650005', 'TERRAIN DE PETANQUE', 'CHEMIN DU CORMIER', 'Terrain de pétanque', '48.8155', '1.98936', '1', '0', '78340'),
-('E001I781650006', 'TERRAIN SPORT LOISIRS', 'ALLEE DE LA GARE', 'Multisports/City-stades', '48.82449', '1.99276', '1', '0', '78340');
-INSERT INTO `equipements_sportifs_paris` (`id`, `nom`, `adresse`, `type_sport`, `latitude`, `longitude`, `gratuit`, `handicap_access`, `arrondissement`) VALUES
+('E001I781650006', 'TERRAIN SPORT LOISIRS', 'ALLEE DE LA GARE', 'Multisports/City-stades', '48.82449', '1.99276', '1', '0', '78340'),
 ('E001I781650007', 'TERRAIN SPORTS LOISIRS', 'PRAIRIE FORESTIERE AQUEDUC DE L&#039;AVRE', 'Multisports/City-stades', '48.82416', '1.96949', '1', '0', '78340'),
 ('E001I781680008', 'CITY PARK', 'RUE NEAUPHLE LE CHATEAU', 'Multisports/City-stades', '48.74946', '1.91888', '1', '0', '78310'),
-('E001I781720005', 'SKATE PARK', 'RUE DU MARECHAL JOFFRE', 'Skatepark', '48.99705', '2.08213', '1', '0', '78700'),
+('E001I781720005', 'SKATE PARK', 'RUE DU MARECHAL JOFFRE', 'Skatepark', '48.99705', '2.08213', '1', '0', '78700');
+INSERT INTO `equipements_sportifs_paris` (`id`, `nom`, `adresse`, `type_sport`, `latitude`, `longitude`, `gratuit`, `handicap_access`, `arrondissement`) VALUES
 ('E001I781720007', 'TERRAIN DE FOOTBALL', 'RUE ARISTIDE BRIAND', 'Terrain de football', '49.00892', '2.08846', '1', '0', '78700'),
 ('E001I781720010', 'TERRAIN DE PETANQUE', 'RUE DE LA JUSTICE', 'Terrain de pétanque', '49.01023', '2.12232', '1', '0', '78700'),
 ('E001I781720011', 'PLATEAU MULTISPORTS', 'RUE LEONARD LAROCHE', 'Multisports/City-stades', '48.99459', '2.07996', '1', '0', '78700'),
@@ -1656,11 +1173,11 @@ INSERT INTO `equipements_sportifs_paris` (`id`, `nom`, `adresse`, `type_sport`, 
 ('E001I911820003', 'TERRAIN DE BASKET BALL', '24 RUE DU MARQUIS DE RAIES', 'Terrain de basket-ball', '48.62733', '2.4164', '1', '0', '91080'),
 ('E001I911820006', 'PLATEAU D&#039;EVOLUTION', 'AVENUE PIERRE BEREGOVOY', 'Multisports/City-stades', '48.62008', '2.40575', '1', '0', '91080'),
 ('E001I911820007', 'TERRAIN DE FOOTBALL', '26 RUE DES PLESSIS BRIARD', 'Terrain de football', '48.63268', '2.40758', '1', '0', '91080'),
-('E001I911820008', 'TERRAIN DE PROXIMITE', 'ALLEE DU PETIT CHEVAL BLANC', 'Multisports/City-stades', '48.6303', '2.42028', '1', '0', '91080');
-INSERT INTO `equipements_sportifs_paris` (`id`, `nom`, `adresse`, `type_sport`, `latitude`, `longitude`, `gratuit`, `handicap_access`, `arrondissement`) VALUES
+('E001I911820008', 'TERRAIN DE PROXIMITE', 'ALLEE DU PETIT CHEVAL BLANC', 'Multisports/City-stades', '48.6303', '2.42028', '1', '0', '91080'),
 ('E001I911820009', 'TERRAIN DE FOOTBALL SYNTHETIQUE', 'BOIS DE MON COEUR', 'Terrain de soccer', '48.62962', '2.41827', '1', '0', '91080'),
 ('E001I911820011', 'PARCOURS DE SANTE', 'BOIS DE LA GARENNE', 'Parcours sportif/santé', '48.620577', '2.402596', '1', '0', '91080'),
-('E001I911820013', 'Zone de parapente', 'Buttes du Parc du Rondeau', 'Aire mixte (décollage et atterissage)', '48.6165', '2.3988', '1', '1', '91080'),
+('E001I911820013', 'Zone de parapente', 'Buttes du Parc du Rondeau', 'Aire mixte (décollage et atterissage)', '48.6165', '2.3988', '1', '1', '91080');
+INSERT INTO `equipements_sportifs_paris` (`id`, `nom`, `adresse`, `type_sport`, `latitude`, `longitude`, `gratuit`, `handicap_access`, `arrondissement`) VALUES
 ('E001I911840002', 'TERRAIN DE BICROSS', 'RUE DE L&#039;ECLOSE', 'Espace de vélo-freestyle', '48.42091', '2.38165', '1', '0', '91720'),
 ('E001I911840003', 'TERRAIN DE BOULES', '2 RUE DU CLOS-SAINT-GERVAIS', 'Terrain de boules traditionnelles', '48.41678', '2.37809', '1', '0', '91720'),
 ('E001I911860001', 'TERRAIN DE FOOTBALL', 'RUE DU PARC', 'Terrain de football', '48.59576', '2.144415', '1', '0', '91680'),
@@ -2036,10 +1553,10 @@ INSERT INTO `equipements_sportifs_paris` (`id`, `nom`, `adresse`, `type_sport`, 
 ('E001I920250056', 'BOULODROME', '74 RUE DU MARECHAL JOFFRE', 'Terrain de boules', '48.921043', '2.257752', '1', '0', '92700'),
 ('E001I920260001', 'PATINOIRE MUNICIPALE', 'PLACE CHARLES DE GAULLE', 'Aire de sports de glace sportive', '48.89467', '2.25269', '1', '0', '92400'),
 ('E001I920260029', 'TERRAIN DE BASKET-BALL', '81 RUE JEAN-BAPTISTE CHARCOT', 'Terrain de basket-ball', '48.89953', '2.271', '1', '0', '92400'),
-('E001I920260030', 'TERRAIN DE BASKET-BALL', 'BOULEVARD ARMAND SYLVESTRE', 'Terrain de basket-ball', '48.90208', '2.26713', '1', '0', '92400');
-INSERT INTO `equipements_sportifs_paris` (`id`, `nom`, `adresse`, `type_sport`, `latitude`, `longitude`, `gratuit`, `handicap_access`, `arrondissement`) VALUES
+('E001I920260030', 'TERRAIN DE BASKET-BALL', 'BOULEVARD ARMAND SYLVESTRE', 'Terrain de basket-ball', '48.90208', '2.26713', '1', '0', '92400'),
 ('E001I920260031', 'TERRAIN DE BASKET-BALL', 'SQUARE DE L&#039;HOTEL DE VILLE', 'Terrain de basket-ball', '48.89571', '2.25793', '1', '0', '92400'),
-('E001I920260032', 'TERRAIN DE PROXIMITE', 'PARC DIDEROT', 'Multisports/City-stades', '48.89137', '2.251', '1', '0', '92400'),
+('E001I920260032', 'TERRAIN DE PROXIMITE', 'PARC DIDEROT', 'Multisports/City-stades', '48.89137', '2.251', '1', '0', '92400');
+INSERT INTO `equipements_sportifs_paris` (`id`, `nom`, `adresse`, `type_sport`, `latitude`, `longitude`, `gratuit`, `handicap_access`, `arrondissement`) VALUES
 ('E001I920260033', 'TERRAIN DE BASKET-BALL', 'ENTRE L&#039;AVENUE FICATIER ET RUE DE L&#039;INDUSTRIE', 'Terrain de basket-ball', '48.89248', '2.25691', '1', '0', '92400'),
 ('E001I920260034', 'TERRAIN DE BASKET-BALL', 'AVENUE DE L&#039;ARCHE', 'Terrain de basket-ball', '48.89683', '2.23834', '1', '0', '92400'),
 ('E001I920320010', 'SKATE PARK', 'RUE DE L&#039;AVENIR', 'Skatepark', '48.79303', '2.29216', '1', '0', '92260'),
@@ -2395,10 +1912,10 @@ INSERT INTO `equipements_sportifs_paris` (`id`, `nom`, `adresse`, `type_sport`, 
 ('E001I940170021', 'TERRAIN DE PETANQUE (6 X 27)  - PARC DEPARTEMENTAL DU PLATEAU', '76 RUE DE BERNAU', 'Terrain de pétanque', '48.81659', '2.528351', '1', '0', '94500'),
 ('E001I940170022', 'PLATEAU D&#039;EVOLUTION RUE DE JALAPA', 'RUE DE JALAPA', 'Multisports/City-stades', '48.81117', '2.526493', '1', '0', '94500'),
 ('E001I940170023', '2 TERRAINS DE FOOTBALL GAZON SYNTHETIQUE - STADE CHARLES SOLIGNAT', 'RUE DE JALAPA', 'Terrain de football', '48.810545', '2.529549', '1', '0', '94500'),
-('E001I940170025', 'TERRAIN DE FOOTBALL AVENUE MAURICE THOREZ - RESIDENCE LE PLATEAU', '25 AVENUE DU 11 NOVEMBRE 1918', 'Multisports/City-stades', '48.810097', '2.534342', '1', '0', '94500');
-INSERT INTO `equipements_sportifs_paris` (`id`, `nom`, `adresse`, `type_sport`, `latitude`, `longitude`, `gratuit`, `handicap_access`, `arrondissement`) VALUES
+('E001I940170025', 'TERRAIN DE FOOTBALL AVENUE MAURICE THOREZ - RESIDENCE LE PLATEAU', '25 AVENUE DU 11 NOVEMBRE 1918', 'Multisports/City-stades', '48.810097', '2.534342', '1', '0', '94500'),
 ('E001I940170031', 'TERRAIN DE PETANQUE SQUARE RENE DESVILLETTES', 'RUE DANIELLE CASANOVA', 'Terrain de pétanque', '48.825537', '2.510543', '1', '0', '94500'),
-('E001I940170032', 'TERRAIN DE PETANQUE SQUARE ARISTIDE BRIAND', 'BOULEVARD ARISTIDE BRIAND', 'Terrain de pétanque', '48.822682', '2.499993', '1', '0', '94500'),
+('E001I940170032', 'TERRAIN DE PETANQUE SQUARE ARISTIDE BRIAND', 'BOULEVARD ARISTIDE BRIAND', 'Terrain de pétanque', '48.822682', '2.499993', '1', '0', '94500');
+INSERT INTO `equipements_sportifs_paris` (`id`, `nom`, `adresse`, `type_sport`, `latitude`, `longitude`, `gratuit`, `handicap_access`, `arrondissement`) VALUES
 ('E001I940170033', 'TERRAIN DE FOOTBALL (PROXIMITE) - SQUARE SONIA DELAUNAY - QUARTIER DES MORDACS', 'RUE DU BOIS L&#039;ABBE', 'Multisports/City-stades', '48.810449', '2.541542', '1', '0', '94500'),
 ('E001I940170034', 'BOULODROME SQUARE DU COUELLY', 'RUE SEVERINE', 'Terrain de pétanque', '48.811738', '2.546086', '1', '0', '94500'),
 ('E001I940170035', 'TERRAIN DE FOOTBALL (PROXIMITE) - SQUARE CHARLES D&#039;ORLEANS - QUARTIER DU BOIS L&#039;ABBE', 'SQUARE CHARLES D&#039;ORLEANS', 'Multisports/City-stades', '48.80664', '2.54745', '1', '0', '94500'),
@@ -2750,10 +2267,10 @@ INSERT INTO `equipements_sportifs_paris` (`id`, `nom`, `adresse`, `type_sport`, 
 ('E001I952800006', 'BOUCLE DE RANDONNEE &quot;AUTOUR DE GOUSSAINVILLE&quot; (PF1.1 PR38)', '1 PLACE DE LA CHARMEUSE', 'Boucle de randonnée', '49.03243', '2.47352', '1', '0', '95190'),
 ('E001I952800011', 'TERRAIN DE PROXIMITE', 'AVENUE PELTIER', 'Terrain de basket-ball', '49.03572', '2.46187', '1', '0', '95190'),
 ('E001I952800012', 'TERRAIN DE PROXIMITE', 'BOULEVARD DU GENERAL DE GAULLE', 'Multisports/City-stades', '49.02641', '2.47365', '1', '0', '95190'),
-('E001I952800014', 'BOULODROME', 'BOULEVARD ROGER SALENGRO', 'Terrain de pétanque', '49.04234', '2.46277', '1', '0', '95190');
-INSERT INTO `equipements_sportifs_paris` (`id`, `nom`, `adresse`, `type_sport`, `latitude`, `longitude`, `gratuit`, `handicap_access`, `arrondissement`) VALUES
+('E001I952800014', 'BOULODROME', 'BOULEVARD ROGER SALENGRO', 'Terrain de pétanque', '49.04234', '2.46277', '1', '0', '95190'),
 ('E001I952800016', 'PLATEAU MULTISPORTS', 'CHEMIN DES ECOLIERS', 'Multisports/City-stades', '49.03157', '2.4533', '1', '0', '95190'),
-('E001I952800024', 'GRANDE CARRIERE', 'Rue de la Suef', 'Carrière', '49.014142', '2.464165', '1', '0', '95190'),
+('E001I952800024', 'GRANDE CARRIERE', 'Rue de la Suef', 'Carrière', '49.014142', '2.464165', '1', '0', '95190');
+INSERT INTO `equipements_sportifs_paris` (`id`, `nom`, `adresse`, `type_sport`, `latitude`, `longitude`, `gratuit`, `handicap_access`, `arrondissement`) VALUES
 ('E001I952820001', 'BOULODROME', 'GRANDE RUE', 'Terrain de pétanque', '49.11214', '1.90517', '1', '0', '95450'),
 ('E001I952880007', 'CITY STADE', 'RUE GAMBETTA', 'Multisports/City-stades', '48.98223', '2.34465', '1', '0', '95410'),
 ('E001I953040002', 'TERRAIN DE TENNIS', 'RUE DES FORTES TERRES', 'Court de tennis', '49.153582', '2.172145', '1', '0', '95690'),
@@ -3129,9 +2646,9 @@ INSERT INTO `equipements_sportifs_paris` (`id`, `nom`, `adresse`, `type_sport`, 
 ('E002I772850013', 'SKATE PARK', 'RUE DES LACS - PARC DE MECKENHEIM', 'Skatepark', '48.53796', '2.6259', '1', '0', '77350'),
 ('E002I772850014', 'TERRAIN DE BASEBALL', 'RUE DU PRE RIGOT', 'Terrain de baseball /softball', '48.54466', '2.62441', '1', '0', '77350'),
 ('E002I772880002', 'TERRAIN DE FOOTBALL N°1', 'AVENUE DE LA LIBERATION', 'Terrain de football', '48.52783', '2.66661', '1', '0', '77000'),
-('E002I772920001', 'TERRAIN DE FOOTBALL', 'chemin rural dit &quot;du Bray&quot;', 'Terrain de football', '48.96556', '2.69351', '1', '0', '77410');
+('E002I772920001', 'TERRAIN DE FOOTBALL', 'chemin rural dit &quot;du Bray&quot;', 'Terrain de football', '48.96556', '2.69351', '1', '0', '77410'),
+('E002I772940007', 'TERRAIN DE PETANQUE', 'RUE EMILE RONNE', 'Terrain de pétanque', '48.97705540739558', '2.624216973781586', '1', '0', '77290');
 INSERT INTO `equipements_sportifs_paris` (`id`, `nom`, `adresse`, `type_sport`, `latitude`, `longitude`, `gratuit`, `handicap_access`, `arrondissement`) VALUES
-('E002I772940007', 'TERRAIN DE PETANQUE', 'RUE EMILE RONNE', 'Terrain de pétanque', '48.97705540739558', '2.624216973781586', '1', '0', '77290'),
 ('E002I772940013', 'TERRAIN DE PETANQUE', 'RUE JEAN-BAPTISTE CLEMENT', 'Terrain de pétanque', '48.954', '2.60253', '1', '0', '77290'),
 ('E002I772960002', 'MINI-FOOTBALL', 'RUE DU NOYER PERROT', 'Terrain de football', '48.6234', '2.5957', '1', '0', '77550'),
 ('E002I772960004', 'PLATEAU MULTISPORTS', 'CHEMIN DES CHARMILLES', 'Multisports/City-stades', '48.626491467975136', '2.574880421161652', '1', '0', '77550'),
@@ -3515,9 +3032,9 @@ INSERT INTO `equipements_sportifs_paris` (`id`, `nom`, `adresse`, `type_sport`, 
 ('E002I914080001', '2 MURS D&#039;ENTRAINEMENT', 'CHEMIN DE MALABRY CHAUDE VALLEE', 'Mur de tennis', '48.42293', '2.45279', '1', '0', '91490'),
 ('E002I914120001', 'TERRAIN DE BOULES', 'ROUTE DE LA PADOLE', 'Terrain de pétanque', '48.48887', '2.42126', '1', '0', '91590'),
 ('E002I914140001', 'TERRAIN DE FOOTBALL', 'CHEMIN DE MENNESSARD', 'Terrain de football', '48.3435', '2.04257', '1', '0', '91930'),
-('E002I914250004', 'TERRAIN DE BASKET-BALL', 'RUE DE LA PLAINE', 'Terrain de basket-ball', '48.63964', '2.28128', '1', '0', '91310');
+('E002I914250004', 'TERRAIN DE BASKET-BALL', 'RUE DE LA PLAINE', 'Terrain de basket-ball', '48.63964', '2.28128', '1', '0', '91310'),
+('E002I914320007', 'SKATE PARK', 'RUE DE SAVIGNY', 'Skatepark', '48.70265', '2.33564', '1', '0', '91420');
 INSERT INTO `equipements_sportifs_paris` (`id`, `nom`, `adresse`, `type_sport`, `latitude`, `longitude`, `gratuit`, `handicap_access`, `arrondissement`) VALUES
-('E002I914320007', 'SKATE PARK', 'RUE DE SAVIGNY', 'Skatepark', '48.70265', '2.33564', '1', '0', '91420'),
 ('E002I914350001', '2 TERRAINS DE BOULES', 'CHEMIN DES HAUTES MONTELIEVRES', 'Terrain de boules', '48.57307', '2.49209', '1', '0', '91250'),
 ('E002I914570009', '3 TERRAINS DE BOULES 2', 'PARC DE LA MAIRIE - RUE PASTEUR', 'Terrain de boules', '48.5873', '2.25954', '1', '0', '91290'),
 ('E002I914690002', 'TERRAIN DE BOULES', 'RUE DU MESNIL', 'Terrain de boules', '48.40437', '2.14374', '1', '0', '91150'),
@@ -3882,9 +3399,9 @@ INSERT INTO `equipements_sportifs_paris` (`id`, `nom`, `adresse`, `type_sport`, 
 ('E002I954590006', 'MANEGE', '7 CHEMIN DE DANGU', 'Manège', '', '', '1', '1', '95420'),
 ('E002I954620001', 'PLATEAU D&#039;EVOLUTION', 'RUE DES FONTAINES', 'Multisports/City-stades', '49.1407', '1.71503', '1', '0', '95420'),
 ('E002I954760007', 'SKATE PARC', 'ALLEE FRANCOIS VILLON', 'Skatepark', '49.06413', '2.08265', '1', '0', '95520'),
-('E002I954760012', 'TERRAIN DE FOOTBALL', 'RUE DE LA FRATERNITE', 'Terrain de football', '49.0639', '2.05024', '1', '0', '95520');
+('E002I954760012', 'TERRAIN DE FOOTBALL', 'RUE DE LA FRATERNITE', 'Terrain de football', '49.0639', '2.05024', '1', '0', '95520'),
+('E002I954830001', 'MINI TERRAIN DE FOOTBALL', 'ROUTE DE MARINES', 'Terrain de football', '49.11', '1.92865', '1', '0', '95450');
 INSERT INTO `equipements_sportifs_paris` (`id`, `nom`, `adresse`, `type_sport`, `latitude`, `longitude`, `gratuit`, `handicap_access`, `arrondissement`) VALUES
-('E002I954830001', 'MINI TERRAIN DE FOOTBALL', 'ROUTE DE MARINES', 'Terrain de football', '49.11', '1.92865', '1', '0', '95450'),
 ('E002I954830002', 'Grand Manège', '29 grande rue ferme de la tanniere', 'Manège', '49.111163', '1.932565', '1', '1', '95450'),
 ('E002I954870005', 'PETIT CITY STADE', 'RUE GAMBETTA', 'Multisports/City-stades', '49.15024', '2.26717', '1', '0', '95340'),
 ('E002I954870006', 'TERRAIN DE BOULES N°2', 'RUE GAMBETTA', 'Terrain de pétanque', '49.15048', '2.26632', '1', '0', '95340'),
@@ -4266,9 +3783,9 @@ INSERT INTO `equipements_sportifs_paris` (`id`, `nom`, `adresse`, `type_sport`, 
 ('E003I913760001', 'CITY STADE', '36 CHEMIN DE LA POSTE', 'Multisports/City-stades', '48.56057', '2.29765', '1', '0', '91630'),
 ('E003I913770002', 'COURT DE TENNIS EXT 1', 'Rue Georges Mandel', 'Court de tennis', '48.737208', '2.253635', '1', '1', '91300'),
 ('E003I913770005', 'CITY-STADE', 'ALLEE DE TEHERAN', 'Multisports/City-stades', '48.73281', '2.28558', '1', '0', '91300'),
-('E003I913770010', 'TERRAIN DE RUGBY N°2', 'AVENUE DU MARECHAL KOENING', 'Terrain de rugby', '48.7287', '2.29597', '1', '0', '91300');
+('E003I913770010', 'TERRAIN DE RUGBY N°2', 'AVENUE DU MARECHAL KOENING', 'Terrain de rugby', '48.7287', '2.29597', '1', '0', '91300'),
+('E003I913860003', 'TERRAIN D&#039;ENTRAINEMENT', 'RD153', 'Terrain mixte', '48.55855', '2.44231', '1', '0', '91540');
 INSERT INTO `equipements_sportifs_paris` (`id`, `nom`, `adresse`, `type_sport`, `latitude`, `longitude`, `gratuit`, `handicap_access`, `arrondissement`) VALUES
-('E003I913860003', 'TERRAIN D&#039;ENTRAINEMENT', 'RD153', 'Terrain mixte', '48.55855', '2.44231', '1', '0', '91540'),
 ('E003I913860007', 'PARCOURS SPORTIF DE SANTE', 'AVENUE DARBLAY', 'Parcours sportif/santé', '48.56533', '2.42178', '1', '0', '91540'),
 ('E003I913900004', 'TERRAINS DE TENNIS DECOUVERTS 2', 'RUE PIERRE BARBEROT', 'Court de tennis', '48.31255', '2.10075', '1', '0', '91660'),
 ('E003I913900006', 'PISTE  D&#039;ATHLETISME', 'RUE DE BEL AIR', 'Piste d&#039;athlétisme isolée', '48.31434', '2.08241', '1', '0', '91660'),
@@ -4639,9 +4156,9 @@ INSERT INTO `equipements_sportifs_paris` (`id`, `nom`, `adresse`, `type_sport`, 
 ('E004I783580006', 'SKATE PARK', '27 RUE DE LA DIGUE', 'Skatepark', '48.9423', '2.15286', '1', '0', '78600'),
 ('E004I783610011', 'PISTE DE COURSE ET DE SAUT', 'ROUTE NATIONALE 13', 'Aire de saut', '48.9961', '1.67438', '1', '0', '78200'),
 ('E004I783680004', 'PLATEAU D&#039;EVOLUTION', 'ALLEE DES CRAYONS', 'Multisports/City-stades', '48.89062', '1.87855', '1', '0', '78124'),
-('E004I783800001', 'PLATEAUX  MULTISPORTS', 'CHEMIN DU RADET', 'Multisports/City-stades', '48.90559', '1.85989', '1', '0', '78580');
+('E004I783800001', 'PLATEAUX  MULTISPORTS', 'CHEMIN DU RADET', 'Multisports/City-stades', '48.90559', '1.85989', '1', '0', '78580'),
+('E004I783830008', 'PISTE D&#039;ATHLETISME', 'BOULEVARD DU RHIN', 'Piste d&#039;athlétisme isolée', '48.76797', '1.94013', '1', '0', '78310');
 INSERT INTO `equipements_sportifs_paris` (`id`, `nom`, `adresse`, `type_sport`, `latitude`, `longitude`, `gratuit`, `handicap_access`, `arrondissement`) VALUES
-('E004I783830008', 'PISTE D&#039;ATHLETISME', 'BOULEVARD DU RHIN', 'Piste d&#039;athlétisme isolée', '48.76797', '1.94013', '1', '0', '78310'),
 ('E004I783840001', 'GRANDE CARRIERE', '66 RUE DE BRETEUIL', 'Carrière', '48.94882', '1.9881', '1', '0', '78670'),
 ('E004I784010003', 'SALLE DE MUSCULATION', 'AVENUE DES AULNES', 'Salle de musculation/cardiotraining', '49.01144', '1.90324', '1', '0', '78250'),
 ('E004I784400001', 'TERRAIN MULTISPORTS', 'RUE HUBERT MOUCHEL', 'Multisports/City-stades', '48.98565', '1.92469', '1', '0', '78130'),
@@ -5910,66 +5427,76 @@ INSERT INTO `equipements_sportifs_paris` (`id`, `nom`, `adresse`, `type_sport`, 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `likes`
+-- Table structure for table `likes`
 --
 
 CREATE TABLE `likes` (
-  `id` int NOT NULL,
-  `user_id` int NOT NULL,
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `element_id` varchar(20) NOT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `created_at` timestamp NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Déchargement des données de la table `likes`
+-- Dumping data for table `likes`
 --
 
 INSERT INTO `likes` (`id`, `user_id`, `element_id`, `created_at`) VALUES
-(35, 5, 'E001I751120080', '2025-04-10 16:02:43'),
-(36, 5, 'E001I751130026', '2025-04-10 16:02:44'),
-(38, 5, 'E001I751140052', '2025-04-10 16:03:04'),
-(39, 5, 'E001I751150071', '2025-04-10 16:03:05'),
-(40, 5, 'E001I751170054', '2025-04-10 16:03:06'),
-(45, 5, 'E001I751110045', '2025-04-11 07:26:56'),
-(47, 5, 'E001I751140004', '2025-04-11 08:28:58');
+(36, 5, 'E001I751130026', '2025-04-10 14:02:44'),
+(38, 5, 'E001I751140052', '2025-04-10 14:03:04'),
+(39, 5, 'E001I751150071', '2025-04-10 14:03:05'),
+(45, 5, 'E001I751110045', '2025-04-11 05:26:56'),
+(47, 5, 'E001I751140004', '2025-04-11 06:28:58'),
+(50, 5, 'E001I751100006', '2025-04-11 15:08:23'),
+(51, 5, 'E001I784400010', '2025-04-11 18:01:16'),
+(52, 5, 'E001I784400008', '2025-04-11 18:01:31'),
+(60, 5, 'E001I751070023', '2025-04-11 19:55:53'),
+(73, 5, 'E001I751030015', '2025-04-11 20:07:39'),
+(75, 5, 'E001I783270001', '2025-04-11 20:09:30'),
+(76, 5, 'E001I784440001', '2025-04-11 20:09:52'),
+(77, 5, 'E005I786420005', '2025-04-11 20:13:50'),
+(78, 5, 'E001I751040004', '2025-04-11 20:13:54'),
+(79, 5, 'E001I751040005', '2025-04-11 20:13:55'),
+(81, 5, 'E001I751100012', '2025-04-11 21:33:49'),
+(82, 5, 'E002I784400013', '2025-04-11 21:51:04');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `utilisateurs`
+-- Table structure for table `utilisateurs`
 --
 
 CREATE TABLE `utilisateurs` (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `nom` varchar(100) NOT NULL,
   `prenom` varchar(100) NOT NULL,
   `email` varchar(255) NOT NULL,
   `mot_de_passe` varchar(255) NOT NULL,
-  `date_inscription` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_inscription` timestamp NULL DEFAULT current_timestamp(),
   `avatar` varchar(255) DEFAULT 'assets/default-avatar.png'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Déchargement des données de la table `utilisateurs`
+-- Dumping data for table `utilisateurs`
 --
 
 INSERT INTO `utilisateurs` (`id`, `nom`, `prenom`, `email`, `mot_de_passe`, `date_inscription`, `avatar`) VALUES
-(4, 'Soriano', 'Matheo Yannis', 'yannis.s241@gmail.com', '$2y$10$pVwgpu.DVy1DKFQM5gUJD.ErwwPVClmBmScgJUDKckcqIaumaRYta', '2025-04-09 14:18:21', 'assets/default-avatar.png'),
-(5, 'test', 'test', 'Admin@gmail.com', '$2y$10$Ikwcyc4wftW6Awq7sLenWOZCBH5YXA8Ra3hn2f4ijBx7yDtOPD5DS', '2025-04-09 14:22:54', 'uploads/avatars/image cv.png'),
-(6, 'test2', 'test2', 'test2@gmail.com', '$2y$10$mb6yeNjT5yb5hRcCLI/my.6Ovh6o9WCMG79jVfTChfThDAa0YcXhq', '2025-04-09 18:15:56', 'assets/default-avatar.png');
+(4, 'Soriano', 'Matheo Yannis', 'yannis.s241@gmail.com', '$2y$10$pVwgpu.DVy1DKFQM5gUJD.ErwwPVClmBmScgJUDKckcqIaumaRYta', '2025-04-09 12:18:21', 'assets/default-avatar.png'),
+(5, 'test', 'test', 'Admin@gmail.com', '$2y$10$Ikwcyc4wftW6Awq7sLenWOZCBH5YXA8Ra3hn2f4ijBx7yDtOPD5DS', '2025-04-09 12:22:54', 'uploads/avatars/image cv.png'),
+(6, 'test2', 'test2', 'test2@gmail.com', '$2y$10$mb6yeNjT5yb5hRcCLI/my.6Ovh6o9WCMG79jVfTChfThDAa0YcXhq', '2025-04-09 16:15:56', 'assets/default-avatar.png');
 
 --
--- Index pour les tables déchargées
+-- Indexes for dumped tables
 --
 
 --
--- Index pour la table `equipements_sportifs_paris`
+-- Indexes for table `equipements_sportifs_paris`
 --
 ALTER TABLE `equipements_sportifs_paris`
   ADD PRIMARY KEY (`id`);
 
 --
--- Index pour la table `likes`
+-- Indexes for table `likes`
 --
 ALTER TABLE `likes`
   ADD PRIMARY KEY (`id`),
@@ -5977,34 +5504,34 @@ ALTER TABLE `likes`
   ADD KEY `element_id` (`element_id`);
 
 --
--- Index pour la table `utilisateurs`
+-- Indexes for table `utilisateurs`
 --
 ALTER TABLE `utilisateurs`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email` (`email`);
 
 --
--- AUTO_INCREMENT pour les tables déchargées
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT pour la table `likes`
+-- AUTO_INCREMENT for table `likes`
 --
 ALTER TABLE `likes`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
 
 --
--- AUTO_INCREMENT pour la table `utilisateurs`
+-- AUTO_INCREMENT for table `utilisateurs`
 --
 ALTER TABLE `utilisateurs`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
--- Contraintes pour les tables déchargées
+-- Constraints for dumped tables
 --
 
 --
--- Contraintes pour la table `likes`
+-- Constraints for table `likes`
 --
 ALTER TABLE `likes`
   ADD CONSTRAINT `likes_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `utilisateurs` (`id`) ON DELETE CASCADE,

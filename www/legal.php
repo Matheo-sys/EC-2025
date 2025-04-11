@@ -1,5 +1,5 @@
 <?php
-// Inclusions nécessaires (configuration de la base de données et header)
+
 include('config/database.php');
 include('includes/header.php');
 ?>
