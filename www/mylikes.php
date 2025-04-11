@@ -27,6 +27,7 @@ $stmt = $conn->prepare("
     FROM equipements_sportifs_paris e
     INNER JOIN likes l ON e.id = l.element_id
     WHERE l.user_id = ?
+    ORDER BY l.created_at desc
 ");
 $stmt->execute([$userId]);
 $likedTerrains = $stmt->fetchAll(PDO::FETCH_ASSOC);

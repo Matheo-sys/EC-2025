@@ -61,32 +61,13 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Module Likes
-    function handleLikeClick(event) {
-        const button = event.currentTarget;
-        const elementId = button.dataset.elementId;
-        const isLiked = button.dataset.liked === 'true';
-        const heartIcon = button.querySelector('.heart-icon');
-        const likeText = button.querySelector('.like-text');
-
-        button.dataset.liked = (!isLiked).toString();
-        heartIcon.classList.toggle('fa-regular', isLiked);
-        heartIcon.classList.toggle('fa-solid', !isLiked);
-        likeText.textContent = isLiked ? 'Like' : 'Unlike';
-
-        fetch('likes.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams({ element_id: elementId })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status !== 'liked' && data.status !== 'unliked') {
-                console.error("Erreur: ", data.message);
-                button.dataset.liked = isLiked.toString();
-            }
-        })
-        .catch(console.error);
+        
+    // Pour les popups Leaflet
+    if (typeof map !== 'undefined') {
+        map.on('popupopen', (e) => {
+            const popup = e.popup.getElement();
+            popup.querySelector('.like-btn')?.addEventListener('click', handleLikeClick);
+        });
     }
 
     // Module Password
