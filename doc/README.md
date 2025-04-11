@@ -21,3 +21,16 @@ Les données utilisées pour alimenter la base de données proviennent de la pla
   - Type de sport
   - Arrondissement
   - Coordonnées géographiques
+
+## Fonctionnalités
+
+Les fonctionnalités sont : 
+ - une landing page (page d'accueil)
+ - une page carte qui permet de voir tous les terrains sur une map
+ - Connexion/inscription
+ - like de terrains retrouvable dans sa page mes like
+ - page de contact fonctionnelle
+ - page mon profil pour modifier ses informations
+ 
+## Site deployé
+https://parissport.alwaysdata.net/
