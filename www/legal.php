@@ -40,15 +40,15 @@ include('includes/header.php');
                 <div class="card-body">
                     <h3>Identification de l'éditeur</h3>
                     <p><strong>Nom de l'entreprise :</strong> ParisSport+</p>
-                    <p><strong>Siège social :</strong> 123 rue du Sport, 75001 Paris, France</p>
-                    <p><strong>SIRET :</strong> 123 456 789 00012</p>
-                    <p><strong>Numéro de TVA intracommunautaire :</strong> FR12345678901</p>
-                    <p><strong>Directeur de la publication :</strong> Jean Dupont</p>
+                    <p><strong>Siège social :</strong> 3 Rue Armand Moisant, 75015 Paris, France</p>
+                    <p><strong>SIRET :</strong></p>
+                    <p><strong>Numéro de TVA intracommunautaire :</strong></p>
+                    <p><strong>Directeur de la publication :</strong> Mathéo Soriano</p>
 
                     <h3>Hébergement</h3>
                     <p><strong>Nom de l'hébergeur :</strong> Alwaysdata </p>
-                    <p><strong>Adresse de l'hébergeur :</strong> 456 rue du Web, 75002 Paris, France</p>
-                    <p><strong>Numéro de téléphone :</strong> +33 1 23 45 67 89</p>
+                    <p><strong>Adresse de l'hébergeur :</strong> 91 RUE DU FAUBOURG SAINT-HONORE, 75008 PARIS France</p>
+                    <p><strong>Numéro de téléphone :</strong>08 90 10 92 59</p>
 
                     <h3>Propriété intellectuelle</h3>
                     <p>Les contenus (textes, images, logos, vidéos, etc.) présents sur ParisSport+ sont protégés par les droits de propriété intellectuelle. Toute reproduction, diffusion ou utilisation non autorisée des éléments du site est interdite.</p>
@@ -64,7 +64,7 @@ include('includes/header.php');
                     <p>Le site ParisSport+ utilise des cookies pour améliorer votre expérience utilisateur. Vous pouvez gérer vos préférences en matière de cookies dans les paramètres de votre navigateur.</p>
 
                     <h3>Contact</h3>
-                    <p>Pour toute question, contactez-nous par e-mail à <a href="mailto:parissport@alwaysdata.net">parissport@alwaysdata.net</a> ou par téléphone au +33 1 23 45 67 89.</p>
+                    <p>Pour toute question, contactez-nous par e-mail à <a href="mailto:parissport@alwaysdata.net">parissport@alwaysdata.net</a></p>
 
                     <p class="text-center">
                         <a href="index.php" class="btn btn-primary" style="background-color: #2B9348; border-color: #2B9348;">Retour à l'accueil</a>
