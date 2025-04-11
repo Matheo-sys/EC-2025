@@ -11,7 +11,7 @@ $query = isset($_GET['q']) ? $_GET['q'] : '';
 $sql = "SELECT * FROM equipements_sportifs_paris WHERE 1";
 
 if ($query) {
-    $sql .= " AND (nom LIKE :query OR adresse LIKE :query OR type_sport LIKE :query)";
+    $sql .= " AND (nom LIKE :query OR adresse LIKE :query OR type_sport LIKE :query) OR arrondissement LIKE :query";
 }
 if ($sport) {
     $sql .= " AND type_sport = :sport";
@@ -113,6 +113,8 @@ function calculer_distance($lat1, $lon1, $lat2, $lon2) {
                             <h5 class="card-title"><?= htmlspecialchars($terrain['nom']) ?></h5>
                             <p class="card-text">Adresse : <?= htmlspecialchars($terrain['adresse']) ?></p>
                             <p class="card-text">Type/Sport : <?= htmlspecialchars($terrain['type_sport']) ?></p>
+                            <p class="card-text">Code Postal : <?= htmlspecialchars($terrain['arrondissement']) ?></p>
+                            <p class="card-text">Accès handicap : <?= htmlspecialchars($terrain['handicap_access']) ?></p>
                             <button class="like-btn" data-element-id="<?= $terrain['id'] ?>" data-liked="false">
                             <i class="fa-regular fa-heart"></i> 
                             </button>
@@ -129,88 +131,95 @@ function calculer_distance($lat1, $lon1, $lat2, $lon2) {
 </main>
 
 
-    <!-- JavaScript map -->
-    <script>
-        // Variables pour stocker la position de l'utilisateur
-        var userLat = 48.8566; // Paris par défaut
-        var userLon = 2.3522;
+<script>
+    // Définir un icône personnalisé simple sans ombre pour réduire le lag
+    var simpleIcon = L.icon({
+        iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [0, -41],
+        shadowUrl: '',          // Pas d'ombre
+        shadowSize: [0, 0],
+        shadowAnchor: [0, 0]
+    });
 
-        // Utilisation de l'API de géolocalisation du navigateur pour obtenir la position
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                userLat = position.coords.latitude;
-                userLon = position.coords.longitude;
+    // Variables pour stocker la position de l'utilisateur (Paris par défaut)
+    var userLat = 48.8566;
+    var userLon = 2.3522;
 
-                // Centrer la carte sur la position de l'utilisateur
-                map.setView([userLat, userLon], 12);
+    // Si l'API de géolocalisation est disponible
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            userLat = position.coords.latitude;
+            userLon = position.coords.longitude;
 
-                // Ajouter un marqueur pour la position de l'utilisateur
-                L.marker([userLat, userLon]).addTo(map)
-                    .bindPopup("<b>Vous êtes ici</b>")
-                    .openPopup();
-            });
-        }
+            // Centrer la carte sur la position de l'utilisateur
+            map.setView([userLat, userLon], 12);
 
-        // Initialisation de la carte avec Leaflet
-        var map = L.map('map').setView([userLat, userLon], 12); // Paris par défaut
-
-        // Carte OpenStreetMap
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-
-        // Ajouter tous les marqueurs des terrains sur la carte et les classer par distance
-        var terrains = <?php echo json_encode($terrains); ?>;
-        var distances = [];
-
-        terrains.forEach(function(terrain) {
-            var distance = calculer_distance(userLat, userLon, terrain.latitude, terrain.longitude);
-            distances.push({terrain: terrain, distance: distance});
+            // Ajouter un marqueur pour la position de l'utilisateur avec l'icône simple
+            L.marker([userLat, userLon], {icon: simpleIcon}).addTo(map)
+                .bindPopup("<b>Vous êtes ici</b>")
+                .openPopup();
         });
+    }
 
-        // Trier les terrains par distance 
-        distances.sort(function(a, b) {
-            return a.distance - b.distance;
-        });
+    // Initialisation de la carte avec Leaflet
+    var map = L.map('map').setView([userLat, userLon], 12);
 
-// Ajou des marqueurs pour les terrains 
-distances.forEach(function(item) {
-    var terrain = item.terrain;
-    var marker = L.marker([terrain.latitude, terrain.longitude]).addTo(map);
+    // Ajout de la carte OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
 
-    // Créer le contenu HTML de la popup avec le bouton like
-    var popupContent = 
-        "<b>" + terrain.nom + "</b><br>" +
-        "Adresse: " + terrain.adresse + "<br>" +
-        "Sport: " + terrain.type_sport + "<br><br>" +
-        "<button class='like-btn' data-element-id='" + terrain.id + "' data-liked='false'>" +
-            "<i class='fa-regular fa-heart heart-icon'></i> " +
-            "<span class='like-text'>Like</span>" +
-        "</button>";
+    // Convertir les terrains (fourni via PHP) en tableau et calculer les distances
+    var terrains = <?php echo json_encode($terrains); ?>;
+    var distances = [];
 
-    marker.bindPopup(popupContent);
-});
+    terrains.forEach(function(terrain) {
+        var distance = calculer_distance(userLat, userLon, terrain.latitude, terrain.longitude);
+        distances.push({terrain: terrain, distance: distance});
+    });
 
+    // Trier les terrains par distance (du plus proche au plus éloigné)
+    distances.sort(function(a, b) {
+        return a.distance - b.distance;
+    });
 
-        // Fonction pour calculer la distance entre deux points (en km)
-        function calculer_distance(lat1, lon1, lat2, lon2) {
-            var R = 6371; // Rayon de la Terre en kilomètres
-            var phi1 = deg2rad(lat1);
-            var phi2 = deg2rad(lat2);
-            var delta_phi = deg2rad(lat2 - lat1);
-            var delta_lambda = deg2rad(lon2 - lon1);
-            var a = Math.sin(delta_phi / 2) * Math.sin(delta_phi / 2) +
-                    Math.cos(phi1) * Math.cos(phi2) *
-                    Math.sin(delta_lambda / 2) * Math.sin(delta_lambda / 2);
-            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            var distance = R * c; // Distance en kilomètres
-            return distance;
-        }
+    // Ajouter des marqueurs pour les terrains triés, en utilisant l'icône simple
+    distances.forEach(function(item) {
+        var terrain = item.terrain;
+        var marker = L.marker([terrain.latitude, terrain.longitude], {icon: simpleIcon}).addTo(map);
+        
+        // Créer le contenu de la popup avec un bouton like
+        var popupContent =
+            "<b>" + terrain.nom + "</b><br>" +
+            "Adresse: " + terrain.adresse + "<br>" +
+            "Sport: " + terrain.type_sport + "<br><br>" +
+            "<button class='like-btn' data-element-id='" + terrain.id + "' data-liked='false'>" +
+                "<i class='fa-regular fa-heart heart-icon'></i> " +
+                "<span class='like-text'>Like</span>" +
+            "</button>";
+        marker.bindPopup(popupContent);
+    });
 
-        function deg2rad(deg) {
-            return deg * (Math.PI / 180);
-        }
-    </script>
+    // Fonction pour calculer la distance en km entre deux points (formule de Haversine)
+    function calculer_distance(lat1, lon1, lat2, lon2) {
+        var R = 6371;
+        var phi1 = deg2rad(lat1);
+        var phi2 = deg2rad(lat2);
+        var delta_phi = deg2rad(lat2 - lat1);
+        var delta_lambda = deg2rad(lon2 - lon1);
+        var a = Math.sin(delta_phi / 2) * Math.sin(delta_phi / 2) +
+                Math.cos(phi1) * Math.cos(phi2) *
+                Math.sin(delta_lambda / 2) * Math.sin(delta_lambda / 2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c;
+    }
+
+    function deg2rad(deg) {
+        return deg * (Math.PI / 180);
+    }
+</script>
     <!-- Likes -->
     <script>
     document.addEventListener('DOMContentLoaded', function() {
