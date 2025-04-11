@@ -121,7 +121,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </label>
         </div>
 
-            <button type='submit' class="btn btn-secondary w-100 rounded-pill" style="background-color: #2B9348; border-color: #2B9348;">
+            <button type='submit' id="submitBtn" class="btn btn-secondary w-100 rounded-pill" style="background-color: #2B9348; border-color: #2B9348;" disabled>
                 S'inscrire
             </button>
 
