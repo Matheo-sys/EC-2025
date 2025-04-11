@@ -8,54 +8,42 @@ $sport = isset($_GET['sport']) ? $_GET['sport'] : '';
 $arrondissement = isset($_GET['arrondissement']) ? $_GET['arrondissement'] : '';
 $distance = isset($_GET['distance']) ? $_GET['distance'] : 0;
 $query = isset($_GET['q']) ? $_GET['q'] : '';
+
+$keywords = explode(' ', $query);
+
 $sql = "SELECT * FROM equipements_sportifs_paris WHERE 1";
 
-// Récupérer le terme de recherche
-$search = isset($_GET['search']) ? trim($_GET['search']) : '';
-
-$keywords = explode(' ', $search);
-
-$sql = "SELECT * FROM equipements_sportifs_paris";
-
-// On crée un tableau pour les paramètres et les conditions
+// Tableau pour stocker les conditions et les paramètres de la requête
 $whereClauses = [];
 $params = [];
 
-// On applique chaque mot-clé à chaque colonne (nom, adresse, type_sport, arrondissement)
-foreach ($keywords as $keyword) {
-    if (!empty($keyword)) {
-        $whereClauses[] = "(nom LIKE :keyword OR adresse LIKE :keyword OR type_sport LIKE :keyword OR arrondissement LIKE :keyword)";
-        $params['keyword'] = '%' . $keyword . '%';  // On recherche ce mot-clé
+// Ajouter la recherche par mots-clés si elle est définie
+if ($query) {
+    foreach ($keywords as $keyword) {
+        if (!empty($keyword)) {
+            $whereClauses[] = "(nom LIKE :keyword OR adresse LIKE :keyword OR type_sport LIKE :keyword OR arrondissement LIKE :keyword)";
+            $params['keyword'] = '%' . $keyword . '%';
+        }
     }
 }
 
-// Si des conditions ont été créées (au moins un mot-clé), on les ajoute à la requête
-if (count($whereClauses) > 0) {
-    $sql .= " WHERE " . implode(" AND ", $whereClauses);
-}
-
-$sql .= " ORDER BY id DESC";
-
-$stmt = $conn->prepare($sql);
-$stmt->execute($params);
-$equipements = $stmt->fetchAll(PDO::FETCH_ASSOC);
-if ($query) {
-    $sql .= " AND (nom LIKE :query OR adresse LIKE :query OR type_sport LIKE :query) OR arrondissement LIKE :query";
-}
+// Ajouter le filtre sur le sport
 if ($sport) {
-    $sql .= " AND type_sport = :sport";
+    $whereClauses[] = "type_sport = :sport";
+    $params['sport'] = $sport;
 }
+
+// Ajouter le filtre sur l'arrondissement
 if ($arrondissement) {
-    $sql .= " AND arrondissement = :arrondissement";
+    $whereClauses[] = "arrondissement = :arrondissement";
+    $params['arrondissement'] = $arrondissement;
 }
 
-// Exécution de la requête
-$stmt = $conn->prepare($sql);
-$params = [];
-if ($query) $params['query'] = '%' . $query . '%';
-if ($sport) $params['sport'] = $sport;
-if ($arrondissement) $params['arrondissement'] = $arrondissement;
+if (count($whereClauses) > 0) {
+    $sql .= " AND " . implode(" AND ", $whereClauses);
+}
 
+$stmt = $conn->prepare($sql);
 $stmt->execute($params);
 $terrains = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -74,6 +62,7 @@ function calculer_distance($lat1, $lon1, $lat2, $lon2) {
     return $distance;
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="fr">
