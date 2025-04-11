@@ -5438,7 +5438,7 @@ CREATE TABLE `likes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `likes`
+-- Dumping exemples data for table `likes`
 --
 
 INSERT INTO `likes` (`id`, `user_id`, `element_id`, `created_at`) VALUES
@@ -5481,7 +5481,6 @@ CREATE TABLE `utilisateurs` (
 --
 
 INSERT INTO `utilisateurs` (`id`, `nom`, `prenom`, `email`, `mot_de_passe`, `date_inscription`, `avatar`) VALUES
-(4, 'Soriano', 'Matheo Yannis', 'yannis.s241@gmail.com', '$2y$10$pVwgpu.DVy1DKFQM5gUJD.ErwwPVClmBmScgJUDKckcqIaumaRYta', '2025-04-09 12:18:21', 'assets/default-avatar.png'),
 (5, 'test', 'test', 'Admin@gmail.com', '$2y$10$Ikwcyc4wftW6Awq7sLenWOZCBH5YXA8Ra3hn2f4ijBx7yDtOPD5DS', '2025-04-09 12:22:54', 'uploads/avatars/image cv.png'),
 (6, 'test2', 'test2', 'test2@gmail.com', '$2y$10$mb6yeNjT5yb5hRcCLI/my.6Ovh6o9WCMG79jVfTChfThDAa0YcXhq', '2025-04-09 16:15:56', 'assets/default-avatar.png');
 
