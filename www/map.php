@@ -10,6 +10,35 @@ $distance = isset($_GET['distance']) ? $_GET['distance'] : 0;
 $query = isset($_GET['q']) ? $_GET['q'] : '';
 $sql = "SELECT * FROM equipements_sportifs_paris WHERE 1";
 
+// Récupérer le terme de recherche
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+
+$keywords = explode(' ', $search);
+
+$sql = "SELECT * FROM equipements_sportifs_paris";
+
+// On crée un tableau pour les paramètres et les conditions
+$whereClauses = [];
+$params = [];
+
+// On applique chaque mot-clé à chaque colonne (nom, adresse, type_sport, arrondissement)
+foreach ($keywords as $keyword) {
+    if (!empty($keyword)) {
+        $whereClauses[] = "(nom LIKE :keyword OR adresse LIKE :keyword OR type_sport LIKE :keyword OR arrondissement LIKE :keyword)";
+        $params['keyword'] = '%' . $keyword . '%';  // On recherche ce mot-clé
+    }
+}
+
+// Si des conditions ont été créées (au moins un mot-clé), on les ajoute à la requête
+if (count($whereClauses) > 0) {
+    $sql .= " WHERE " . implode(" AND ", $whereClauses);
+}
+
+$sql .= " ORDER BY id DESC";
+
+$stmt = $conn->prepare($sql);
+$stmt->execute($params);
+$equipements = $stmt->fetchAll(PDO::FETCH_ASSOC);
 if ($query) {
     $sql .= " AND (nom LIKE :query OR adresse LIKE :query OR type_sport LIKE :query) OR arrondissement LIKE :query";
 }
@@ -125,6 +154,7 @@ function calculer_distance($lat1, $lon1, $lat2, $lon2) {
                         </div>
                     </div>
                 </div>
+            
             <?php endforeach; ?>
 
     </section>
