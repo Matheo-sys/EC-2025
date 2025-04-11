@@ -37,9 +37,9 @@ if ($arrondissement) {
     $whereClauses[] = "arrondissement = :arrondissement";
     $params['arrondissement'] = $arrondissement;
 }
-// Après la récupération des autres paramètres
+
 if (!empty($_GET['sports'])) {
-    $sportConditions = [];
+    $globalSportConditions = [];
     
     foreach ($_GET['sports'] as $sportKeywords) {
         $keywords = explode(',', $sportKeywords);
@@ -51,13 +51,11 @@ if (!empty($_GET['sports'])) {
             $params[$paramKey] = "%$keyword%";
         }
         
-        if (!empty($sportOrConditions)) {
-            $sportConditions[] = '(' . implode(' OR ', $sportOrConditions) . ')';
-        }
+        $globalSportConditions[] = '(' . implode(' OR ', $sportOrConditions) . ')';
     }
     
-    if (!empty($sportConditions)) {
-        $whereClauses[] = '(' . implode(' AND ', $sportConditions) . ')';
+    if (!empty($globalSportConditions)) {
+        $whereClauses[] = '(' . implode(' OR ', $globalSportConditions) . ')';
     }
 }
 if (count($whereClauses) > 0) {
@@ -120,14 +118,14 @@ function slugify($text) {
 
         <!-- Formulaire de recherche -->
         <form action="map.php" method="get" class="d-flex flex-column align-items-center">
-            <div class="input-group w-50">
+            <div class="input-group mb-3">
                 <input type="text" name="q" class="form-control" placeholder="Rechercher un terrain sportif...">
                 <button class="btn btn-primary" style="background-color: #2B9348; border-color:#2B9348" type="submit" href="map.php">Rechercher</button>
             </div>
 
-            <!-- Checkbox filtres -->
-            <div class="filters-container mb-3 mt-4"  width="100%">
-                <div class="d-flex flex-wrap gap-3 justify-content-center">
+            <!-- Checkbox -->
+            <div class="filters-container mt-3" style="width: 100%;">
+                <div class="d-flex flex-wrap justify-content-center gap-2">
                     <?php
                     $sportsFilters = [
                         'Foot' => ['foot', 'soccer', 'football'],
@@ -135,7 +133,7 @@ function slugify($text) {
                         'Pétanque' => ['pétanque', 'boules'],
                         'Volley' => ['volley', 'volleyball'],
                         'Tennis' => ['tennis'],
-                        'Musculation' => ['muscu', 'fitness', 'musculation','forme%','remise%'],
+                        'Musculation/Forme' => ['muscu', 'fitness', 'musculation','forme%','remise%','santé%'],
                         'Multi-sports/City' => ['multi', 'polyvalent','city%'],
                         'Piste Cyclabe' => ['cyclisme', 'vélo', 'piste%', 'cyclable'],
                     ];
@@ -172,7 +170,7 @@ function slugify($text) {
                 <?php if ($query): ?>
                     <h4>Nombre de terrains trouvés : <?= count($terrains) ?></h4>
                 <?php else: ?>
-                    <h4>Liste de tous les terrains</h4>
+                    <h4>Liste des tous les terrains : <?= count($terrains) ?></h4>
                 <?php endif; ?>
             </div>
         </div>
