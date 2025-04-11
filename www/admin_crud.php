@@ -66,7 +66,7 @@ $equipements = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <!-- Barre de recherche -->
     <div class="row mb-3">
         <div class="col-md-6 offset-md-3">
-            <form method="get" class="input-group">
+            <form method="get" class="input-group mb-3 flex-nowrap flex-md-wrap">
                 <input type="text" name="search" class="form-control" placeholder="Rechercher par nom, adresse, sport ou code postal" value="<?= htmlspecialchars($search) ?>">
                 <button class="btn btn-primary" style="background-color: #2B9348; border-color: #2B9348;" type="submit">Rechercher</button>
             </form>

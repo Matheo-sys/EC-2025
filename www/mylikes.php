@@ -10,7 +10,7 @@ include('config/database.php');
 
 $userId = $_SESSION['user']['id'];
 
-// suppression d'un like 
+// Suppression d'un like 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['element_id'])) {
     $elementId = $_POST['element_id'];
     
