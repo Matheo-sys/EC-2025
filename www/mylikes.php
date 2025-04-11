@@ -43,8 +43,7 @@ $likedTerrains = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <!-- Inclusion de Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
-    <!-- Vos styles personnalisés -->
-    <link rel="stylesheet" href="css/reset.css">
+    <!-- Styles perso -->
     <link rel="stylesheet" href="css/style.css">
     
     <!-- Inclusion des polices -->

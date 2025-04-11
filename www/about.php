@@ -17,7 +17,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 
     <!-- CSS Perso -->
-    <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/style.css">
 
     <!-- Favicon -->

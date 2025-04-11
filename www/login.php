@@ -53,7 +53,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>ParisSport+ - Accueil</title>
     
     <!-- CSS -->
-    <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/style.css">
     
     <!-- Polices -->

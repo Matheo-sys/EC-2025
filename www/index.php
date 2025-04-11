@@ -27,7 +27,6 @@ $terrains = $sql->fetchAll(PDO::FETCH_ASSOC);
     <title>ParisSport+ - Accueil</title>
     
     <!-- CSS -->
-    <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/style.css">
     
     <!-- Polices -->

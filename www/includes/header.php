@@ -20,7 +20,6 @@ if (session_status() == PHP_SESSION_NONE) {
     <title>ParisSport+ - Accueil</title>
     
     <!-- CSS -->
-    <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/style.css">
     
     <!-- Polices -->
