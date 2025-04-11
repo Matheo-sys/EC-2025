@@ -1,8 +1,8 @@
 <?php
-$serveur = "127.0.0.1";
-$utilisateur = "root";
-$motdepasse = "root";
-$bdd = "parissport";
+$serveur = "mysql-parissport.alwaysdata.net;port=3306";
+$utilisateur = "408844";
+$motdepasse = "qqRyDvP7G#r3crg";
+$bdd = "parissport_bdd";
 
 try {
     $conn = new PDO(

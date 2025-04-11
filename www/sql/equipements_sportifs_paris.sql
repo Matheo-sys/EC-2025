@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:8889
--- Généré le : ven. 11 avr. 2025 à 09:37
+-- Généré le : ven. 11 avr. 2025 à 12:26
 -- Version du serveur : 8.0.40
 -- Version de PHP : 8.3.14
 
@@ -18,8 +18,490 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
+-- Base de données : `mixone`
+--
+CREATE DATABASE IF NOT EXISTS `mixone` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+USE `mixone`;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cache`
+--
+
+CREATE TABLE `cache` (
+  `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `expiration` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cache_locks`
+--
+
+CREATE TABLE `cache_locks` (
+  `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `owner` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `expiration` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `failed_jobs`
+--
+
+CREATE TABLE `failed_jobs` (
+  `id` bigint UNSIGNED NOT NULL,
+  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `jobs`
+--
+
+CREATE TABLE `jobs` (
+  `id` bigint UNSIGNED NOT NULL,
+  `queue` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `attempts` tinyint UNSIGNED NOT NULL,
+  `reserved_at` int UNSIGNED DEFAULT NULL,
+  `available_at` int UNSIGNED NOT NULL,
+  `created_at` int UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `job_batches`
+--
+
+CREATE TABLE `job_batches` (
+  `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `total_jobs` int NOT NULL,
+  `pending_jobs` int NOT NULL,
+  `failed_jobs` int NOT NULL,
+  `failed_job_ids` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `options` mediumtext COLLATE utf8mb4_unicode_ci,
+  `cancelled_at` int DEFAULT NULL,
+  `created_at` int NOT NULL,
+  `finished_at` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `messages`
+--
+
+CREATE TABLE `messages` (
+  `id` bigint UNSIGNED NOT NULL,
+  `sender_id` bigint UNSIGNED NOT NULL,
+  `receiver_id` bigint UNSIGNED NOT NULL,
+  `message` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `migrations`
+--
+
+CREATE TABLE `migrations` (
+  `id` int UNSIGNED NOT NULL,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `migrations`
+--
+
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
+(1, '0001_01_01_000000_create_users_table', 1),
+(2, '0001_01_01_000001_create_cache_table', 1),
+(3, '0001_01_01_000002_create_jobs_table', 1),
+(5, '2025_02_11_122349_create_studios_table', 2),
+(6, '2025_02_14_170633_add_columns_to_studios_table', 3),
+(7, '2025_02_14_194815_add_latitude_longitude_to_studios_table', 4),
+(8, '2025_02_25_123031_create_messages_table', 5),
+(9, '2025_03_01_160553_add_profile_fields_to_users_table', 5),
+(10, '2025_03_09_202225_add_rating_to_studios_table', 5),
+(11, '2025_03_20_142006_create_reservations_table', 5),
+(13, '2025_03_20_160847_add_date_and_number_of_hours_to_reservations_table', 6),
+(14, '2025_03_22_125109_create_wishlists_table', 7),
+(15, '2025_03_22_164841_add_price_and_status_to_reservations', 8),
+(16, '2025_03_23_164742_add_image_fields_to_studios_table', 9);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `password_reset_tokens`
+--
+
+CREATE TABLE `password_reset_tokens` (
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `reservations`
+--
+
+CREATE TABLE `reservations` (
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `studio_id` bigint UNSIGNED NOT NULL,
+  `date` date NOT NULL,
+  `number_of_hours` int NOT NULL,
+  `price` decimal(10,2) DEFAULT NULL,
+  `status` enum('En attente','Confirmée','Annulée') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'En attente',
+  `time_slot` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `reservations`
+--
+
+INSERT INTO `reservations` (`id`, `user_id`, `studio_id`, `date`, `number_of_hours`, `price`, `status`, `time_slot`, `created_at`, `updated_at`) VALUES
+(22, 2, 3, '2025-03-31', 1, 50.00, 'Confirmée', '14:00', '2025-03-22 21:23:40', '2025-03-25 11:49:32'),
+(23, 2, 3, '2025-03-31', 2, 100.00, 'Confirmée', '08:00', '2025-03-22 21:24:58', '2025-03-25 11:28:41'),
+(24, 2, 11, '2025-03-25', 3, 60.00, 'Annulée', '14:00', '2025-03-23 22:32:34', '2025-03-25 11:28:06'),
+(25, 2, 8, '2025-03-28', 3, 60.00, 'Confirmée', '14:00', '2025-03-24 13:12:01', '2025-03-25 11:27:58'),
+(26, 2, 21, '2025-03-28', 2, 140.00, 'Annulée', '16:00', '2025-03-24 13:43:24', '2025-03-25 11:27:42'),
+(27, 2, 10, '2025-04-16', 7, 140.00, 'Confirmée', '14:00', '2025-03-25 08:10:35', '2025-03-25 11:27:39'),
+(28, 2, 21, '2025-03-28', 4, 280.00, 'Annulée', '10:00', '2025-03-25 11:41:58', '2025-03-25 12:22:00'),
+(29, 2, 21, '2025-03-30', 4, 280.00, 'Confirmée', '14:00', '2025-03-25 11:49:53', '2025-03-25 12:21:57'),
+(30, 2, 21, '2025-03-31', 5, 350.00, 'Confirmée', '16:00', '2025-03-25 12:22:47', '2025-03-25 12:38:19'),
+(31, 2, 21, '2025-04-23', 5, 350.00, 'Confirmée', '10:00', '2025-03-25 13:43:03', '2025-03-25 13:43:38'),
+(33, 3, 3, '2025-03-25', 1, 50.00, 'En attente', '08:00', '2025-03-25 13:52:28', '2025-03-25 13:52:28'),
+(34, 2, 21, '2025-03-27', 2, 140.00, 'Confirmée', '16:00', '2025-03-27 11:41:03', '2025-03-27 11:41:08');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `sessions`
+--
+
+CREATE TABLE `sessions` (
+  `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` bigint UNSIGNED DEFAULT NULL,
+  `ip_address` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `user_agent` text COLLATE utf8mb4_unicode_ci,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_activity` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `sessions`
+--
+
+INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
+('9qesFeNy5t0xxopI01d5pLoeFNVkeq3reqvOazSl', 2, '127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiQ2pZNzJmRWxaeVV0T0xPbVFLSm5kdTRDSm5wY0RObFlZalNIUmR5VCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjI7czo0OiJhdXRoIjthOjE6e3M6MjE6InBhc3N3b3JkX2NvbmZpcm1lZF9hdCI7aToxNzQzMDc5MzIwO319', 1743079320),
+('NuOg9RGf1mzWqKsF723VrUFxZEbRjpehN4m22fOA', 3, '127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiTHdkbnBOdTJ3WllrU1hRVXZkeEswd1lYQXJlQnZXUUxnUFlXNDJJOSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzg6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9kYXNoYm9hcmQvc3R1ZGlvIjt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MztzOjQ6ImF1dGgiO2E6MTp7czoyMToicGFzc3dvcmRfY29uZmlybWVkX2F0IjtpOjE3NDI5NjYwNDk7fX0=', 1742966052),
+('qBrchM2dMATZL0Pl2wytvWKGT5qkFa7KMMvj42Ac', 3, '127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiUkxpVmdwUWdwN0tiRkdHYUczOUFjR0NLendwV1NpWDM5NW9yNVlEdiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjM7czo0OiJhdXRoIjthOjE6e3M6MjE6InBhc3N3b3JkX2NvbmZpcm1lZF9hdCI7aToxNzQyOTEzODMzO319', 1742916591);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `studios`
+--
+
+CREATE TABLE `studios` (
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `zipcode` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `city` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `country` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `hourly_rate` double NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `available_date` date DEFAULT NULL,
+  `min_hours` int DEFAULT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `latitude` decimal(10,7) DEFAULT NULL,
+  `longitude` decimal(10,7) DEFAULT NULL,
+  `rating` decimal(3,1) DEFAULT '0.0',
+  `image1` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image3` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image4` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `studios`
+--
+
+INSERT INTO `studios` (`id`, `user_id`, `name`, `address`, `zipcode`, `city`, `country`, `hourly_rate`, `created_at`, `updated_at`, `available_date`, `min_hours`, `description`, `latitude`, `longitude`, `rating`, `image1`, `image2`, `image3`, `image4`) VALUES
+(3, 1, 'Studio 1', 'xxxx', '75000', 'Cachan', 'France', 50, '2025-02-13 13:07:04', NULL, NULL, 1, NULL, 48.7945413, 2.3340758, 0.0, NULL, NULL, NULL, NULL),
+(4, 1, 'Studio 2', '3 avenue Flouquet ', '75000', 'Paris 20', 'France', 40, '2025-02-12 13:07:04', NULL, NULL, 2, NULL, 48.8660000, 2.4060000, 0.0, NULL, NULL, NULL, NULL),
+(5, 6, 'Studio 3', 'aaaaaaaa', '75000', 'Fresnes', 'France', 20, '2025-02-14 18:10:52', '2025-02-14 18:10:52', NULL, 3, 'aaaaaaaa', 48.7556000, 2.3225000, 0.0, NULL, NULL, NULL, NULL),
+(6, 6, 'Studio 4', 'aaaaaa', '75000', 'Paris 13', 'France', 10, '2025-02-14 18:13:52', '2025-02-14 18:13:52', NULL, 4, 'aaaaaa', 48.8298000, 2.3556000, 0.0, NULL, NULL, NULL, NULL),
+(7, 6, 'Studio 5', 'aaaaaa', '75000', 'Rambouillet', 'France', 10, '2025-02-14 18:14:32', '2025-02-14 18:14:32', NULL, 4, 'aaaaaa', 48.6444000, 1.8292000, 0.0, NULL, NULL, NULL, NULL),
+(8, 6, 'Studio 6', 'aaaaaa', '75000', 'Cergy', 'France', 20, '2025-02-14 19:51:07', '2025-02-14 19:51:07', NULL, 1, 'aaaaaaa', 49.0360000, 2.0633000, 0.0, NULL, NULL, NULL, NULL),
+(9, 6, 'Studio 7', 'aaaaaaaa', '75000', 'Monaco', 'France', 20, '2025-02-14 19:53:44', '2025-02-14 19:53:44', NULL, 1, 'aaaaaaaa', 43.7384000, 7.4246000, 0.0, NULL, NULL, NULL, NULL),
+(10, 7, 'Sudio 8', 'gggvhgh', '75000', 'Marseille', 'France', 20, '2025-02-16 14:53:17', '2025-02-16 14:53:17', NULL, 1, 'aaaaa', 43.2965000, 5.3698000, 0.0, NULL, NULL, NULL, NULL),
+(11, 7, 'Studio 9', 'aaaaaa', '94240', 'Saint-Denis', 'France', 20, '2025-02-25 10:42:34', '2025-02-25 10:42:34', NULL, 1, 'aaaaa', 48.9366000, 2.3572000, 0.0, NULL, NULL, NULL, NULL),
+(21, 3, 'Studio Vert', '5 rue jules valles', '78130', 'Les Mureaux', 'France', 70, '2025-03-24 13:42:22', '2025-03-24 13:42:22', NULL, 2, 'Contenu et description', 48.9762513, 1.9108283, 0.0, NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `users`
+--
+
+CREATE TABLE `users` (
+  `id` bigint UNSIGNED NOT NULL,
+  `profile` enum('artist','studio') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `username` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `last_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `first_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `birth_date` date DEFAULT NULL,
+  `about` text COLLATE utf8mb4_unicode_ci,
+  `avatar` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_line1` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_line2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `city` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `state` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `country` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `zipcode` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email_verified_at` timestamp NULL DEFAULT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `users`
+--
+
+INSERT INTO `users` (`id`, `profile`, `username`, `last_name`, `first_name`, `email`, `phone`, `birth_date`, `about`, `avatar`, `address_line1`, `address_line2`, `city`, `state`, `country`, `zipcode`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'artist', NULL, 'Magniez', 'Thibaud', 'thibaud@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$12$NpcHetu/q9KS7u7x.tQvx.sbEBboaotppdX6ZUOeHLsZsjS50UrFC', NULL, '2025-02-11 09:30:55', '2025-02-11 09:30:55'),
+(2, 'artist', NULL, 'Louhichi', 'Elias', 'elias@gmail.com', NULL, NULL, NULL, 'avatars/l0z86kHnOeRRZwMF9JYsboBLSpxFcoYh0ZSCVXLb.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$12$7Cgwr4mdocGsPydqb26wquGJLms01aUweDwJSLYLLYATuhgRnlL.i', NULL, '2025-02-11 14:25:41', '2025-03-23 22:32:49'),
+(3, 'studio', NULL, 'soriano', 'matheo', 'matheo@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$12$tFbqWqeWlHBGu4peU14QY.gHlHk4PuK44GpwxAJ/H1HVOhlVwa8Da', NULL, '2025-02-13 07:24:19', '2025-03-25 08:06:39'),
+(4, 'studio', NULL, 'soriano', 'matheo', 'matheo2@gmail.com', NULL, NULL, NULL, 'avatars/Sm93drq1OuzfzaL0l2NyDWRQfrEykQhL4CySKC86.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$12$cl4kqqXHkRnGg7XmreFMmeW4GB5AaxWtaL8lgUCLlYrNI8LitaUcq', NULL, '2025-02-16 16:06:52', '2025-03-25 08:26:58');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `wishlists`
+--
+
+CREATE TABLE `wishlists` (
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `studio_id` bigint UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `wishlists`
+--
+
+INSERT INTO `wishlists` (`id`, `user_id`, `studio_id`, `created_at`, `updated_at`) VALUES
+(3, 2, 8, '2025-03-22 15:40:18', '2025-03-22 15:40:18'),
+(4, 2, 3, '2025-03-25 08:09:14', '2025-03-25 08:09:14'),
+(5, 2, 9, '2025-03-25 08:09:19', '2025-03-25 08:09:19'),
+(6, 2, 10, '2025-03-25 08:09:21', '2025-03-25 08:09:21');
+
+--
+-- Index pour les tables déchargées
+--
+
+--
+-- Index pour la table `cache`
+--
+ALTER TABLE `cache`
+  ADD PRIMARY KEY (`key`);
+
+--
+-- Index pour la table `cache_locks`
+--
+ALTER TABLE `cache_locks`
+  ADD PRIMARY KEY (`key`);
+
+--
+-- Index pour la table `failed_jobs`
+--
+ALTER TABLE `failed_jobs`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`);
+
+--
+-- Index pour la table `jobs`
+--
+ALTER TABLE `jobs`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `jobs_queue_index` (`queue`);
+
+--
+-- Index pour la table `job_batches`
+--
+ALTER TABLE `job_batches`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `messages`
+--
+ALTER TABLE `messages`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `messages_sender_id_foreign` (`sender_id`),
+  ADD KEY `messages_receiver_id_foreign` (`receiver_id`);
+
+--
+-- Index pour la table `migrations`
+--
+ALTER TABLE `migrations`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `password_reset_tokens`
+--
+ALTER TABLE `password_reset_tokens`
+  ADD PRIMARY KEY (`email`);
+
+--
+-- Index pour la table `reservations`
+--
+ALTER TABLE `reservations`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `reservations_user_id_foreign` (`user_id`),
+  ADD KEY `reservations_studio_id_foreign` (`studio_id`);
+
+--
+-- Index pour la table `sessions`
+--
+ALTER TABLE `sessions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `sessions_user_id_index` (`user_id`),
+  ADD KEY `sessions_last_activity_index` (`last_activity`);
+
+--
+-- Index pour la table `studios`
+--
+ALTER TABLE `studios`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `studios_user_id_foreign` (`user_id`);
+
+--
+-- Index pour la table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `users_email_unique` (`email`);
+
+--
+-- Index pour la table `wishlists`
+--
+ALTER TABLE `wishlists`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `wishlists_user_id_studio_id_unique` (`user_id`,`studio_id`),
+  ADD KEY `wishlists_studio_id_foreign` (`studio_id`);
+
+--
+-- AUTO_INCREMENT pour les tables déchargées
+--
+
+--
+-- AUTO_INCREMENT pour la table `failed_jobs`
+--
+ALTER TABLE `failed_jobs`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `jobs`
+--
+ALTER TABLE `jobs`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `messages`
+--
+ALTER TABLE `messages`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `migrations`
+--
+ALTER TABLE `migrations`
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT pour la table `reservations`
+--
+ALTER TABLE `reservations`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+
+--
+-- AUTO_INCREMENT pour la table `studios`
+--
+ALTER TABLE `studios`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- AUTO_INCREMENT pour la table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT pour la table `wishlists`
+--
+ALTER TABLE `wishlists`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- Contraintes pour les tables déchargées
+--
+
+--
+-- Contraintes pour la table `messages`
+--
+ALTER TABLE `messages`
+  ADD CONSTRAINT `messages_receiver_id_foreign` FOREIGN KEY (`receiver_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `messages_sender_id_foreign` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `reservations`
+--
+ALTER TABLE `reservations`
+  ADD CONSTRAINT `reservations_studio_id_foreign` FOREIGN KEY (`studio_id`) REFERENCES `studios` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `reservations_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `wishlists`
+--
+ALTER TABLE `wishlists`
+  ADD CONSTRAINT `wishlists_studio_id_foreign` FOREIGN KEY (`studio_id`) REFERENCES `studios` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `wishlists_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+--
 -- Base de données : `parissport`
 --
+CREATE DATABASE IF NOT EXISTS `parissport` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+USE `parissport`;
 
 -- --------------------------------------------------------
 
@@ -5425,6 +5907,57 @@ INSERT INTO `equipements_sportifs_paris` (`id`, `nom`, `adresse`, `type_sport`, 
 ('E048I940280070', 'TERRAIN DE BASKET-BALL 2', 'CHEMIN DES BOEUFS', 'Terrain de basket-ball', '48.77188', '2.43452', '1', '0', '94000'),
 ('E049I940170001', '2 TERRAINS DE BOULES LYONNAISES 2', '11 boulevard des alliés', 'Terrain de boules traditionnelles', '48.826907', '2.483729', '1', '0', '94500');
 
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `likes`
+--
+
+CREATE TABLE `likes` (
+  `id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `element_id` varchar(20) NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `likes`
+--
+
+INSERT INTO `likes` (`id`, `user_id`, `element_id`, `created_at`) VALUES
+(35, 5, 'E001I751120080', '2025-04-10 16:02:43'),
+(36, 5, 'E001I751130026', '2025-04-10 16:02:44'),
+(38, 5, 'E001I751140052', '2025-04-10 16:03:04'),
+(39, 5, 'E001I751150071', '2025-04-10 16:03:05'),
+(40, 5, 'E001I751170054', '2025-04-10 16:03:06'),
+(45, 5, 'E001I751110045', '2025-04-11 07:26:56'),
+(47, 5, 'E001I751140004', '2025-04-11 08:28:58');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `utilisateurs`
+--
+
+CREATE TABLE `utilisateurs` (
+  `id` int NOT NULL,
+  `nom` varchar(100) NOT NULL,
+  `prenom` varchar(100) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `mot_de_passe` varchar(255) NOT NULL,
+  `date_inscription` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `avatar` varchar(255) DEFAULT 'assets/default-avatar.png'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `utilisateurs`
+--
+
+INSERT INTO `utilisateurs` (`id`, `nom`, `prenom`, `email`, `mot_de_passe`, `date_inscription`, `avatar`) VALUES
+(4, 'Soriano', 'Matheo Yannis', 'yannis.s241@gmail.com', '$2y$10$pVwgpu.DVy1DKFQM5gUJD.ErwwPVClmBmScgJUDKckcqIaumaRYta', '2025-04-09 14:18:21', 'assets/default-avatar.png'),
+(5, 'test', 'test', 'Admin@gmail.com', '$2y$10$Ikwcyc4wftW6Awq7sLenWOZCBH5YXA8Ra3hn2f4ijBx7yDtOPD5DS', '2025-04-09 14:22:54', 'uploads/avatars/image cv.png'),
+(6, 'test2', 'test2', 'test2@gmail.com', '$2y$10$mb6yeNjT5yb5hRcCLI/my.6Ovh6o9WCMG79jVfTChfThDAa0YcXhq', '2025-04-09 18:15:56', 'assets/default-avatar.png');
+
 --
 -- Index pour les tables déchargées
 --
@@ -5434,6 +5967,48 @@ INSERT INTO `equipements_sportifs_paris` (`id`, `nom`, `adresse`, `type_sport`, 
 --
 ALTER TABLE `equipements_sportifs_paris`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `likes`
+--
+ALTER TABLE `likes`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user_id` (`user_id`,`element_id`),
+  ADD KEY `element_id` (`element_id`);
+
+--
+-- Index pour la table `utilisateurs`
+--
+ALTER TABLE `utilisateurs`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
+-- AUTO_INCREMENT pour les tables déchargées
+--
+
+--
+-- AUTO_INCREMENT pour la table `likes`
+--
+ALTER TABLE `likes`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+
+--
+-- AUTO_INCREMENT pour la table `utilisateurs`
+--
+ALTER TABLE `utilisateurs`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- Contraintes pour les tables déchargées
+--
+
+--
+-- Contraintes pour la table `likes`
+--
+ALTER TABLE `likes`
+  ADD CONSTRAINT `likes_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `utilisateurs` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `likes_ibfk_2` FOREIGN KEY (`element_id`) REFERENCES `equipements_sportifs_paris` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
