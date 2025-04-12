@@ -22,15 +22,24 @@ Les données utilisées pour alimenter la base de données proviennent de la pla
   - Arrondissement
   - Coordonnées géographiques
 
-## Fonctionnalités
+## Fonctionnalitées
 
 Les fonctionnalités sont : 
  - une landing page (page d'accueil)
- - une page carte qui permet de voir tous les terrains sur une map
+ - une page carte qui permet de voir tous les terrains sur une map avec une multi-recherche, ainsi que des filtres
  - Connexion/inscription
- - like de terrains retrouvable dans sa page mes like
- - page de contact fonctionnelle
+ - like de terrains retrouvable dans sa page Favoris
  - page mon profil pour modifier ses informations
+ - page de contact fonctionnelle
+
+## Technologies
+
+- Html 5 (notemment bootstrap)
+- Css 3
+- Javascript (leaflet, scripts ...)
+- Php 8.3
+- MySql/MariaDB
+
  
 ## Site deployé
 https://parissport.alwaysdata.net/
