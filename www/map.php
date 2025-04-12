@@ -281,12 +281,17 @@ function slugify($text) {
         <b>${terrain.nom}</b><br>
         Adresse: ${terrain.adresse}<br>
         Sport: ${terrain.type_sport}<br><br>
+        <?php if (isset($_SESSION['user']["id"])): ?>
         <button class='like-btn' 
                 data-element-id='${terrain.id}' 
                 data-liked='${isLiked ? 'true' : 'false'}'>
             <i class='${isLiked ? 'fa-solid' : 'fa-regular'} fa-heart heart-icon'></i>
             <span class='like-text'>${isLiked ? 'Unlike' : 'Like'}</span>
+            
         </button>
+        <?php else: ?>
+            <p class="text-muted">Connectez-vous pour aimer ce terrain.</p>
+        <?php endif; ?>
     `;
         marker.bindPopup(popupContent);
     });
