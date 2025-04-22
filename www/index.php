@@ -54,7 +54,7 @@ $terrains = $sql->fetchAll(PDO::FETCH_ASSOC);
                 </form>
 
                 <p class="description mt-4" style="color: white;">
-                    Trouvez facilement des terrains sportifs à Paris.
+                    Trouvez facilement des terrains sportifs à Paris et en Ile-de-France.
                 </p>
             </div>
         </section>
