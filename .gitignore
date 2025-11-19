@@ -1,2 +1,6 @@
 # Ignorer .DS_Store 
 .DS_Store
+
+# Ignorer les fichiers de database
+/config/database.php
+/config/database2.php
