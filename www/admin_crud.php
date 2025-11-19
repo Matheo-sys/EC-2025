@@ -4,8 +4,24 @@ session_start();
 
 include('includes/header.php');
 
-if (!isset($_SESSION['user']['id']) || $_SESSION['user']['id'] != 5) { 
-    header('Location: index.php');
+if (!isset($_SESSION['user']['role']) || $_SESSION['user']['role'] != 1) {
+    http_response_code(403);
+    echo "<!DOCTYPE html>
+    <html lang='fr'>
+    <head>
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <title>403 — Accès refusé</title>
+        <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css' rel='stylesheet'>
+    </head>
+    <body>
+    <div class='container mt-5'>
+        <h1 class='display-6'>403 — Accès refusé</h1>
+        <p>Vous n'avez pas la permission d'accéder à cette page.</p>
+        <a href='index.php' class='btn btn-secondary'>Retour</a>
+    </div>
+    </body>
+    </html>";
     exit();
 }
 // Récupérer le terme de recherche

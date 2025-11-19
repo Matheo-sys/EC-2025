@@ -2,7 +2,7 @@
 require_once("config/database.php");
 session_start();
 
-if (!isset($_SESSION['user']['id']) || $_SESSION['user']['id'] != 5) { 
+if (!isset($_SESSION['user']['role']) || $_SESSION['user']['role'] != 1) { 
     header('Location: index.php');
     exit();
 }

@@ -1,8 +1,8 @@
 <?php
-$serveur = "mysql-parissport.alwaysdata.net";
-$utilisateur = "408844";
+$serveur = "mysql-sportidf.alwaysdata.net";
+$utilisateur = "sportidf";
 $motdepasse = "qqRyDvP7G#r3crg";
-$bdd = "parissport_bdd";
+$bdd = "sportidf_bdd";
 
 try {
     $conn = new PDO(

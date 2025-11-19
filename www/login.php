@@ -23,7 +23,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'id' => $user['id'],  
             'nom' => $user['nom'],
             'prenom' => $user['prenom'],
-            'avatar' => $user['avatar'] ?? 'assets/default-avatar.png'
+            'avatar' => $user['avatar'] ?? 'assets/default-avatar.png',
+            'role' => $user['role']
         ];
         
         header("Location: index.php");
