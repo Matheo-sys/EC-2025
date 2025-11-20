@@ -12,21 +12,31 @@ if (!isset($_SESSION['user']['role']) || $_SESSION['user']['role'] != 1) {
 $erreur = '';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $id = htmlspecialchars(trim($_POST['id']));
-    $nom = htmlspecialchars(trim($_POST['nom']));
-    $adresse = htmlspecialchars(trim($_POST['adresse']));
-    $type_sport = htmlspecialchars(trim($_POST['type_sport']));
-    $latitude = htmlspecialchars(trim($_POST['latitude']));
-    $longitude = htmlspecialchars(trim($_POST['longitude']));
-    $gratuit = htmlspecialchars(trim($_POST['gratuit']));
-    $handicap_access = htmlspecialchars(trim($_POST['handicap_access']));
-    $arrondissement = htmlspecialchars(trim($_POST['arrondissement']));
+    $id = trim($_POST['id']);
+    $nom = htmlspecialchars(trim($_POST['nom']), ENT_QUOTES, 'UTF-8');
+    $adresse = htmlspecialchars(trim($_POST['adresse']), ENT_QUOTES, 'UTF-8');
+    $type_sport = htmlspecialchars(trim($_POST['type_sport']), ENT_QUOTES, 'UTF-8');
+    $latitude = trim($_POST['latitude']);
+    $longitude = trim($_POST['longitude']);
+    $gratuit = htmlspecialchars(trim($_POST['gratuit']), ENT_QUOTES, 'UTF-8');
+    $handicap_access = htmlspecialchars(trim($_POST['handicap_access']), ENT_QUOTES, 'UTF-8');
+    $arrondissement = htmlspecialchars(trim($_POST['arrondissement']), ENT_QUOTES, 'UTF-8');
 
-    if (
-        !empty($id) && !empty($nom) && !empty($adresse) && !empty($type_sport) &&
-        !empty($latitude) && !empty($longitude) && !empty($gratuit) &&
-        !empty($handicap_access) && !empty($arrondissement)
-    ) {
+   // Validation serveur stricte
+    if ($id === '' || $nom === '' || $adresse === '' || $type_sport === '' ||
+        $latitude === '' || $longitude === '' || $gratuit === '' ||
+        $handicap_access === '' || $arrondissement === '') {
+        $erreur = "Tous les champs sont obligatoires.";
+    } elseif (!ctype_digit($id)) {
+        $erreur = "ID invalide (doit être numérique).";
+    } elseif (!is_numeric($latitude) || !is_numeric($longitude)) {
+        $erreur = "Latitude et longitude doivent être des nombres valides.";
+    } else {
+        // cast sécurisés
+        $id = (int)$id;
+        $latitude = (float)$latitude;
+        $longitude = (float)$longitude;
+
         // Vérifier si l'id existe déjà
         $check = $conn->prepare("SELECT id FROM equipements_sportifs_paris WHERE id = ?");
         $check->execute([$id]);
@@ -42,8 +52,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             header('Location: admin_crud.php');
             exit();
         }
-    } else {
-        $erreur = "Tous les champs sont obligatoires.";
     }
 }
 include('includes/header.php');

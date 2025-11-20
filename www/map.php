@@ -18,10 +18,12 @@ $params = [];
 
 // Ajouter la recherche par mots-clés si elle est définie
 if ($query) {
-    foreach ($keywords as $keyword) {
-        if (!empty($keyword)) {
-            $whereClauses[] = "(nom LIKE :keyword OR adresse LIKE :keyword OR type_sport LIKE :keyword OR arrondissement LIKE :keyword)";
-            $params['keyword'] = '%' . $keyword . '%';
+    foreach ($keywords as $i => $keyword) {
+        $keyword = trim($keyword);
+        if ($keyword !== '') {
+            $paramKey = 'keyword_' . $i;
+            $whereClauses[] = "(nom LIKE :$paramKey OR adresse LIKE :$paramKey OR type_sport LIKE :$paramKey OR arrondissement LIKE :$paramKey)";
+            $params[$paramKey] = '%' . $keyword . '%';
         }
     }
 }
