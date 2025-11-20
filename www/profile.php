@@ -9,7 +9,9 @@ if (!isset($_SESSION['user']) || !isset($_SESSION['user']['id'])) {
 }
 
 
-include('config/database.php');
+include('config/database2.php');
+require_once('includes/logger.php');
+require_once('includes/csrf.php');
 
 $userId = $_SESSION['user']['id'];
 
@@ -27,6 +29,11 @@ if (!$user) {
 
 // Traitement du formulaire de modification de profil
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Vérification CSRF
+    if (!isset($_POST['csrf_token']) || !verify_csrf_token($_POST['csrf_token'])) {
+        write_log('CSRF', $userId, 'FAILURE', 'Invalid token on Profile');
+        die("Erreur de sécurité (CSRF). Veuillez recharger la page.");
+    }
 
     $newEmail = $_POST['email'] ?? '';
     $currentPassword = $_POST['current_password'] ?? '';
@@ -171,16 +178,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
         </div>
 
-        <!-- Formulaire de mise à jour -->
-        <div class="row justify-content-center mt-5">
-            <div class="col-12 col-md-6">
-                <h3>Modifier mes informations</h3>
-                <form method="POST" enctype="multipart/form-data">
-                    <!-- Changer l'avatar -->
-                    <div class="mb-3">
-                        <label for="avatar" class="form-label">Changer l'avatar</label>
-                        <input type="file" class="form-control" id="avatar" name="avatar">
-                    </div>
+    <!-- Formulaire de mise à jour -->
+    <div class="row justify-content-center mt-5">
+        <div class="col-12 col-md-6">
+            <h3>Modifier mes informations</h3>
+            <form method="POST" enctype="multipart/form-data">
+                <?php csrf_input(); ?>
+                <!-- Changer l'avatar -->
+                <div class="mb-3">
+                    <label for="avatar" class="form-label">Changer l'avatar</label>
+                    <input type="file" class="form-control" id="avatar" name="avatar">
+                </div>
 
                     <!-- Email (optionnel, uniquement si l'utilisateur veut le changer) -->
                     <div class="mb-3">

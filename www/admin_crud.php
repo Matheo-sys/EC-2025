@@ -1,5 +1,5 @@
 <?php
-require_once("config/database.php");
+require_once("config/database2.php");
 session_start();
 
 include('includes/header.php');
@@ -101,46 +101,44 @@ $equipements = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 style="background-color: #2B9348; border-color: #2B9348;">Ajouter un équipement</a>
         </div>
 
-        <!-- Tableau des équipements -->
-        <div class="table-responsive">
-            <table class="table table-striped table-bordered text-center">
-                <thead class="table-dark">
+    <!-- Tableau des équipements -->
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Adresse</th>
+                    <th>Sport</th>
+                    <th>Code Postal</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (count($equipements) > 0): ?>
+                    <?php foreach($equipements as $eq): ?>
                     <tr>
-                        <th>ID</th>
-                        <th>Nom</th>
-                        <th>Adresse</th>
-                        <th>Sport</th>
-                        <th>Code Postal</th>
-                        <th>Actions</th>
+                        <td><?= htmlspecialchars($eq['id']) ?></td>
+                        <td><?= htmlspecialchars($eq['nom']) ?></td>
+                        <td><?= htmlspecialchars($eq['adresse']) ?></td>
+                        <td><?= htmlspecialchars($eq['type_sport']) ?></td>
+                        <td><?= htmlspecialchars($eq['arrondissement']) ?></td>
+                        <td>
+<?php require_once('includes/csrf.php'); ?>
+                            <a href="edit_equipement.php?id=<?= urlencode($eq['id']) ?>" class="btn btn-warning btn-sm me-2">Modifier</a>
+                            <a href="delete_equipement.php?id=<?= urlencode($eq['id']) ?>&token=<?= generate_csrf_token() ?>" onclick="return confirm('Supprimer cet équipement ?')" class="btn btn-danger btn-sm">Supprimer</a>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    <?php if (count($equipements) > 0): ?>
-                        <?php foreach ($equipements as $eq): ?>
-                            <tr>
-                                <td><?= htmlspecialchars($eq['id']) ?></td>
-                                <td><?= htmlspecialchars($eq['nom']) ?></td>
-                                <td><?= htmlspecialchars($eq['adresse']) ?></td>
-                                <td><?= htmlspecialchars($eq['type_sport']) ?></td>
-                                <td><?= htmlspecialchars($eq['arrondissement']) ?></td>
-                                <td>
-                                    <a href="edit_equipement.php?id=<?= urlencode($eq['id']) ?>"
-                                        class="btn btn-warning btn-sm me-2">Modifier</a>
-                                    <a href="delete_equipement.php?id=<?= urlencode($eq['id']) ?>"
-                                        onclick="return confirm('Supprimer cet équipement ?')"
-                                        class="btn btn-danger btn-sm">Supprimer</a>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <tr>
-                            <td colspan="6">Aucun équipement trouvé.</td>
-                        </tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
-        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="6">Aucun équipement trouvé.</td>
+                    </tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
     </div>
+</div>
 
     <!-- Inclusion de Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"

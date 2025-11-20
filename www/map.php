@@ -1,5 +1,6 @@
 <?php
-require_once("config/database.php");
+require_once("config/database2.php");
+require_once("includes/csrf.php");
 
 include('includes/header.php');
 
@@ -18,10 +19,12 @@ $params = [];
 
 // Ajouter la recherche par mots-clés si elle est définie
 if ($query) {
-    foreach ($keywords as $keyword) {
-        if (!empty($keyword)) {
-            $whereClauses[] = "(nom LIKE :keyword OR adresse LIKE :keyword OR type_sport LIKE :keyword OR arrondissement LIKE :keyword)";
-            $params['keyword'] = '%' . $keyword . '%';
+    foreach ($keywords as $i => $keyword) {
+        $keyword = trim($keyword);
+        if ($keyword !== '') {
+            $paramKey = 'keyword_' . $i;
+            $whereClauses[] = "(nom LIKE :$paramKey OR adresse LIKE :$paramKey OR type_sport LIKE :$paramKey OR arrondissement LIKE :$paramKey)";
+            $params[$paramKey] = '%' . $keyword . '%';
         }
     }
 }
@@ -217,6 +220,8 @@ function slugify($text)
 
 </html>
 <script nonce="<?= $nonce ?>">
+    const csrfToken = "<?= generate_csrf_token() ?>";
+
     var simpleIcon = L.icon({
         iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
         iconSize: [25, 41],
@@ -334,6 +339,7 @@ function slugify($text)
                 }
                 const dataToSend = new URLSearchParams();
                 dataToSend.append('element_id', elementId);
+          dataToSend.append('csrf_token', csrfToken);
 
                 fetch('likes.php', {
                     method: 'POST',
@@ -399,6 +405,7 @@ function slugify($text)
                     },
                     body: new URLSearchParams({
                         'element_id': elementId,
+                    'csrf_token': csrfToken
                     }),
                 })
                     .then(response => response.json())

@@ -1,55 +1,58 @@
 <?php
-include('config/database.php');
-include('includes/header.php');
+require_once('config/database2.php');
+require_once('includes/logger.php');
+require_once('includes/csrf.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nom = htmlspecialchars($_POST['nom']);
-    $prenom = htmlspecialchars($_POST['prenom']);
-    $email = htmlspecialchars($_POST['email']);
-    $password = $_POST['password'];
-    $confirm_password = $_POST['confirm_password'];
+    // Vérification CSRF
+    if (!isset($_POST['csrf_token']) || !verify_csrf_token($_POST['csrf_token'])) {
+        write_log('CSRF', 'Unknown', 'FAILURE', 'Invalid token on Register');
+        die("Erreur de sécurité (CSRF). Veuillez recharger la page.");
+    }
 
-    if ($password !== $confirm_password) {
+    $nom = trim($_POST['nom']);
+    $prenom = trim($_POST['prenom']);
+    $email = trim($_POST['email']);
+    $password = $_POST['password'] ?? '';
+    $confirm_password = $_POST['confirm_password'] ?? '';
+
+    // Nettoyage basique
+    $nom = htmlspecialchars($nom, ENT_QUOTES, 'UTF-8');
+    $prenom = htmlspecialchars($prenom, ENT_QUOTES, 'UTF-8');
+
+    // Validation serveur
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $erreur = "Email invalide.";
+    } elseif (strlen($password) < 8) {
+        $erreur = "Le mot de passe doit contenir au moins 8 caractères.";
+    } elseif ($password !== $confirm_password) {
         $erreur = "Les mots de passe ne correspondent pas.";
     } else {
-
+        // Vérifier l'unicité de l'email
         $sql = "SELECT COUNT(*) FROM utilisateurs WHERE email = ?";
         $stmt = $conn->prepare($sql);
         $stmt->execute([$email]);
         $email_exists = $stmt->fetchColumn();
 
         if ($email_exists) {
+            write_log('REGISTER', $email, 'FAILURE', 'Email already exists');
             $erreur = "Cet email est déjà utilisé.";
-
         } else {
-            // Si les mots de passe correspondent, on hache le mot de passe
             $password_hashed = password_hash($password, PASSWORD_DEFAULT);
-
-
-
             $sql = "INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe) VALUES (?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            if ($stmt->execute([$nom, $prenom, $email, $password_hashed])) {
-                $user_id = $conn->lastInsertId();
-
-                $_SESSION['user_id'] = $user_id;
-                $_SESSION['nom'] = $nom;
-                $_SESSION['prenom'] = $prenom;
-                $_SESSION['email'] = $email;
-                $_SESSION['is_logged_in'] = true;
-                $_SESSION['avatar_url'] = 'assets/default-avatar.png';
-
-                header("Location: login.php");
-                exit();
+            if($stmt->execute([$nom, $prenom, $email, $password_hashed])) {
+                write_log('REGISTER', $email, 'SUCCESS', 'New user created');
+                // suite existante...
             } else {
+                write_log('REGISTER', $email, 'FAILURE', 'SQL Error');
                 $erreur = "Erreur lors de l'inscription.";
             }
         }
     }
 }
-
-
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -95,6 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "<div class='alert alert-danger'>$erreur</div>"; ?>
 
         <form method="post">
+            <?php csrf_input(); ?>
             <div class="form-floating mb-3">
                 <input type="text" class="form-control2 w-100 rounded-pill" id="nom" name="nom" placeholder="Nom"
                     required>

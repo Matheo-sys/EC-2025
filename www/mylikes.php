@@ -6,12 +6,20 @@ if (!isset($_SESSION['user']) || !isset($_SESSION['user']['id'])) {
     exit();
 }
 
-include('config/database.php');
+include('config/database2.php');
+require_once('includes/logger.php');
+require_once('includes/csrf.php');
 
 $userId = $_SESSION['user']['id'];
 
 // Suppression d'un like 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['element_id'])) {
+    // Vérification CSRF
+    if (!isset($_POST['csrf_token']) || !verify_csrf_token($_POST['csrf_token'])) {
+        write_log('CSRF', $userId, 'FAILURE', 'Invalid token on MyLikes');
+        die("Erreur de sécurité (CSRF). Veuillez recharger la page.");
+    }
+
     $elementId = $_POST['element_id'];
 
     $stmt = $conn->prepare("DELETE FROM likes WHERE user_id = ? AND element_id = ?");
@@ -60,35 +68,34 @@ $likedTerrains = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <?php include('includes/header.php'); ?>
 
-    <main class="container mt-5">
-        <h1 class="text-center mb-4">Mes Likes</h1>
-        <div class="text-center mb-4">
-            <a href="index.php" class="btn btn-secondary w-20"
-                style="background-color: #2B9348; border-color: #2B9348;">Retour à l'accueil</a>
-        </div>
-        <?php if (empty($likedTerrains)): ?>
-            <p class="text-center">Vous n'avez encore rien liké.</p>
-        <?php else: ?>
-            <div class="row g-4">
-                <?php foreach ($likedTerrains as $terrain): ?>
-                    <div class="col-md-4">
-                        <div class="card shadow-sm h-100">
-                            <div class="card-body">
-                                <h5 class="card-title"><?= htmlspecialchars($terrain['nom']) ?></h5>
-                                <p class="card-text">Adresse : <?= htmlspecialchars($terrain['adresse']) ?></p>
-                                <p class="card-text">Sport : <?= htmlspecialchars($terrain['type_sport']) ?></p>
-
-                                <form method="POST" action="mylikes.php">
-                                    <input type="hidden" name="element_id" value="<?= htmlspecialchars($terrain['id']) ?>">
-                                    <button type="submit" class="btn btn-danger w-100">Supprimer le like</button>
-                                </form>
-                            </div>
+<main class="container mt-5">
+    <h1 class="text-center mb-4">Mes Likes</h1>
+    <div class="text-center mb-4">
+        <a href="index.php" class="btn btn-secondary w-20" style="background-color: #2B9348; border-color: #2B9348;">Retour à l'accueil</a>
+    </div>
+    <?php if (empty($likedTerrains)): ?>
+        <p class="text-center">Vous n'avez encore rien liké.</p>
+    <?php else: ?>
+        <div class="row g-4">
+            <?php foreach ($likedTerrains as $terrain): ?>
+                <div class="col-md-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="card-title"><?= htmlspecialchars($terrain['nom']) ?></h5>
+                            <p class="card-text">Adresse : <?= htmlspecialchars($terrain['adresse']) ?></p>
+                            <p class="card-text">Sport : <?= htmlspecialchars($terrain['type_sport']) ?></p>
+                            
+                            <form method="POST" action="mylikes.php">
+                                <input type="hidden" name="element_id" value="<?= htmlspecialchars($terrain['id']) ?>">
+                                <button type="submit" class="btn btn-danger w-100">Supprimer le like</button>
+                            </form>
                         </div>
                     </div>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
-    </main>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
+</main>
 
     <?php include('includes/footer.php'); ?>
 

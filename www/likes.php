@@ -1,7 +1,15 @@
 <?php
 session_start();
-include('config/database.php');
+include('config/database2.php');
+require_once('includes/csrf.php');
+
 if (isset($_POST['element_id'])) {
+    // Vérification CSRF
+    if (!isset($_POST['csrf_token']) || !verify_csrf_token($_POST['csrf_token'])) {
+        echo json_encode(["status" => "error", "message" => "Erreur de sécurité (CSRF)"]);
+        exit();
+    }
+
     $element_id = $_POST['element_id']; 
 
     if (empty($element_id)) {

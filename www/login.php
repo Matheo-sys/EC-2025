@@ -11,26 +11,38 @@ include('config/database.php');
 include('includes/header.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Vérification CSRF
+    if (!isset($_POST['csrf_token']) || !verify_csrf_token($_POST['csrf_token'])) {
+        write_log('CSRF', 'Unknown', 'FAILURE', 'Invalid token on Login');
+        die("Erreur de sécurité (CSRF). Veuillez recharger la page.");
+    }
+
     $email = htmlspecialchars($_POST['email']);
     $password = $_POST['password'];
 
-    $stmt = $conn->prepare("SELECT * FROM utilisateurs WHERE email = ?");
-    $stmt->execute([$email]);
-    $user = $stmt->fetch();
-
-    if ($user && password_verify($password, $user['mot_de_passe'])) {
-        $_SESSION['user'] = [
-            'id' => $user['id'],
-            'nom' => $user['nom'],
-            'prenom' => $user['prenom'],
-            'avatar' => $user['avatar'] ?? 'assets/default-avatar.png',
-            'role' => $user['role']
-        ];
-
-        header("Location: index.php");
-        exit();
+    if (empty($email) || empty($password)) {
+        $erreur = "Veuillez remplir tous les champs.";
     } else {
-        $erreur = "Email ou mot de passe incorrect.";
+        $stmt = $conn->prepare("SELECT * FROM utilisateurs WHERE email = ?");
+        $stmt->execute([$email]);
+        $user = $stmt->fetch();
+
+        if ($user && password_verify($password, $user['mot_de_passe'])) {
+            $_SESSION['user'] = [
+                'id' => $user['id'],  
+                'nom' => $user['nom'],
+                'prenom' => $user['prenom'],
+                'avatar' => $user['avatar'] ?? 'assets/default-avatar.png',
+                'role' => $user['role']
+            ];
+            
+            write_log('LOGIN', $email, 'SUCCESS', 'Role: ' . $user['role']);
+            header("Location: index.php");
+            exit();
+        } else {
+            write_log('LOGIN', $email, 'FAILURE', 'Invalid credentials');
+            $erreur = "Email ou mot de passe incorrect.";
+        }
     }
 }
 ?>
@@ -80,6 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "<div class='alert alert-danger'>$erreur</div>"; ?>
 
         <form method="post">
+            <?php csrf_input(); ?>
             <div class="form-floating mb-3">
                 <input type="email" class="form-control2 w-100 rounded-pill" id="email" name="email" placeholder="Email"
                     required>

@@ -1,5 +1,7 @@
 <?php
-require_once("config/database.php");
+require_once("config/database2.php");
+require_once("includes/logger.php");
+require_once("includes/csrf.php");
 session_start();
 
 if (!isset($_SESSION['user']['role']) || $_SESSION['user']['role'] != 1) {
@@ -27,20 +29,39 @@ if (!$equipement) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $nom = htmlspecialchars(trim($_POST['nom']));
-    $adresse = htmlspecialchars(trim($_POST['adresse']));
-    $type_sport = htmlspecialchars(trim($_POST['type_sport']));
-    $latitude = htmlspecialchars(trim($_POST['latitude']));
-    $longitude = htmlspecialchars(trim($_POST['longitude']));
-    $gratuit = htmlspecialchars(trim($_POST['gratuit']));
-    $handicap_access = htmlspecialchars(trim($_POST['handicap_access']));
-    $arrondissement = htmlspecialchars(trim($_POST['arrondissement']));
+    // Vérification CSRF
+    if (!isset($_POST['csrf_token']) || !verify_csrf_token($_POST['csrf_token'])) {
+        write_log('CSRF', $_SESSION['user']['id'], 'FAILURE', 'Invalid token on Edit Equip');
+        die("Erreur de sécurité (CSRF). Veuillez recharger la page.");
+    }
 
-    if (
-        !empty($nom) && !empty($adresse) && !empty($type_sport) &&
-        !empty($latitude) && !empty($longitude) && !empty($gratuit) &&
-        !empty($handicap_access) && !empty($arrondissement)
-    ) {
+    $nom = htmlspecialchars(trim($_POST['nom']), ENT_QUOTES, 'UTF-8');
+    $adresse = htmlspecialchars(trim($_POST['adresse']), ENT_QUOTES, 'UTF-8');
+    $type_sport = htmlspecialchars(trim($_POST['type_sport']), ENT_QUOTES, 'UTF-8');
+    $latitude = trim($_POST['latitude']);
+    $longitude = trim($_POST['longitude']);
+    $gratuit = htmlspecialchars(trim($_POST['gratuit']), ENT_QUOTES, 'UTF-8');
+    $handicap_access = htmlspecialchars(trim($_POST['handicap_access']), ENT_QUOTES, 'UTF-8');
+    $arrondissement = htmlspecialchars(trim($_POST['arrondissement']), ENT_QUOTES, 'UTF-8');
+
+    // Validation stricte
+    if (empty($nom) || empty($adresse) || empty($type_sport) ||
+        $latitude === '' || $longitude === '' || empty($gratuit) ||
+        empty($handicap_access) || empty($arrondissement)) {
+        $erreur = "Tous les champs sont obligatoires.";
+    } elseif (!is_numeric($latitude) || !is_numeric($longitude)) {
+        $erreur = "Latitude et longitude doivent être des nombres valides.";
+    } elseif (strlen($nom) > 255 || strlen($adresse) > 255) {
+        $erreur = "Le nom et l'adresse ne doivent pas dépasser 255 caractères.";
+    } elseif (strlen($type_sport) > 100) {
+        $erreur = "Le type de sport ne doit pas dépasser 100 caractères.";
+    } elseif (strlen($arrondissement) > 10) {
+        $erreur = "L'arrondissement ne doit pas dépasser 10 caractères.";
+    } else {
+        // Cast sécurisés
+        $latitude = (float)$latitude;
+        $longitude = (float)$longitude;
+
         $stmt = $conn->prepare("UPDATE equipements_sportifs_paris 
             SET nom = :nom, adresse = :adresse, type_sport = :type_sport, latitude = :latitude, 
                 longitude = :longitude, gratuit = :gratuit, handicap_access = :handicap_access, arrondissement = :arrondissement
@@ -59,10 +80,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'id' => $id
         ]);
 
+        write_log('EDIT_EQUIP', $_SESSION['user']['id'], 'SUCCESS', "ID: $id, Nom: $nom");
         header('Location: admin_crud.php');
         exit();
-    } else {
-        $erreur = "Merci de compléter tous les champs.";
     }
 }
 
@@ -98,6 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <?php endif; ?>
 
     <form method="post">
+        <?php csrf_input(); ?>
         <div class="mb-3">
             <label class="form-label">Nom</label>
             <input type="text" name="nom" class="form-control" value="<?= htmlspecialchars($equipement['nom']) ?>">

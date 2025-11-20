@@ -1,9 +1,38 @@
 <?php include('includes/header.php'); ?>
-<?php
+<?php 
+require_once('includes/logger.php');
+require_once('includes/csrf.php');
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nom = htmlspecialchars($_POST['name']);
-    $email = htmlspecialchars($_POST['email']);
-    $message = htmlspecialchars($_POST['message']);
+    // Vérification CSRF
+    if (!isset($_POST['csrf_token']) || !verify_csrf_token($_POST['csrf_token'])) {
+        write_log('CSRF', 'Unknown', 'FAILURE', 'Invalid token on Contact');
+        die("Erreur de sécurité (CSRF). Veuillez recharger la page.");
+    }
+    $nom = trim($_POST['name']);
+    $email = trim($_POST['email']);
+    $message = trim($_POST['message']);
+
+    // Validation serveur stricte
+    if (empty($nom) || empty($email) || empty($message)) {
+        echo "<script>alert('Tous les champs sont obligatoires.'); window.location.href='contact.php';</script>";
+        exit();
+    }
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo "<script>alert('Adresse email invalide.'); window.location.href='contact.php';</script>";
+        exit();
+    }
+
+    // Protection contre l'injection d'en-têtes (CRLF Injection)
+    // On supprime les retours à la ligne dans le nom et l'email
+    $nom = str_replace(["\r", "\n"], '', $nom);
+    $email = str_replace(["\r", "\n"], '', $email);
+
+    // Nettoyage pour l'affichage/envoi
+    $nom = htmlspecialchars($nom);
+    $email = htmlspecialchars($email);
+    $message = htmlspecialchars($message);
 
     $to = "sportidf@alwaysdata.net";
     $subject = "Nouveau message de $nom via ParisSport+";
@@ -55,9 +84,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <p class="mb-4 text-muted">Une question ? Un bug ? Une idée ? N'hésitez pas à nous contacter via ce
                 formulaire.</p>
 
-            <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <form action="contact.php" method="post" class="p-4 border rounded shadow-sm bg-light">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+            <form action="contact.php" method="post" class="p-4 border rounded shadow-sm bg-light">
+                <?php csrf_input(); ?>
 
                         <div class="mb-3 text-start">
                             <label for="name" class="form-label">Nom</label>
