@@ -1,6 +1,47 @@
 <?php
+// Configuration initiale
 if (session_status() == PHP_SESSION_NONE) {
     @session_start();
+}
+
+function send_csp_header(): string
+{
+    if (headers_sent()) {
+        return '';
+    }
+    $nonce = base64_encode(random_bytes(16));
+
+    $script_sources = implode(' ', [
+        "'self'",
+        "https://cdn.jsdelivr.net",
+        "https://unpkg.com",
+        "https://cdnjs.cloudflare.com",
+        "https://kit.fontawesome.com",
+        "'nonce-$nonce'",
+    ]);
+
+    $style_sources = implode(' ', [
+        "'self'",
+        "'unsafe-inline'",
+        "https://fonts.googleapis.com",
+        "https://cdn.jsdelivr.net",
+        "https://unpkg.com",
+        "https://cdnjs.cloudflare.com",
+        "https://kit.fontawesome.com",
+    ]);
+    $csp = "default-src 'self'; ";
+
+    $csp .= "script-src $script_sources; ";
+    $csp .= "style-src $style_sources; ";
+    $csp .= "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com https://ka-f.fontawesome.com; ";
+    $csp .= "img-src 'self' data: https:; ";
+    $csp .= "connect-src 'self' https://cdn.jsdelivr.net https://unpkg.com https://cdnjs.cloudflare.com https://ka-f.fontawesome.com; ";
+
+    $csp .= "base-uri 'self'; ";
+
+
+    header("Content-Security-Policy: $csp");
+    return $nonce;
 }
 
 function safe_attr($value): string
@@ -17,27 +58,7 @@ function sanitize_html_allowlist(string $html, array $allowedTags = []): string
     foreach ($allowedTags as $t) {
         $allowed .= "<" . $t . ">";
     }
-    // strip_tags garde uniquement les balises autorisées
     return strip_tags($html, $allowed);
 }
-
-function send_csp_header(): string
-{
-    if (headers_sent())
-        return '';
-
-    $nonce = base64_encode(random_bytes(16));
-
-    $csp = "default-src 'self'; ";
-    $csp .= "script-src 'self' https://cdn.jsdelivr.net https://unpkg.com https://cdnjs.cloudflare.com https://kit.fontawesome.com 'nonce-$nonce'; ";
-    $csp .= "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://unpkg.com https://cdnjs.cloudflare.com https://kit.fontawesome.com; ";
-    $csp .= "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com https://ka-f.fontawesome.com; ";
-    $csp .= "img-src 'self' data: https:; ";
-    $csp .= "connect-src 'self'; ";
-
-    header("Content-Security-Policy: $csp");
-    return $nonce;
-}
-
 $nonce = send_csp_header();
 ?>

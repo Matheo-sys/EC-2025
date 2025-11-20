@@ -4,7 +4,7 @@ session_start();
 
 
 
-if (!isset($_SESSION['user']['role']) || $_SESSION['user']['role'] != 1) { 
+if (!isset($_SESSION['user']['role']) || $_SESSION['user']['role'] != 1) {
     header('Location: index.php');
     exit();
 }
@@ -48,20 +48,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 include('includes/header.php');
 ?>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ajouter Equipement - ParisSport+</title>
-    
+
     <!-- Inclusion de Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        nonce="<?= $nonce ?>">
+
     <!-- Vos styles personnalisés -->
-    <link rel="stylesheet" href="css/style.css">
-    
+    <link rel="stylesheet" href="css/style.css" nonce="<?= $nonce ?>">
+
     <!-- Inclusion des polices -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"
+        nonce="<?= $nonce ?>">
+
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="assets/P+-removebg.png" sizes="16x16">
 </head>
@@ -111,7 +114,8 @@ include('includes/header.php');
         </div>
 
         <div class="text-end">
-            <button type="submit" class="btn btn-primary" style="background-color: #2B9348; border-color: #2B9348;">Ajouter</button>
+            <button type="submit" class="btn btn-primary"
+                style="background-color: #2B9348; border-color: #2B9348;">Ajouter</button>
         </div>
     </form>
 </div>

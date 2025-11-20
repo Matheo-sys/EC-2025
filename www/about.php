@@ -9,10 +9,12 @@
     <title>À propos - ParisSport+</title>
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        nonce="<?= $nonce ?>">
 
     <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        nonce="<?= $nonce ?>"></script>
 
     <!-- Polices -->
     <link
@@ -20,7 +22,7 @@
         rel="stylesheet">
 
     <!-- CSS Perso -->
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css" nonce="<?= $nonce ?>">
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="assets/P+-removebg.png">

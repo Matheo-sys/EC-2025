@@ -1,6 +1,5 @@
 <?php
 require_once("config/database.php");
-require_once("includes/security.php");
 
 $sql = $conn->query("SELECT * FROM equipements_sportifs_paris LIMIT 10");
 $terrains = $sql->fetchAll(PDO::FETCH_ASSOC);
@@ -8,7 +7,10 @@ $terrains = $sql->fetchAll(PDO::FETCH_ASSOC);
 
 <!DOCTYPE html>
 <html lang="fr">
-<?php include('includes/head.php'); ?>
+
+<head>
+    <?php include('includes/head.php'); ?>
+</head>
 
 <body>
     <?php include('includes/header.php'); ?>
@@ -77,7 +79,8 @@ $terrains = $sql->fetchAll(PDO::FETCH_ASSOC);
                                         <p class="card-text">Adresse : <?= htmlspecialchars($terrain['adresse']) ?></p>
                                         <p class="card-text">Sport : <?= htmlspecialchars($terrain['type_sport']) ?></p>
                                         <p class="card-text">Arrondissement :
-                                            <?= htmlspecialchars($terrain['arrondissement']) ?></p>
+                                            <?= htmlspecialchars($terrain['arrondissement']) ?>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -115,7 +118,7 @@ $terrains = $sql->fetchAll(PDO::FETCH_ASSOC);
     include('includes/footer.php');
     ?>
     <!-- JavaScript -->
-    <script src="js/script.js"></script>
+    <script src="js/script.js" nonce="<?= $nonce ?>"></script>
 
 </body>
 

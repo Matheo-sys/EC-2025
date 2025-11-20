@@ -2,7 +2,7 @@
 require_once("config/database.php");
 session_start();
 
-if (!isset($_SESSION['user']['role']) || $_SESSION['user']['role'] != 1) { 
+if (!isset($_SESSION['user']['role']) || $_SESSION['user']['role'] != 1) {
     header('Location: index.php');
     exit();
 }
@@ -69,28 +69,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 
 <?php include('includes/header.php'); ?>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modifier Equipement - ParisSport+</title>
-    
+
     <!-- Inclusion de Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        nonce="<?= $nonce ?>">
+
     <!-- Styles perso -->
 
-    <link rel="stylesheet" href="css/style.css">
-    
+    <link rel="stylesheet" href="css/style.css" nonce="<?= $nonce ?>">
+
     <!-- Inclusion des polices -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"
+        nonce="<?= $nonce ?>">
+
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="assets/P+-removebg.png" sizes="16x16">
 </head>
 <div class="container mt-5">
     <h1 class="mb-4 text-center">Modifier un Équipement Sportif</h1>
 
-    <?php if(!empty($erreur)): ?>
+    <?php if (!empty($erreur)): ?>
         <div class="alert alert-danger"><?= $erreur ?></div>
     <?php endif; ?>
 
@@ -107,32 +110,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <div class="mb-3">
             <label class="form-label">Type de Sport</label>
-            <input type="text" name="type_sport" class="form-control" value="<?= htmlspecialchars($equipement['type_sport']) ?>">
+            <input type="text" name="type_sport" class="form-control"
+                value="<?= htmlspecialchars($equipement['type_sport']) ?>">
         </div>
 
         <div class="mb-3">
             <label class="form-label">Latitude</label>
-            <input type="text" name="latitude" class="form-control" value="<?= htmlspecialchars($equipement['latitude']) ?>">
+            <input type="text" name="latitude" class="form-control"
+                value="<?= htmlspecialchars($equipement['latitude']) ?>">
         </div>
 
         <div class="mb-3">
             <label class="form-label">Longitude</label>
-            <input type="text" name="longitude" class="form-control" value="<?= htmlspecialchars($equipement['longitude']) ?>">
+            <input type="text" name="longitude" class="form-control"
+                value="<?= htmlspecialchars($equipement['longitude']) ?>">
         </div>
 
         <div class="mb-3">
             <label class="form-label">Gratuit</label>
-            <input type="text" name="gratuit" class="form-control" value="<?= htmlspecialchars($equipement['gratuit']) ?>">
+            <input type="text" name="gratuit" class="form-control"
+                value="<?= htmlspecialchars($equipement['gratuit']) ?>">
         </div>
 
         <div class="mb-3">
             <label class="form-label">Accès Handicapé</label>
-            <input type="text" name="handicap_access" class="form-control" value="<?= htmlspecialchars($equipement['handicap_access']) ?>">
+            <input type="text" name="handicap_access" class="form-control"
+                value="<?= htmlspecialchars($equipement['handicap_access']) ?>">
         </div>
 
         <div class="mb-3">
             <label class="form-label">Arrondissement</label>
-            <input type="text" name="arrondissement" class="form-control" value="<?= htmlspecialchars($equipement['arrondissement']) ?>">
+            <input type="text" name="arrondissement" class="form-control"
+                value="<?= htmlspecialchars($equipement['arrondissement']) ?>">
         </div>
 
         <button type="submit" class="btn btn-success w-100">Modifier</button>

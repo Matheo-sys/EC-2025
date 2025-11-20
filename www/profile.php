@@ -1,5 +1,5 @@
 <?php
-session_start(); 
+session_start();
 
 // Vérifie si l'utilisateur est connecté
 if (!isset($_SESSION['user']) || !isset($_SESSION['user']['id'])) {
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Vérification de l'avatar
     if ($avatar && $avatar['error'] == 0) {
- 
+
         $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
         $fileExtension = pathinfo($avatar['name'], PATHINFO_EXTENSION);
 
@@ -113,106 +113,119 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap"
+        rel="stylesheet">
 
-<!-- Bootstrap CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        nonce="<?= $nonce ?>">
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        nonce="<?= $nonce ?>"></script>
 
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ParisSport+ - Accueil</title>
-    
+
     <!-- CSS -->
-    <link rel="stylesheet" href="css/style.css">
-    
+    <link rel="stylesheet" href="css/style.css" nonce="<?= $nonce ?>">
+
     <!-- Polices -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"
+        nonce="<?= $nonce ?>">
+
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="assets/P+-removebg.png" sizes="16x16">
     <link rel="icon" type="image/png" href="assets/P+-removebg.png" sizes="32x32">
     <link rel="icon" type="image/png" href="assets/P+-removebg.png" sizes="48x48">
-    <link rel="icon" type="image/png" href="assets/P+-removebg.png" sizes="64x64">    
+    <link rel="icon" type="image/png" href="assets/P+-removebg.png" sizes="64x64">
 </head>
+
 <body>
 
-<?php include('includes/header.php'); ?>
+    <?php include('includes/header.php'); ?>
 
-<main class="container mt-5">
-    <h1 class="text-center mb-4">Mon Profil</h1>
+    <main class="container mt-5">
+        <h1 class="text-center mb-4">Mon Profil</h1>
 
-    <div class="row justify-content-center">
-        <div class="col-12 col-md-6">
-            <!-- Affichage des informations de l'utilisateur -->
-            <div class="card">
-                <div class="card-body text-center">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-6">
+                <!-- Affichage des informations de l'utilisateur -->
+                <div class="card">
+                    <div class="card-body text-center">
 
-                    <img src="<?= htmlspecialchars($user['avatar'] ?? 'assets/default-avatar.png') ?>" alt="Avatar" class="img-fluid rounded-circle" style="width: 150px; height: 150px;">
-                    <h3 class="mt-3"><?= htmlspecialchars($user['prenom']) ?> <?= htmlspecialchars($user['nom']) ?></h3>
-                    <p class="mt-2"><?= htmlspecialchars($user['email']) ?></p>
+                        <img src="<?= htmlspecialchars($user['avatar'] ?? 'assets/default-avatar.png') ?>" alt="Avatar"
+                            class="img-fluid rounded-circle" style="width: 150px; height: 150px;">
+                        <h3 class="mt-3"><?= htmlspecialchars($user['prenom']) ?> <?= htmlspecialchars($user['nom']) ?>
+                        </h3>
+                        <p class="mt-2"><?= htmlspecialchars($user['email']) ?></p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Formulaire de mise à jour -->
-    <div class="row justify-content-center mt-5">
-        <div class="col-12 col-md-6">
-            <h3>Modifier mes informations</h3>
-            <form method="POST" enctype="multipart/form-data">
-                <!-- Changer l'avatar -->
-                <div class="mb-3">
-                    <label for="avatar" class="form-label">Changer l'avatar</label>
-                    <input type="file" class="form-control" id="avatar" name="avatar">
-                </div>
+        <!-- Formulaire de mise à jour -->
+        <div class="row justify-content-center mt-5">
+            <div class="col-12 col-md-6">
+                <h3>Modifier mes informations</h3>
+                <form method="POST" enctype="multipart/form-data">
+                    <!-- Changer l'avatar -->
+                    <div class="mb-3">
+                        <label for="avatar" class="form-label">Changer l'avatar</label>
+                        <input type="file" class="form-control" id="avatar" name="avatar">
+                    </div>
 
-                <!-- Email (optionnel, uniquement si l'utilisateur veut le changer) -->
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" value="<?= htmlspecialchars($user['email']) ?>">
-                </div>
+                    <!-- Email (optionnel, uniquement si l'utilisateur veut le changer) -->
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email"
+                            value="<?= htmlspecialchars($user['email']) ?>">
+                    </div>
 
-                <!-- Mot de passe actuel (nécessaire pour toute modification de l'email ou du mot de passe) -->
-                <div class="mb-3">
-                    <label for="current_password" class="form-label">Mot de passe actuel</label>
-                    <input type="password" class="form-control" id="current_password" name="current_password" required>
-                </div>
+                    <!-- Mot de passe actuel (nécessaire pour toute modification de l'email ou du mot de passe) -->
+                    <div class="mb-3">
+                        <label for="current_password" class="form-label">Mot de passe actuel</label>
+                        <input type="password" class="form-control" id="current_password" name="current_password"
+                            required>
+                    </div>
 
-                <!-- Nouveau mot de passe (optionnel, uniquement si l'utilisateur veut le changer) -->
-                <div class="mb-3">
-                    <label for="new_password" class="form-label">Nouveau mot de passe</label>
-                    <input type="password" class="form-control" id="new_password" name="new_password">
-                </div>
+                    <!-- Nouveau mot de passe (optionnel, uniquement si l'utilisateur veut le changer) -->
+                    <div class="mb-3">
+                        <label for="new_password" class="form-label">Nouveau mot de passe</label>
+                        <input type="password" class="form-control" id="new_password" name="new_password">
+                    </div>
 
-                <!-- Confirmation du mot de passe (optionnel) -->
-                <div class="mb-3">
-                    <label for="confirm_password" class="form-label">Confirmer le nouveau mot de passe</label>
-                    <input type="password" class="form-control" id="confirm_password" name="confirm_password">
-                </div>
+                    <!-- Confirmation du mot de passe (optionnel) -->
+                    <div class="mb-3">
+                        <label for="confirm_password" class="form-label">Confirmer le nouveau mot de passe</label>
+                        <input type="password" class="form-control" id="confirm_password" name="confirm_password">
+                    </div>
 
-                <button type="submit" class="btn btn-secondary w-100 rounded-pill" style="background-color: #2B9348; border-color: #2B9348;">Mettre à jour</button>
-            </form>
+                    <button type="submit" class="btn btn-secondary w-100 rounded-pill"
+                        style="background-color: #2B9348; border-color: #2B9348;">Mettre à jour</button>
+                </form>
 
-            <?php
-            // Afficher les erreurs 
-            if (!empty($errors)) {
-                foreach ($errors as $error) {
-                    echo "<div class='alert alert-danger mt-3'>$error</div>";
+                <?php
+                // Afficher les erreurs 
+                if (!empty($errors)) {
+                    foreach ($errors as $error) {
+                        echo "<div class='alert alert-danger mt-3'>$error</div>";
+                    }
                 }
-            }
-            ?>
+                ?>
+            </div>
         </div>
-    </div>
-</main>
+    </main>
 
-<?php include('includes/footer.php'); ?>
+    <?php include('includes/footer.php'); ?>
 
 </body>
+
 </html>
