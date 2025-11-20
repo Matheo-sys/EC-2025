@@ -9,17 +9,17 @@
     rel="stylesheet" nonce="<?= $nonce ?>">
 
 <!-- Bootstrap CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" nonce="<?= $nonce ?>">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    nonce="<?= $nonce ?>">
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-    nonce="<?= $nonce ?>"></script>
+
 
 <!-- CSS -->
 <link rel="stylesheet" href="css/style.css" nonce="<?= $nonce ?>">
 
 <!-- Polices -->
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" nonce="<?= $nonce ?>">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"
+    nonce="<?= $nonce ?>">
 
 <!-- Favicon -->
 <link rel="icon" type="image/png" href="assets/P+-removebg.png" sizes="16x16">
