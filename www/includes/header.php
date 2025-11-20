@@ -2,6 +2,8 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
+
+require_once __DIR__ . '/security.php';
 ?>
 <head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
