@@ -40,20 +40,20 @@ if ($arrondissement) {
 // Multi-recherche 
 if (!empty($_GET['sports'])) {
     $globalSportConditions = [];
-    
+
     foreach ($_GET['sports'] as $sportKeywords) {
         $keywords = explode(',', $sportKeywords);
         $sportOrConditions = [];
-        
+
         foreach ($keywords as $keyword) {
             $paramKey = 'sport_' . uniqid();
             $sportOrConditions[] = "type_sport LIKE :$paramKey";
             $params[$paramKey] = "%$keyword%";
         }
-        
+
         $globalSportConditions[] = '(' . implode(' OR ', $sportOrConditions) . ')';
     }
-    
+
     if (!empty($globalSportConditions)) {
         $whereClauses[] = '(' . implode(' OR ', $globalSportConditions) . ')';
     }
@@ -77,7 +77,8 @@ if (isset($_SESSION['user']['id'])) {
 
 
 // Fonction slug
-function slugify($text) {
+function slugify($text)
+{
     return strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $text)));
 }
 ?>
@@ -85,11 +86,12 @@ function slugify($text) {
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carte - ParisSport+</title>
-    
+
     <!-- CSS et Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -110,113 +112,114 @@ function slugify($text) {
         }
     </style>
 </head>
+
 <body>
 
-<main id="main-content">
-    <section class="container py-5">
-        <h2 class="mb-5 text-center">Résultats de la recherche</h2>
+    <main id="main-content">
+        <section class="container py-5">
+            <h2 class="mb-5 text-center">Résultats de la recherche</h2>
 
-        <!-- Formulaire de recherche -->
-        <form action="map.php" method="get" class="d-flex flex-column align-items-center">
-            <div class="input-group mb-3 flex-nowrap flex-md-wrap">
-                <input type="text" name="q" class="form-control" placeholder="Rechercher un terrain sportif...">
-                <button class="btn btn-primary" style="background-color: #2B9348; border-color:#2B9348" type="submit" href="map.php">Rechercher</button>
-            </div>
-
-            <!-- Checkbox -->
-            <div class="filters-container mt-3" style="width: 100%;">
-                <div class="d-flex flex-wrap justify-content-center gap-2">
-                    <?php
-                    $sportsFilters = [
-                        'Foot' => ['foot', 'soccer', 'football'],
-                        'Basket' => ['basket', 'basketball'],
-                        'Pétanque' => ['pétanque', 'boules'],
-                        'Volley' => ['volley', 'volleyball'],
-                        'Tennis' => ['tennis'],
-                        'Musculation/Forme' => ['muscu', 'fitness', 'musculation','forme%','remise%','santé%'],
-                        'Multi-sports/City' => ['multi', 'polyvalent','city%'],
-                        'Piste Cyclabe' => ['cyclisme', 'vélo', 'piste%', 'cyclable'],
-                    ];
-                    
-                    foreach ($sportsFilters as $label => $keywords): ?>
-                        <div class="form-check">
-                            <input class="form-check-input" 
-                                type="checkbox" 
-                                name="sports[]" 
-                                value="<?= implode(',', $keywords) ?>" 
-                                id="filter_<?= slugify($label) ?>"
-                                <?= isset($_GET['sports']) && array_intersect($keywords, $_GET['sports']) ? 'checked' : '' ?>>
-                            <label class="form-check-label" for="filter_<?= slugify($label) ?>">
-                                <?= $label ?>
-                            </label>
-                        </div>
-                    <?php endforeach; ?>
+            <!-- Formulaire de recherche -->
+            <form action="map.php" method="get" class="d-flex flex-column align-items-center">
+                <div class="input-group mb-3 flex-nowrap flex-md-wrap">
+                    <input type="text" name="q" class="form-control" placeholder="Rechercher un terrain sportif...">
+                    <button class="btn btn-primary" style="background-color: #2B9348; border-color:#2B9348"
+                        type="submit" href="map.php">Rechercher</button>
                 </div>
-            </div>
 
-        </form>
+                <!-- Checkbox -->
+                <div class="filters-container mt-3" style="width: 100%;">
+                    <div class="d-flex flex-wrap justify-content-center gap-2">
+                        <?php
+                        $sportsFilters = [
+                            'Foot' => ['foot', 'soccer', 'football'],
+                            'Basket' => ['basket', 'basketball'],
+                            'Pétanque' => ['pétanque', 'boules'],
+                            'Volley' => ['volley', 'volleyball'],
+                            'Tennis' => ['tennis'],
+                            'Musculation/Forme' => ['muscu', 'fitness', 'musculation', 'forme%', 'remise%', 'santé%'],
+                            'Multi-sports/City' => ['multi', 'polyvalent', 'city%'],
+                            'Piste Cyclabe' => ['cyclisme', 'vélo', 'piste%', 'cyclable'],
+                        ];
 
-        <!-- Map -->
-        <div class="row mb-5">
-            <div class="col-md-12">
-                <div id="map" style="height: 400px; border-radius: 15px;"></div>
-            </div>
-        </div>
-        <div id="terrains-data" data-terrains="<?= htmlspecialchars(json_encode($terrains), ENT_QUOTES, 'UTF-8') ?>"></div>
-
-        <!-- Nombre de résultats -->
-        <div class="row mb-4">
-            <div class="col-md-12 text-center">
-                <?php if ($query): ?>
-                    <h4>Nombre de terrains trouvés : <?= count($terrains) ?></h4>
-                <?php else: ?>
-                    <h4>Liste des tous les terrains : <?= count($terrains) ?></h4>
-                <?php endif; ?>
-            </div>
-        </div>
-
-        <!-- Résultats -->
-        <div class="row g-4"> 
-            <?php foreach ($terrains as $terrain): ?>
-                <?php 
-                    $alreadyLiked = in_array($terrain['id'], $userLikes);
-                ?>
-                <div class="col-md-4">
-                    <div class="card shadow-sm h-100">
-                        <div class="card-body">
-                            <h5 class="card-title"><?= htmlspecialchars($terrain['nom']) ?></h5>
-                            <p class="card-text">Adresse : <?= htmlspecialchars($terrain['adresse']) ?></p>
-                            <p class="card-text">Type/Sport : <?= htmlspecialchars($terrain['type_sport']) ?></p>
-                            <p class="card-text">Code Postal : <?= htmlspecialchars($terrain['arrondissement']) ?></p>
-                            <p class="card-text">Accès handicap : <?= htmlspecialchars($terrain['handicap_access']) ?></p>
-                            <?php if (isset($_SESSION['user']["id"])): ?>
-                                <button class="like-btn" 
-                        data-element-id="<?= $terrain['id'] ?>" 
-                        data-liked="<?= $alreadyLiked ? 'true' : 'false' ?>">
-                    <i class="heart-icon <?= $alreadyLiked ? 'fa-solid' : 'fa-regular' ?> fa-heart"></i>
-                            <?php else: ?>
-                                <p class="text-muted">Connectez-vous pour aimer ce terrain.</p>
-                            <?php endif; ?>
-
-                        </div>
+                        foreach ($sportsFilters as $label => $keywords): ?>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="sports[]"
+                                    value="<?= implode(',', $keywords) ?>" id="filter_<?= slugify($label) ?>"
+                                    <?= isset($_GET['sports']) && array_intersect($keywords, $_GET['sports']) ? 'checked' : '' ?>>
+                                <label class="form-check-label" for="filter_<?= slugify($label) ?>">
+                                    <?= $label ?>
+                                </label>
+                            </div>
+                        <?php endforeach; ?>
                     </div>
                 </div>
-            
-            <?php endforeach; ?>
 
-    </section>
-</main>
+            </form>
+
+            <!-- Map -->
+            <div class="row mb-5">
+                <div class="col-md-12">
+                    <div id="map" style="height: 400px; border-radius: 15px;"></div>
+                </div>
+            </div>
+            <div id="terrains-data"
+                data-terrains="<?= htmlspecialchars(json_encode($terrains), ENT_QUOTES, 'UTF-8') ?>"></div>
+
+            <!-- Nombre de résultats -->
+            <div class="row mb-4">
+                <div class="col-md-12 text-center">
+                    <?php if ($query): ?>
+                        <h4>Nombre de terrains trouvés : <?= count($terrains) ?></h4>
+                    <?php else: ?>
+                        <h4>Liste des tous les terrains : <?= count($terrains) ?></h4>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <!-- Résultats -->
+            <div class="row g-4">
+                <?php foreach ($terrains as $terrain): ?>
+                    <?php
+                    $alreadyLiked = in_array($terrain['id'], $userLikes);
+                    ?>
+                    <div class="col-md-4">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-body">
+                                <h5 class="card-title"><?= htmlspecialchars($terrain['nom']) ?></h5>
+                                <p class="card-text">Adresse : <?= htmlspecialchars($terrain['adresse']) ?></p>
+                                <p class="card-text">Type/Sport : <?= htmlspecialchars($terrain['type_sport']) ?></p>
+                                <p class="card-text">Code Postal : <?= htmlspecialchars($terrain['arrondissement']) ?></p>
+                                <p class="card-text">Accès handicap : <?= htmlspecialchars($terrain['handicap_access']) ?>
+                                </p>
+                                <?php if (isset($_SESSION['user']["id"])): ?>
+                                    <button class="like-btn" data-element-id="<?= $terrain['id'] ?>"
+                                        data-liked="<?= $alreadyLiked ? 'true' : 'false' ?>">
+                                        <i class="heart-icon <?= $alreadyLiked ? 'fa-solid' : 'fa-regular' ?> fa-heart"></i>
+                                    <?php else: ?>
+                                        <p class="text-muted">Connectez-vous pour aimer ce terrain.</p>
+                                    <?php endif; ?>
+
+                            </div>
+                        </div>
+                    </div>
+
+                <?php endforeach; ?>
+
+        </section>
+    </main>
 
 
 </body>
+
 </html>
-<script>
+<script nonce="<?= $nonce ?>">
     var simpleIcon = L.icon({
         iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
         iconSize: [25, 41],
         iconAnchor: [12, 41],
         popupAnchor: [0, -41],
-        shadowUrl: '',          
+        shadowUrl: '',
         shadowSize: [0, 0],
         shadowAnchor: [0, 0]
     });
@@ -226,25 +229,25 @@ function slugify($text) {
         iconSize: [10, 10],
         iconAnchor: [10, 10],
         popupAnchor: [0, -10],
-        shadowUrl: '',       
+        shadowUrl: '',
         shadowSize: [0, 0],
         shadowAnchor: [0, 0],
         className: 'dot-icon'
-})
+    })
 
     var userLat = 48.8566;
     var userLon = 2.3522;
 
     // Si l'API de géolocalisation est disponible
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
+        navigator.geolocation.getCurrentPosition(function (position) {
             userLat = position.coords.latitude;
             userLon = position.coords.longitude;
 
             map.setView([userLat, userLon], 12);
 
             // Position de l'utilisateur
-            L.marker([userLat, userLon], {icon: dotIcon}).addTo(map)
+            L.marker([userLat, userLon], { icon: dotIcon }).addTo(map)
                 .bindPopup("<b>Vous êtes ici</b>")
                 .openPopup();
         });
@@ -262,20 +265,20 @@ function slugify($text) {
     var terrains = <?php echo json_encode($terrains); ?>;
     var distances = [];
 
-    terrains.forEach(function(terrain) {
+    terrains.forEach(function (terrain) {
         var distance = calculer_distance(userLat, userLon, terrain.latitude, terrain.longitude);
-        distances.push({terrain: terrain, distance: distance});
+        distances.push({ terrain: terrain, distance: distance });
     });
 
     // Trier les terrains par distance (du plus proche au plus éloigné)
-    distances.sort(function(a, b) {
+    distances.sort(function (a, b) {
         return a.distance - b.distance;
     });
 
     // Ajouter des marqueurs pour les terrains triés, en utilisant l'icône simple
-    distances.forEach(function(item) {
+    distances.forEach(function (item) {
         var terrain = item.terrain;
-        var marker = L.marker([terrain.latitude, terrain.longitude], {icon: simpleIcon}).addTo(map);
+        var marker = L.marker([terrain.latitude, terrain.longitude], { icon: simpleIcon }).addTo(map);
         var isLiked = <?= json_encode($userLikes) ?>.includes(terrain.id.toString());
         var popupContent = `
         <b>${terrain.nom}</b><br>
@@ -304,8 +307,8 @@ function slugify($text) {
         var delta_phi = deg2rad(lat2 - lat1);
         var delta_lambda = deg2rad(lon2 - lon1);
         var a = Math.sin(delta_phi / 2) * Math.sin(delta_phi / 2) +
-                Math.cos(phi1) * Math.cos(phi2) *
-                Math.sin(delta_lambda / 2) * Math.sin(delta_lambda / 2);
+            Math.cos(phi1) * Math.cos(phi2) *
+            Math.sin(delta_lambda / 2) * Math.sin(delta_lambda / 2);
         var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return R * c;
     }
@@ -314,109 +317,107 @@ function slugify($text) {
         return deg * (Math.PI / 180);
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
-      const likeButtons = document.querySelectorAll('.like-btn');
+    document.addEventListener('DOMContentLoaded', function () {
+        const likeButtons = document.querySelectorAll('.like-btn');
 
-      likeButtons.forEach(button => {
-        button.addEventListener('click', function() {
-          const elementId = button.getAttribute('data-element-id');
-          const isLiked = button.getAttribute('data-liked') === 'true';
+        likeButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const elementId = button.getAttribute('data-element-id');
+                const isLiked = button.getAttribute('data-liked') === 'true';
 
-          if (!elementId) {
-            console.error('ID d\'élément manquant');
-            return;
-          }
-          const dataToSend = new URLSearchParams();
-          dataToSend.append('element_id', elementId);
-          
-          fetch('likes.php', {
-            method: 'POST',
-            body: dataToSend
-          })
-          .then(response => response.json())
-          .then(data => {
-            if (data.status === 'liked') {
-              // Met à jour l'état du bouton en like
-              button.setAttribute('data-liked', 'true');
-              const icon = button.querySelector('i');
-              icon.classList.remove('fa-regular');
-              icon.classList.add('fa-solid');
-            } else if (data.status === 'unliked') {
-              // Met à jour l'état du bouton en unlike
-              button.setAttribute('data-liked', 'false');
-              const icon = button.querySelector('i');
-              icon.classList.remove('fa-solid');
-              icon.classList.add('fa-regular');
-            } else {
-              alert("Erreur: " + data.message);
-            }
-          })
-          .catch(error => {
-            console.error('Erreur AJAX:', error);
-          });
+                if (!elementId) {
+                    console.error('ID d\'élément manquant');
+                    return;
+                }
+                const dataToSend = new URLSearchParams();
+                dataToSend.append('element_id', elementId);
+
+                fetch('likes.php', {
+                    method: 'POST',
+                    body: dataToSend
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'liked') {
+                            // Met à jour l'état du bouton en like
+                            button.setAttribute('data-liked', 'true');
+                            const icon = button.querySelector('i');
+                            icon.classList.remove('fa-regular');
+                            icon.classList.add('fa-solid');
+                        } else if (data.status === 'unliked') {
+                            // Met à jour l'état du bouton en unlike
+                            button.setAttribute('data-liked', 'false');
+                            const icon = button.querySelector('i');
+                            icon.classList.remove('fa-solid');
+                            icon.classList.add('fa-regular');
+                        } else {
+                            alert("Erreur: " + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erreur AJAX:', error);
+                    });
+            });
         });
-      });
     });
 
-map.on('popupopen', function(e) {
-    const popupNode = e.popup.getElement();
+    map.on('popupopen', function (e) {
+        const popupNode = e.popup.getElement();
 
-    const likeButton = popupNode.querySelector('.like-btn');
+        const likeButton = popupNode.querySelector('.like-btn');
 
-    if (likeButton) {
-        likeButton.addEventListener('click', function(event) {
-            event.preventDefault(); // Empêche le comportement par défaut
-            const elementId = likeButton.getAttribute('data-element-id');
-            const isLiked = likeButton.getAttribute('data-liked') === 'true';
-            const heartIcon = likeButton.querySelector('.heart-icon');
-            const likeText = likeButton.querySelector('.like-text');
+        if (likeButton) {
+            likeButton.addEventListener('click', function (event) {
+                event.preventDefault(); // Empêche le comportement par défaut
+                const elementId = likeButton.getAttribute('data-element-id');
+                const isLiked = likeButton.getAttribute('data-liked') === 'true';
+                const heartIcon = likeButton.querySelector('.heart-icon');
+                const likeText = likeButton.querySelector('.like-text');
 
-            // Inverse l'état dans l'interface
-            const newLikeState = !isLiked;
-            likeButton.setAttribute('data-liked', newLikeState ? 'true' : 'false');
+                // Inverse l'état dans l'interface
+                const newLikeState = !isLiked;
+                likeButton.setAttribute('data-liked', newLikeState ? 'true' : 'false');
 
-            if (newLikeState) {
-                heartIcon.classList.remove('fa-regular');
-                heartIcon.classList.add('fa-solid');
-                likeText.textContent = 'Unlike';
-            } else {
-                heartIcon.classList.remove('fa-solid');
-                heartIcon.classList.add('fa-regular');
-                likeText.textContent = 'Like';
-            }
-
-            // Envoyer l'ID et le nouvel état via AJAX à likes.php
-            fetch('likes.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: new URLSearchParams({
-                    'element_id': elementId,
-                }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'liked') {
-                    likeButton.setAttribute('data-liked', 'true');
+                if (newLikeState) {
                     heartIcon.classList.remove('fa-regular');
                     heartIcon.classList.add('fa-solid');
                     likeText.textContent = 'Unlike';
-                } else if (data.status === 'unliked') {
-                    likeButton.setAttribute('data-liked', 'false');
+                } else {
                     heartIcon.classList.remove('fa-solid');
                     heartIcon.classList.add('fa-regular');
                     likeText.textContent = 'Like';
-                } else {
-                    console.error("Erreur: " + data.message);
                 }
-            })
-            .catch(error => console.error('Erreur AJAX:', error));
-        });
-    }
-});
+
+                // Envoyer l'ID et le nouvel état via AJAX à likes.php
+                fetch('likes.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        'element_id': elementId,
+                    }),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'liked') {
+                            likeButton.setAttribute('data-liked', 'true');
+                            heartIcon.classList.remove('fa-regular');
+                            heartIcon.classList.add('fa-solid');
+                            likeText.textContent = 'Unlike';
+                        } else if (data.status === 'unliked') {
+                            likeButton.setAttribute('data-liked', 'false');
+                            heartIcon.classList.remove('fa-solid');
+                            heartIcon.classList.add('fa-regular');
+                            likeText.textContent = 'Like';
+                        } else {
+                            console.error("Erreur: " + data.message);
+                        }
+                    })
+                    .catch(error => console.error('Erreur AJAX:', error));
+            });
+        }
+    });
 </script>
 <script src="js/script.js"></script>
 <?php include('includes/footer.php'); ?>
-
-

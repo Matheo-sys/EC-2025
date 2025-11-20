@@ -1,8 +1,6 @@
 <?php
 require_once("config/database.php");
-include('includes/header.php');
-
-
+require_once("includes/security.php");
 
 $sql = $conn->query("SELECT * FROM equipements_sportifs_paris LIMIT 10");
 $terrains = $sql->fetchAll(PDO::FETCH_ASSOC);
@@ -10,35 +8,10 @@ $terrains = $sql->fetchAll(PDO::FETCH_ASSOC);
 
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<?php include('includes/head.php'); ?>
 
-<!-- Bootstrap CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ParisSport+ - Accueil</title>
-    
-    <!-- CSS -->
-    <link rel="stylesheet" href="css/style.css">
-    
-    <!-- Polices -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="assets/P+-removebg.png" sizes="16x16">
-    <link rel="icon" type="image/png" href="assets/P+-removebg.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="assets/P+-removebg.png" sizes="48x48">
-    <link rel="icon" type="image/png" href="assets/P+-removebg.png" sizes="64x64">    
-</head>
 <body>
+    <?php include('includes/header.php'); ?>
 
     <main id="main-content">
         <!-- Section Recherche -->
@@ -48,8 +21,10 @@ $terrains = $sql->fetchAll(PDO::FETCH_ASSOC);
 
                 <form action="map.php" method="get" class="d-flex justify-content-center">
                     <div class="input-group flex-nowrap flex-md-wrap">
-                        <input type="text" name="q" class="form-control" placeholder="Rechercher un terrain sportif..." required>
-                        <button class="btn btn-primary" style="background-color: #2B9348; border-color:#2B9348" type="submit" href="map.php">Rechercher</button>
+                        <input type="text" name="q" class="form-control" placeholder="Rechercher un terrain sportif..."
+                            required>
+                        <button class="btn btn-primary" style="background-color: #2B9348; border-color:#2B9348"
+                            type="submit" href="map.php">Rechercher</button>
                     </div>
                 </form>
 
@@ -67,15 +42,18 @@ $terrains = $sql->fetchAll(PDO::FETCH_ASSOC);
                 <div class="grid">
                     <article class="feature-card">
                         <h3>Facilité d'accès</h3>
-                        <p>Nous vous permettons de trouver rapidement des terrains de sport gratuits près de chez vous grâce à une interface simple et intuitive.</p>
+                        <p>Nous vous permettons de trouver rapidement des terrains de sport gratuits près de chez vous
+                            grâce à une interface simple et intuitive.</p>
                     </article>
                     <article class="feature-card">
                         <h3>Élargissement de l'offre</h3>
-                        <p>Notre plateforme répertorie une grande variété de terrains de sport gratuits, couvrant divers sports pour satisfaire tous les passionnés.</p>
+                        <p>Notre plateforme répertorie une grande variété de terrains de sport gratuits, couvrant divers
+                            sports pour satisfaire tous les passionnés.</p>
                     </article>
                     <article class="feature-card">
                         <h3>Accessibilité pour tous</h3>
-                        <p>Tous les terrains listés sont accessibles sans frais, permettant à chacun de pratiquer son sport préféré sans contrainte financière.</p>
+                        <p>Tous les terrains listés sont accessibles sans frais, permettant à chacun de pratiquer son
+                            sport préféré sans contrainte financière.</p>
                     </article>
                 </div>
             </div>
@@ -90,29 +68,32 @@ $terrains = $sql->fetchAll(PDO::FETCH_ASSOC);
             <div id="carouselEquipements" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
 
-                <?php foreach ($terrains as $index => $terrain): ?>
-                    <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
-                    <div class="d-flex justify-content-center">
-                        <div class="card" style="width: 18rem;">
-                        <div class="card-body">
-                            <h5 class="card-title"><?= htmlspecialchars($terrain['nom']) ?></h5>
-                            <p class="card-text">Adresse : <?= htmlspecialchars($terrain['adresse']) ?></p>
-                            <p class="card-text">Sport : <?= htmlspecialchars($terrain['type_sport']) ?></p>
-                            <p class="card-text">Arrondissement : <?= htmlspecialchars($terrain['arrondissement']) ?></p>
+                    <?php foreach ($terrains as $index => $terrain): ?>
+                        <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
+                            <div class="d-flex justify-content-center">
+                                <div class="card" style="width: 18rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><?= htmlspecialchars($terrain['nom']) ?></h5>
+                                        <p class="card-text">Adresse : <?= htmlspecialchars($terrain['adresse']) ?></p>
+                                        <p class="card-text">Sport : <?= htmlspecialchars($terrain['type_sport']) ?></p>
+                                        <p class="card-text">Arrondissement :
+                                            <?= htmlspecialchars($terrain['arrondissement']) ?></p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        </div>
-                    </div>
-                    </div>
-                <?php endforeach; ?>
+                    <?php endforeach; ?>
 
                 </div>
 
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselEquipements" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" style="background-color: #2B9348;"></span> 
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselEquipements"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" style="background-color: #2B9348;"></span>
                 </button>
 
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselEquipements" data-bs-slide="next">
-                <span class="carousel-control-next-icon" style="background-color: #2B9348;"></span> 
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselEquipements"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" style="background-color: #2B9348;"></span>
                 </button>
 
 
@@ -130,11 +111,12 @@ $terrains = $sql->fetchAll(PDO::FETCH_ASSOC);
         </section>
     </main>
 
-<?php
-include('includes/footer.php');
-?>
+    <?php
+    include('includes/footer.php');
+    ?>
     <!-- JavaScript -->
     <script src="js/script.js"></script>
 
 </body>
+
 </html>
