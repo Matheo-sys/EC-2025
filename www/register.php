@@ -1,4 +1,6 @@
 <?php
+require_once('config/database2.php');
+require_once('includes/logger.php');
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nom = trim($_POST['nom']);
     $prenom = trim($_POST['prenom']);
@@ -25,14 +27,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $email_exists = $stmt->fetchColumn();
 
         if ($email_exists) {
+            write_log('REGISTER', $email, 'FAILURE', 'Email already exists');
             $erreur = "Cet email est déjà utilisé.";
         } else {
             $password_hashed = password_hash($password, PASSWORD_DEFAULT);
             $sql = "INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe) VALUES (?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
             if($stmt->execute([$nom, $prenom, $email, $password_hashed])) {
+                write_log('REGISTER', $email, 'SUCCESS', 'New user created');
                 // suite existante...
             } else {
+                write_log('REGISTER', $email, 'FAILURE', 'SQL Error');
                 $erreur = "Erreur lors de l'inscription.";
             }
         }

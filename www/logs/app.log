@@ -1,0 +1,6 @@
+[2025-11-20 09:23:20] | TEST_CLI        | console_user         | SUCCESS    | Simulation de test de log
+[2025-11-20 10:02:46] | REGISTER        | louhichielias94@gmail.com | SUCCESS    | New user created
+[2025-11-20 10:03:00] | LOGIN           | louhichielias94@gmail.com | FAILURE    | Invalid credentials
+[2025-11-20 10:06:52] | LOGIN           | louhichielias94@gmail.com | FAILURE    | Invalid credentials
+[2025-11-20 10:07:03] | LOGIN           | louhichielias94@gmail.com | FAILURE    | Invalid credentials
+[2025-11-20 10:07:13] | LOGIN           | louhichielias94@gmail.com | SUCCESS    | Role: 0

@@ -3,7 +3,7 @@ $serveur = "localhost";
 $port = 8889;
 $utilisateur = "root";
 $motdepasse = "root";
-$bdd = "parissport";
+$bdd = "parissport_bdd";
 
 try {
     $conn = new PDO(

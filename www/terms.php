@@ -1,6 +1,6 @@
 <?php
 // Inclusions nécessaires (configuration de la base de données et header)
-include('config/database.php');
+include('config/database2.php');
 include('includes/header.php');
 ?>
 <head>

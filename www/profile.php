@@ -9,7 +9,7 @@ if (!isset($_SESSION['user']) || !isset($_SESSION['user']['id'])) {
 }
 
 
-include('config/database.php');
+include('config/database2.php');
 
 $userId = $_SESSION['user']['id'];
 

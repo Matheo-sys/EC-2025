@@ -1,5 +1,6 @@
 <?php
-require_once("config/database.php");
+require_once("config/database2.php");
+require_once("includes/logger.php");
 session_start();
 
 
@@ -31,6 +32,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $erreur = "ID invalide (doit être numérique).";
     } elseif (!is_numeric($latitude) || !is_numeric($longitude)) {
         $erreur = "Latitude et longitude doivent être des nombres valides.";
+    } elseif (strlen($nom) > 255 || strlen($adresse) > 255) {
+        $erreur = "Le nom et l'adresse ne doivent pas dépasser 255 caractères.";
+    } elseif (strlen($type_sport) > 100) {
+        $erreur = "Le type de sport ne doit pas dépasser 100 caractères.";
+    } elseif (strlen($arrondissement) > 10) {
+        $erreur = "L'arrondissement ne doit pas dépasser 10 caractères.";
     } else {
         // cast sécurisés
         $id = (int)$id;
@@ -49,6 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
             $stmt->execute([$id, $nom, $adresse, $type_sport, $latitude, $longitude, $gratuit, $handicap_access, $arrondissement]);
 
+            write_log('ADD_EQUIP', $_SESSION['user']['id'], 'SUCCESS', "ID: $id, Nom: $nom");
             header('Location: admin_crud.php');
             exit();
         }

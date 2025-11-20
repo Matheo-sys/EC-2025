@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('config/database.php');
+include('config/database2.php');
 if (isset($_POST['element_id'])) {
     $element_id = $_POST['element_id']; 
 

@@ -7,8 +7,9 @@ if (isset($_SESSION['user'])) {
 }
 
 // Le reste de ton code pour la gestion du formulaire de connexion
-include('config/database.php'); 
+include('config/database2.php'); 
 include('includes/header.php'); 
+require_once('includes/logger.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = htmlspecialchars($_POST['email']);
@@ -27,9 +28,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'role' => $user['role']
         ];
         
+        write_log('LOGIN', $email, 'SUCCESS', 'Role: ' . $user['role']);
         header("Location: index.php");
         exit();
     } else {
+        write_log('LOGIN', $email, 'FAILURE', 'Invalid credentials');
         $erreur = "Email ou mot de passe incorrect.";
     }
 }
