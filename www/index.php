@@ -1,5 +1,5 @@
 <?php
-require_once("config/database2.php");
+require_once("config/database.php");
 
 $sql = $conn->query("SELECT * FROM equipements_sportifs_paris LIMIT 10");
 $terrains = $sql->fetchAll(PDO::FETCH_ASSOC);

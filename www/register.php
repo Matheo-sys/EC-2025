@@ -1,5 +1,5 @@
 <?php
-require_once('config/database2.php');
+require_once('config/database.php');
 require_once('includes/logger.php');
 require_once('includes/csrf.php');
 
@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $password_hashed = password_hash($password, PASSWORD_DEFAULT);
             $sql = "INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe) VALUES (?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            if($stmt->execute([$nom, $prenom, $email, $password_hashed])) {
+            if ($stmt->execute([$nom, $prenom, $email, $password_hashed])) {
                 write_log('REGISTER', $email, 'SUCCESS', 'New user created');
                 // suite existante...
             } else {

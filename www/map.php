@@ -1,5 +1,5 @@
 <?php
-require_once("config/database2.php");
+require_once("config/database.php");
 require_once("includes/csrf.php");
 
 include('includes/header.php');
@@ -339,7 +339,7 @@ function slugify($text)
                 }
                 const dataToSend = new URLSearchParams();
                 dataToSend.append('element_id', elementId);
-          dataToSend.append('csrf_token', csrfToken);
+                dataToSend.append('csrf_token', csrfToken);
 
                 fetch('likes.php', {
                     method: 'POST',
@@ -405,7 +405,7 @@ function slugify($text)
                     },
                     body: new URLSearchParams({
                         'element_id': elementId,
-                    'csrf_token': csrfToken
+                        'csrf_token': csrfToken
                     }),
                 })
                     .then(response => response.json())
