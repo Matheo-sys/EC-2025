@@ -7,11 +7,19 @@ if (!isset($_SESSION['user']) || !isset($_SESSION['user']['id'])) {
 }
 
 include('config/database2.php');
+require_once('includes/logger.php');
+require_once('includes/csrf.php');
 
 $userId = $_SESSION['user']['id'];
 
 // Suppression d'un like 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['element_id'])) {
+    // Vérification CSRF
+    if (!isset($_POST['csrf_token']) || !verify_csrf_token($_POST['csrf_token'])) {
+        write_log('CSRF', $userId, 'FAILURE', 'Invalid token on MyLikes');
+        die("Erreur de sécurité (CSRF). Veuillez recharger la page.");
+    }
+
     $elementId = $_POST['element_id'];
     
     $stmt = $conn->prepare("DELETE FROM likes WHERE user_id = ? AND element_id = ?");
@@ -74,6 +82,7 @@ $likedTerrains = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <p class="card-text">Sport : <?= htmlspecialchars($terrain['type_sport']) ?></p>
                             
                             <form method="POST" action="mylikes.php">
+                                <?php csrf_input(); ?>
                                 <input type="hidden" name="element_id" value="<?= htmlspecialchars($terrain['id']) ?>">
                                 <button type="submit" class="btn btn-danger w-100">Supprimer le like</button>
                             </form>

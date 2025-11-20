@@ -1,7 +1,15 @@
 <?php
 require_once('config/database2.php');
 require_once('includes/logger.php');
+require_once('includes/csrf.php');
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Vérification CSRF
+    if (!isset($_POST['csrf_token']) || !verify_csrf_token($_POST['csrf_token'])) {
+        write_log('CSRF', 'Unknown', 'FAILURE', 'Invalid token on Register');
+        die("Erreur de sécurité (CSRF). Veuillez recharger la page.");
+    }
+
     $nom = trim($_POST['nom']);
     $prenom = trim($_POST['prenom']);
     $email = trim($_POST['email']);
@@ -83,6 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php if (!empty($erreur)) echo "<div class='alert alert-danger'>$erreur</div>"; ?>
 
         <form method="post">
+            <?php csrf_input(); ?>
             <div class="form-floating mb-3">
                 <input type="text" class="form-control2 w-100 rounded-pill" id="nom" name="nom" placeholder="Nom" required>
             </div>

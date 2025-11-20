@@ -116,8 +116,9 @@ $equipements = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <td><?= htmlspecialchars($eq['type_sport']) ?></td>
                         <td><?= htmlspecialchars($eq['arrondissement']) ?></td>
                         <td>
+<?php require_once('includes/csrf.php'); ?>
                             <a href="edit_equipement.php?id=<?= urlencode($eq['id']) ?>" class="btn btn-warning btn-sm me-2">Modifier</a>
-                            <a href="delete_equipement.php?id=<?= urlencode($eq['id']) ?>" onclick="return confirm('Supprimer cet équipement ?')" class="btn btn-danger btn-sm">Supprimer</a>
+                            <a href="delete_equipement.php?id=<?= urlencode($eq['id']) ?>&token=<?= generate_csrf_token() ?>" onclick="return confirm('Supprimer cet équipement ?')" class="btn btn-danger btn-sm">Supprimer</a>
                         </td>
                     </tr>
                     <?php endforeach; ?>

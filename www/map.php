@@ -1,5 +1,6 @@
 <?php
 require_once("config/database2.php");
+require_once("includes/csrf.php");
 
 include('includes/header.php');
 
@@ -213,6 +214,8 @@ function slugify($text) {
 </body>
 </html>
 <script>
+    const csrfToken = "<?= generate_csrf_token() ?>";
+
     var simpleIcon = L.icon({
         iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
         iconSize: [25, 41],
@@ -330,6 +333,7 @@ function slugify($text) {
           }
           const dataToSend = new URLSearchParams();
           dataToSend.append('element_id', elementId);
+          dataToSend.append('csrf_token', csrfToken);
           
           fetch('likes.php', {
             method: 'POST',
@@ -395,6 +399,7 @@ map.on('popupopen', function(e) {
                 },
                 body: new URLSearchParams({
                     'element_id': elementId,
+                    'csrf_token': csrfToken
                 }),
             })
             .then(response => response.json())

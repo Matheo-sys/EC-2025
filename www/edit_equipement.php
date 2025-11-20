@@ -1,6 +1,7 @@
 <?php
 require_once("config/database2.php");
 require_once("includes/logger.php");
+require_once("includes/csrf.php");
 session_start();
 
 if (!isset($_SESSION['user']['role']) || $_SESSION['user']['role'] != 1) { 
@@ -28,6 +29,12 @@ if (!$equipement) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Vérification CSRF
+    if (!isset($_POST['csrf_token']) || !verify_csrf_token($_POST['csrf_token'])) {
+        write_log('CSRF', $_SESSION['user']['id'], 'FAILURE', 'Invalid token on Edit Equip');
+        die("Erreur de sécurité (CSRF). Veuillez recharger la page.");
+    }
+
     $nom = htmlspecialchars(trim($_POST['nom']), ENT_QUOTES, 'UTF-8');
     $adresse = htmlspecialchars(trim($_POST['adresse']), ENT_QUOTES, 'UTF-8');
     $type_sport = htmlspecialchars(trim($_POST['type_sport']), ENT_QUOTES, 'UTF-8');
@@ -108,6 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <?php endif; ?>
 
     <form method="post">
+        <?php csrf_input(); ?>
         <div class="mb-3">
             <label class="form-label">Nom</label>
             <input type="text" name="nom" class="form-control" value="<?= htmlspecialchars($equipement['nom']) ?>">

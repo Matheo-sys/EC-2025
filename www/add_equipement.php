@@ -1,9 +1,8 @@
 <?php
 require_once("config/database2.php");
 require_once("includes/logger.php");
+require_once("includes/csrf.php");
 session_start();
-
-
 
 if (!isset($_SESSION['user']['role']) || $_SESSION['user']['role'] != 1) { 
     header('Location: index.php');
@@ -13,6 +12,12 @@ if (!isset($_SESSION['user']['role']) || $_SESSION['user']['role'] != 1) {
 $erreur = '';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Vérification CSRF
+    if (!isset($_POST['csrf_token']) || !verify_csrf_token($_POST['csrf_token'])) {
+        write_log('CSRF', $_SESSION['user']['id'], 'FAILURE', 'Invalid token on Add Equip');
+        die("Erreur de sécurité (CSRF). Veuillez recharger la page.");
+    }
+
     $id = trim($_POST['id']);
     $nom = htmlspecialchars(trim($_POST['nom']), ENT_QUOTES, 'UTF-8');
     $adresse = htmlspecialchars(trim($_POST['adresse']), ENT_QUOTES, 'UTF-8');
@@ -89,6 +94,7 @@ include('includes/header.php');
     <?php endif; ?>
 
     <form method="post" class="mx-auto" style="max-width:600px;">
+        <?php csrf_input(); ?>
         <div class="mb-3">
             <label class="form-label">ID unique</label>
             <input type="text" name="id" class="form-control" required>
