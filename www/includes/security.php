@@ -29,9 +29,9 @@ function send_csp_header(): string
     $nonce = base64_encode(random_bytes(16));
 
     $csp = "default-src 'self'; ";
-    $csp .= "script-src 'self' https://cdn.jsdelivr.net https://unpkg.com https://cdnjs.cloudflare.com 'nonce-$nonce'; ";
-    $csp .= "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://unpkg.com https://cdnjs.cloudflare.com; ";
-    $csp .= "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; ";
+    $csp .= "script-src 'self' https://cdn.jsdelivr.net https://unpkg.com https://cdnjs.cloudflare.com https://kit.fontawesome.com 'nonce-$nonce'; ";
+    $csp .= "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://unpkg.com https://cdnjs.cloudflare.com https://kit.fontawesome.com; ";
+    $csp .= "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com https://ka-f.fontawesome.com; ";
     $csp .= "img-src 'self' data: https:; ";
     $csp .= "connect-src 'self'; ";
 
