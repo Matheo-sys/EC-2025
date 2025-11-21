@@ -1,5 +1,5 @@
 <?php
-require_once("config/database2.php");
+require_once("config/database.php");
 require_once("includes/logger.php");
 require_once("includes/csrf.php");
 session_start();
@@ -45,9 +45,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $arrondissement = htmlspecialchars(trim($_POST['arrondissement']), ENT_QUOTES, 'UTF-8');
 
     // Validation stricte
-    if (empty($nom) || empty($adresse) || empty($type_sport) ||
+    if (
+        empty($nom) || empty($adresse) || empty($type_sport) ||
         $latitude === '' || $longitude === '' || empty($gratuit) ||
-        empty($handicap_access) || empty($arrondissement)) {
+        empty($handicap_access) || empty($arrondissement)
+    ) {
         $erreur = "Tous les champs sont obligatoires.";
     } elseif (!is_numeric($latitude) || !is_numeric($longitude)) {
         $erreur = "Latitude et longitude doivent être des nombres valides.";
@@ -59,8 +61,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $erreur = "L'arrondissement ne doit pas dépasser 10 caractères.";
     } else {
         // Cast sécurisés
-        $latitude = (float)$latitude;
-        $longitude = (float)$longitude;
+        $latitude = (float) $latitude;
+        $longitude = (float) $longitude;
 
         $stmt = $conn->prepare("UPDATE equipements_sportifs_paris 
             SET nom = :nom, adresse = :adresse, type_sport = :type_sport, latitude = :latitude, 

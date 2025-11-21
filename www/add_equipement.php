@@ -1,5 +1,5 @@
 <?php
-require_once("config/database2.php");
+require_once("config/database.php");
 require_once("includes/logger.php");
 require_once("includes/csrf.php");
 session_start();
@@ -28,10 +28,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $handicap_access = htmlspecialchars(trim($_POST['handicap_access']), ENT_QUOTES, 'UTF-8');
     $arrondissement = htmlspecialchars(trim($_POST['arrondissement']), ENT_QUOTES, 'UTF-8');
 
-   // Validation serveur stricte
-    if ($id === '' || $nom === '' || $adresse === '' || $type_sport === '' ||
+    // Validation serveur stricte
+    if (
+        $id === '' || $nom === '' || $adresse === '' || $type_sport === '' ||
         $latitude === '' || $longitude === '' || $gratuit === '' ||
-        $handicap_access === '' || $arrondissement === '') {
+        $handicap_access === '' || $arrondissement === ''
+    ) {
         $erreur = "Tous les champs sont obligatoires.";
     } elseif (!ctype_digit($id)) {
         $erreur = "ID invalide (doit être numérique).";
@@ -45,9 +47,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $erreur = "L'arrondissement ne doit pas dépasser 10 caractères.";
     } else {
         // cast sécurisés
-        $id = (int)$id;
-        $latitude = (float)$latitude;
-        $longitude = (float)$longitude;
+        $id = (int) $id;
+        $latitude = (float) $latitude;
+        $longitude = (float) $longitude;
 
         // Vérifier si l'id existe déjà
         $check = $conn->prepare("SELECT id FROM equipements_sportifs_paris WHERE id = ?");

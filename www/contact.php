@@ -1,5 +1,5 @@
 <?php include('includes/header.php'); ?>
-<?php 
+<?php
 require_once('includes/logger.php');
 require_once('includes/csrf.php');
 
@@ -84,10 +84,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <p class="mb-4 text-muted">Une question ? Un bug ? Une idée ? N'hésitez pas à nous contacter via ce
                 formulaire.</p>
 
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-            <form action="contact.php" method="post" class="p-4 border rounded shadow-sm bg-light">
-                <?php csrf_input(); ?>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <form action="contact.php" method="post" class="p-4 border rounded shadow-sm bg-light">
+                        <?php csrf_input(); ?>
 
                         <div class="mb-3 text-start">
                             <label for="name" class="form-label">Nom</label>
@@ -114,9 +114,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <?php include('includes/footer.php'); ?>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-        nonce="<?= $nonce ?>"></script>
 
 </body>
 

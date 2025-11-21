@@ -5,10 +5,13 @@ if (isset($_SESSION['user'])) {
     header("Location: index.php");
     exit();
 }
+include('includes/logger.php');
 
 // Le reste de ton code pour la gestion du formulaire de connexion
 include('config/database.php');
 include('includes/header.php');
+include('includes/csrf.php');
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Vérification CSRF
@@ -29,13 +32,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($user && password_verify($password, $user['mot_de_passe'])) {
             $_SESSION['user'] = [
-                'id' => $user['id'],  
+                'id' => $user['id'],
                 'nom' => $user['nom'],
                 'prenom' => $user['prenom'],
                 'avatar' => $user['avatar'] ?? 'assets/default-avatar.png',
                 'role' => $user['role']
             ];
-            
+
             write_log('LOGIN', $email, 'SUCCESS', 'Role: ' . $user['role']);
             header("Location: index.php");
             exit();
@@ -61,9 +64,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
         nonce="<?= $nonce ?>">
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-        nonce="<?= $nonce ?>"></script>
 
 
     <meta charset="UTF-8">
@@ -117,6 +117,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </main>
 
 <?php include('includes/footer.php'); ?>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-    nonce="<?= $nonce ?>"></script>
 <script src="js/script.js" nonce="<?= $nonce ?>"></script>

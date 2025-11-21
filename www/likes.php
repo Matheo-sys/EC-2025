@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('config/database2.php');
+include('config/database.php');
 require_once('includes/csrf.php');
 
 if (isset($_POST['element_id'])) {
@@ -10,7 +10,7 @@ if (isset($_POST['element_id'])) {
         exit();
     }
 
-    $element_id = $_POST['element_id']; 
+    $element_id = $_POST['element_id'];
 
     if (empty($element_id)) {
         echo json_encode(["status" => "error", "message" => "L'ID de l'élément est manquant ou invalide"]);

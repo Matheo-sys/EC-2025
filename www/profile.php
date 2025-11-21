@@ -9,7 +9,7 @@ if (!isset($_SESSION['user']) || !isset($_SESSION['user']['id'])) {
 }
 
 
-include('config/database2.php');
+include('config/database.php');
 require_once('includes/logger.php');
 require_once('includes/csrf.php');
 
@@ -132,9 +132,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
         nonce="<?= $nonce ?>">
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-        nonce="<?= $nonce ?>"></script>
 
 
     <meta charset="UTF-8">
@@ -178,17 +175,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
         </div>
 
-    <!-- Formulaire de mise à jour -->
-    <div class="row justify-content-center mt-5">
-        <div class="col-12 col-md-6">
-            <h3>Modifier mes informations</h3>
-            <form method="POST" enctype="multipart/form-data">
-                <?php csrf_input(); ?>
-                <!-- Changer l'avatar -->
-                <div class="mb-3">
-                    <label for="avatar" class="form-label">Changer l'avatar</label>
-                    <input type="file" class="form-control" id="avatar" name="avatar">
-                </div>
+        <!-- Formulaire de mise à jour -->
+        <div class="row justify-content-center mt-5">
+            <div class="col-12 col-md-6">
+                <h3>Modifier mes informations</h3>
+                <form method="POST" enctype="multipart/form-data">
+                    <?php csrf_input(); ?>
+                    <!-- Changer l'avatar -->
+                    <div class="mb-3">
+                        <label for="avatar" class="form-label">Changer l'avatar</label>
+                        <input type="file" class="form-control" id="avatar" name="avatar">
+                    </div>
 
                     <!-- Email (optionnel, uniquement si l'utilisateur veut le changer) -->
                     <div class="mb-3">
