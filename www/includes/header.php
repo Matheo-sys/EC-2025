@@ -1,7 +1,6 @@
 <?php
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
+// Initialisation centralisée de la session (cookies sécurisés)
+require_once __DIR__ . '/session.php';
 require_once __DIR__ . '/security.php';
 ?>
 <!-- Header -->
@@ -32,6 +31,7 @@ require_once __DIR__ . '/security.php';
                     <li class="nav-item"><a href="map.php" class="nav-link">Carte</a></li>
                     <li class="nav-item"><a href="about.php" class="nav-link">À propos</a></li>
                     <li class="nav-item"><a href="contact.php" class="nav-link">Contact</a></li>
+                    <li class="nav-item"><a href="demo_session_fixation.php" class="nav-link">Démo session</a></li>
 
                     <?php if (isset($_SESSION['user'])): ?>
                         <!-- Menu déroulant -->
@@ -67,6 +67,7 @@ require_once __DIR__ . '/security.php';
                     <li class="nav-item"><a href="map.php" class="nav-link">Carte</a></li>
                     <li class="nav-item"><a href="about.php" class="nav-link">À propos</a></li>
                     <li class="nav-item"><a href="contact.php" class="nav-link">Contact</a></li>
+                    <li class="nav-item"><a href="demo_session_fixation.php" class="nav-link">Démo session</a></li>
 
                     <?php if (isset($_SESSION['user'])): ?>
                         <!-- Menu déroulant pour mobile -->

@@ -1,8 +1,8 @@
 <?php
 require_once("config/database.php");
-require_once("includes/logger.php");
+require_once __DIR__ . '/includes/require_once("includes/logger.php");
 require_once("includes/csrf.php");
-session_start();
+session.php';
 
 if (!isset($_SESSION['user']['role']) || $_SESSION['user']['role'] != 1) {
     header('Location: index.php');

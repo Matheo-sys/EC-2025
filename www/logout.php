@@ -1,17 +1,32 @@
 <?php
-// Démarrer la session
-session_start();
+// Utilise l'initialisation centralisée pour assurer les mêmes paramètres de cookie
+require_once __DIR__ . '/includes/session.php';
 
-// Détruire toutes les variables de session
-session_unset();
+// Supprime toutes les variables de session
+$_SESSION = [];
 
-// Détruire la session
-session_destroy();
+// Détruit la session côté serveur
+if (session_id() !== '') {
+	// Récupère le nom du cookie et ses paramètres pour le supprimer correctement
+	$params = session_get_cookie_params();
+	// Détruit la session
+	session_unset();
+	session_destroy();
 
-// Ajouter un message de succès dans la session
-$_SESSION['message'] = "Vous avez bien été déconnecté.";
+	// Détruit aussi le cookie de session côté client
+	setcookie(
+		session_name(),
+		'',
+		time() - 42000,
+		$params['path'] ?? '/',
+		$params['domain'] ?? '',
+		$params['secure'] ?? false,
+		$params['httponly'] ?? true
+	);
+}
 
-// Rediriger l'utilisateur vers la page d'accueil
+// Optionnel: message flash après logout (requiert un nouveau démarrage de session si utilisé)
+// header redirection
 header("Location: index.php");
 exit();
 ?>

@@ -1,4 +1,6 @@
 <?php
+// Inclure l'initialisation de la session avant toute utilisation de $_SESSION
+include('includes/session.php');
 
 // Si l'utilisateur est déjà connecté, redirige-le vers la page d'accueil (index.php)
 if (isset($_SESSION['user'])) {
@@ -31,6 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user = $stmt->fetch();
 
         if ($user && password_verify($password, $user['mot_de_passe'])) {
+            session_regenerate_id(true);
             $_SESSION['user'] = [
                 'id' => $user['id'],
                 'nom' => $user['nom'],
@@ -91,7 +94,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php if (!empty($erreur))
             echo "<div class='alert alert-danger'>$erreur</div>"; ?>
 
-        <form method="post">
+        <!-- Démo : affichage et contrôle du Session ID -->
+        <div class="mb-3 p-3" style="background:#f8f9fa;border-radius:8px;">
+            <strong>Session ID actuel : </strong>
+            <span id="sid">chargement...</span>
+            <div class="mt-2">
+                <button id="sid-refresh" type="button" class="btn btn-sm btn-secondary">🔄 Rafraîchir</button>
+                <button id="sid-login" type="button" class="btn btn-sm btn-primary">🔐 Se connecter (demo)</button>
+            </div>
+        </div>
+
+        <form id="login-form" method="post">
             <?php csrf_input(); ?>
             <div class="form-floating mb-3">
                 <input type="email" class="form-control2 w-100 rounded-pill" id="email" name="email" placeholder="Email"
@@ -118,3 +131,49 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <?php include('includes/footer.php'); ?>
 <script src="js/script.js" nonce="<?= $nonce ?>"></script>
+
+<script>
+    async function loadSID() {
+        try {
+            const res = await fetch('session-info.php');
+            const data = await res.json();
+            document.getElementById('sid').textContent = data.sessionId || '(aucune session)';
+        } catch (e) {
+            document.getElementById('sid').textContent = '(erreur)';
+            console.error(e);
+        }
+    }
+
+    document.getElementById('sid-refresh').addEventListener('click', loadSID);
+
+    document.getElementById('sid-login').addEventListener('click', async () => {
+        // Envoie les mêmes champs que le formulaire de login en AJAX
+        const form = document.getElementById('login-form');
+        const formData = new FormData(form);
+
+        try {
+            await fetch('login.php', {
+                method: 'POST',
+                body: formData,
+                credentials: 'same-origin'
+            });
+
+            // Après le POST, recharge l'ID de session ; si login réussi le serveur aura régénéré l'ID
+            await loadSID();
+
+            // Affiche un message court
+            const sid = document.getElementById('sid').textContent;
+            if (sid && sid !== '(aucune session)') {
+                alert('Session créée / renouvelée — Session ID: ' + sid);
+            } else {
+                alert('Connexion échouée ou aucune session créée. Vérifiez vos identifiants.');
+            }
+        } catch (e) {
+            console.error(e);
+            alert('Erreur lors de la requête de connexion.');
+        }
+    });
+
+    // Charge initial
+    loadSID();
+</script>
