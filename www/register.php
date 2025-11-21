@@ -43,7 +43,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt = $conn->prepare($sql);
             if($stmt->execute([$nom, $prenom, $email, $password_hashed])) {
                 write_log('REGISTER', $email, 'SUCCESS', 'New user created');
-                // suite existante...
             } else {
                 write_log('REGISTER', $email, 'FAILURE', 'SQL Error');
                 $erreur = "Erreur lors de l'inscription.";

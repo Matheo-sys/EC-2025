@@ -2801,3 +2801,8 @@ Set-cookie: Tamper=680b3ea9-4cf8-4624-b368-9a778c37469d
 [2025-11-20 14:28:37] | LOGIN           | system-property(&#039;xsl:vendor&#039;)/&gt; | FAILURE    | Invalid credentials
 [2025-11-20 14:28:37] | LOGIN           | &quot;/&gt;&lt;xsl:value-of select=&quot;system-property(&#039;xsl:vendor&#039;)&quot;/&gt;&lt;!-- | FAILURE    | Invalid credentials
 [2025-11-20 14:29:15] | LOGIN           | zaproxy@example.com  | FAILURE    | Invalid credentials
+[2025-11-20 22:20:18] | LOGIN           | louhichielias94@gmail.com | FAILURE    | Invalid credentials
+[2025-11-20 22:20:23] | LOGIN           | louhichielias94@gmail.com | FAILURE    | Invalid credentials
+[2025-11-20 22:21:12] | REGISTER        | louhichielias94@gmail.com | FAILURE    | Email already exists
+[2025-11-20 22:21:43] | LOGIN           | louhichielias94@gmail.com | FAILURE    | Invalid credentials
+[2025-11-20 22:21:54] | LOGIN           | louhichielias94@gmail.com | SUCCESS    | Role: 0
